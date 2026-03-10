@@ -68,6 +68,12 @@ section{position:relative;z-index:1}
 .btn-g{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.65rem;border-radius:5px;background:transparent;border:1px solid var(--border2);color:var(--text);font-size:.83rem;font-weight:300;text-decoration:none;letter-spacing:.03em;cursor:none;transition:border-color .2s,background .2s,transform .2s}
 .btn-g:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04);transform:translateY(-2px)}
 
+/* STAT CHIP */
+.hero-stats{display:flex;gap:.75rem;margin-top:2rem;flex-wrap:wrap}
+.stat-chip{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.85rem 1.4rem;display:flex;flex-direction:column;gap:.18rem;transition:border-color .2s,transform .2s}
+.stat-chip:hover{border-color:rgba(168,85,247,.3);transform:translateY(-2px)}
+.stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:var(--accent);line-height:1;text-shadow:0 0 20px var(--glow)}
+.stat-lbl{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 
 /* ABOUT */
 #about{padding:120px 0}
@@ -215,6 +221,12 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
         <a href="Harshith_Gujjeti_Resume.pdf" download="Harshith_Gujjeti_Resume.pdf" class="btn-w">Download Résumé ↓</a>
         <a href="mailto:Harshithgujjeti@icloud.com" class="btn-g">Get In Touch</a>
       </div>
+      <div class="hero-stats">
+        <div class="stat-chip">
+          <span class="stat-num">1.5+</span>
+          <span class="stat-lbl">Years Experience</span>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -262,7 +274,7 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
           <div class="exp-co">USF · Centre of Transportation & Research</div>
         </div>
         <div>
-          <div class="exp-title">OPS Student Assistant — Computer Vision & Video Analytics <span class="cur-badge"><span class="cur-dot"></span>Current</span></div>
+          <div class="exp-title">Computer Vision Video Analyst <span class="cur-badge"><span class="cur-dot"></span>Current</span></div>
           <ul class="exp-pts">
             <li>Deployed production <strong>YOLOv8 + ByteTrack</strong> pipeline processing <span class="metric">100+ hours</span> of traffic video — tracked <span class="metric">1,200+ unique motorcycles</span> across Tampa Bay for FDOT injury prevention research.</li>
             <li>Automated manual counting workflows; delivered <span class="metric">50+ annotated videos</span>, CSV datasets, and batch scripts supporting SS4A grant deliverables.</li>
@@ -303,6 +315,23 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
           </ul>
           <div class="exp-tags">
             <span class="tag key">scikit-learn</span><span class="tag key">MLflow</span><span class="tag">Python</span><span class="tag">Healthcare ML</span><span class="tag">SQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-date">Jan 2025 – Jul 2025</div>
+          <div class="exp-co">ISRO — Indian Space Research Organisation</div>
+        </div>
+        <div>
+          <div class="exp-title">AI Research Intern</div>
+          <ul class="exp-pts">
+            <li>Designed a satellite image super-resolution pipeline using <strong>CNN + SRGAN</strong> in PyTorch — achieved <span class="metric">4× upscaling</span> from 10 m to 2.5 m ground sampling distance.</li>
+            <li>Preserved radiometric consistency enabling finer downstream analysis for <strong>national space research programs</strong>.</li>
+          </ul>
+          <div class="exp-tags">
+            <span class="tag key">PyTorch</span><span class="tag key">SRGAN</span><span class="tag">CNN</span><span class="tag">TensorFlow</span><span class="tag">Satellite Imaging</span>
           </div>
         </div>
       </div>
@@ -608,17 +637,4 @@ function draw(){
     ctx.beginPath();ctx.arc(pos.x,pos.y,2.8,0,Math.PI*2);ctx.fillStyle=`rgba(${col},.92)`;ctx.fill();
     const pg=ctx.createRadialGradient(pos.x,pos.y,0,pos.x,pos.y,9);
     pg.addColorStop(0,`rgba(${col},.32)`);pg.addColorStop(1,`rgba(${col},0)`);
-        ctx.beginPath();ctx.arc(pos.x,pos.y,9,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
-  }
-  requestAnimationFrame(draw);
-}
-window.addEventListener('resize',resize);
-resize();draw();
-
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),i*70);});
-},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-</script>
-</body>
-</html>
+        ctx.beginPath();ctx.arc(pos.x,pos.y,9,0,Math.PI*2);ctx.fillStyle=pg
