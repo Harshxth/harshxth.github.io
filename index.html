@@ -49,7 +49,7 @@ section{position:relative;z-index:1}
 
 /* HERO */
 #hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 80px}
-.hero-grid{max-width:1100px;margin:0 auto;padding:0 2.5rem;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center}
+.hero-grid{max-width:1100px;margin:0 auto;padding:0 2.5rem}
 .hero-tag{display:inline-flex;align-items:center;gap:.45rem;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.2);border-radius:100px;padding:.32rem .9rem;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--accent);letter-spacing:.1em;margin-bottom:1.8rem}
 .hero-tag .live{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:liv 2s ease-in-out infinite}
 @keyframes liv{0%,100%{box-shadow:0 0 0 0 rgba(168,85,247,.6)}50%{box-shadow:0 0 0 6px rgba(168,85,247,0)}}
@@ -68,12 +68,6 @@ section{position:relative;z-index:1}
 .btn-g{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.65rem;border-radius:5px;background:transparent;border:1px solid var(--border2);color:var(--text);font-size:.83rem;font-weight:300;text-decoration:none;letter-spacing:.03em;cursor:none;transition:border-color .2s,background .2s,transform .2s}
 .btn-g:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04);transform:translateY(-2px)}
 
-/* HERO PHOTO */
-.hero-photo{width:280px;height:360px;border-radius:16px;overflow:hidden;border:1px solid rgba(168,85,247,.22);box-shadow:0 0 80px rgba(168,85,247,.15),0 0 0 1px rgba(168,85,247,.08);flex-shrink:0;position:relative;align-self:center}
-.hero-photo::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);z-index:2}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
-.hero-location{position:absolute;top:12px;right:12px;z-index:3;display:inline-flex;align-items:center;gap:.35rem;background:rgba(10,10,10,.72);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:.28rem .75rem;font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.85);letter-spacing:.05em}
-.hero-location svg{width:9px;height:9px;opacity:.7}
 
 /* ABOUT */
 #about{padding:120px 0}
@@ -175,7 +169,6 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
 
 @media(max-width:900px){
   nav{padding:1rem 1.5rem}.nav-links{display:none}
-  .hero-photo{display:none}
   .about-grid{grid-template-columns:1fr;gap:2.5rem}
   .exp-item{grid-template-columns:1fr;gap:.4rem}.exp-item::before,.exp-item::after{display:none}
   .proj-grid{grid-template-columns:1fr}.proj-card.feat{grid-column:1}
@@ -220,17 +213,10 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
       <div class="hero-ctas">
         <a href="#projects" class="btn-p">View My Work →</a>
         <a href="Harshith_Gujjeti_Resume.pdf" download="Harshith_Gujjeti_Resume.pdf" class="btn-w">Download Résumé ↓</a>
-        <a href="mailto:Harshithgujjeti@icloud.com" class="btn-g">Get In Touch</a>
+        <a href="/cdn-cgi/l/email-protection#b4fcd5c6c7dcddc0dcd3c1deded1c0ddf4ddd7d8dbc1d09ad7dbd9" class="btn-g">Get In Touch</a>
       </div>
     </div>
-    <!-- swap photo.jpeg with your new image anytime -->
-    <div class="hero-photo">
-      <div class="hero-location">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        Tampa, FL
-      </div>
-      <img src="photo.jpeg" alt="Harshith Gujjeti"/>
-    </div>
+
   </div>
 </section>
 <div class="cdiv"></div>
@@ -504,12 +490,12 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
       <span class="open-chip ac">Summer Internship 2026</span>
     </div>
     <div class="hero-ctas" style="justify-content:center">
-      <a href="mailto:Harshithgujjeti@icloud.com?subject=Let's%20connect" class="btn-p">Email Harshith →</a>
+      <a href="/cdn-cgi/l/email-protection#652d0417160d0c110d02100f0f00110c250c06090a10014b060a085a1610070f000611582900114216405755060a0b0b000611" class="btn-p">Email Harshith →</a>
       <a href="Harshith_Gujjeti_Resume.pdf" download="Harshith_Gujjeti_Resume.pdf" class="btn-w">Download Résumé ↓</a>
       <a href="https://github.com/Harshxth" target="_blank" class="btn-g">GitHub</a>
     </div>
     <div class="contact-links">
-      <a href="mailto:Harshithgujjeti@icloud.com" class="contact-link">Harshithgujjeti@icloud.com</a>
+      <a href="/cdn-cgi/l/email-protection#2961485b5a41405d414e5c43434c5d4069404a45465c4d074a4644" class="contact-link"><span class="__cf_email__" data-cfemail="531b3221203b3a273b3426393936273a133a303f3c26377d303c3e">[email&#160;protected]</span></a>
       <a href="https://github.com/Harshxth" target="_blank" class="contact-link">github.com/Harshxth</a>
       <span class="contact-link">Tampa, FL</span>
     </div>
@@ -522,7 +508,7 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
   <div>© 2026</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // CURSOR
 const cur=document.getElementById('cur');
 const cdot=cur.querySelector('.dot'),cring=cur.querySelector('.ring');
@@ -622,17 +608,4 @@ function draw(){
     ctx.beginPath();ctx.arc(pos.x,pos.y,2.8,0,Math.PI*2);ctx.fillStyle=`rgba(${col},.92)`;ctx.fill();
     const pg=ctx.createRadialGradient(pos.x,pos.y,0,pos.x,pos.y,9);
     pg.addColorStop(0,`rgba(${col},.32)`);pg.addColorStop(1,`rgba(${col},0)`);
-    ctx.beginPath();ctx.arc(pos.x,pos.y,9,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
-  }
-  requestAnimationFrame(draw);
-}
-window.addEventListener('resize',resize);
-resize();draw();
-
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),i*70);});
-},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-</script>
-</body>
-</html>
+    ctx.beginPath();ctx.arc(pos.x,pos.y,9,0,Math.PI*2);ctx.fi
