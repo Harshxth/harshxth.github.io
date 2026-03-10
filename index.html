@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Harshith Gujjeti — AI/ML · Data Engineering</title>
+<title>🤖 Harshith Gujjeti — AI/ML Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -49,7 +49,7 @@ section{position:relative;z-index:1}
 
 /* HERO */
 #hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 80px}
-.hero-grid{max-width:1100px;margin:0 auto;padding:0 2.5rem}
+.hero-grid{max-width:1100px;margin:0 auto;padding:0 2.5rem;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center}
 .hero-tag{display:inline-flex;align-items:center;gap:.45rem;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.2);border-radius:100px;padding:.32rem .9rem;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--accent);letter-spacing:.1em;margin-bottom:1.8rem}
 .hero-tag .live{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:liv 2s ease-in-out infinite}
 @keyframes liv{0%,100%{box-shadow:0 0 0 0 rgba(168,85,247,.6)}50%{box-shadow:0 0 0 6px rgba(168,85,247,0)}}
@@ -67,6 +67,11 @@ section{position:relative;z-index:1}
 .btn-w:hover{transform:translateY(-2px);opacity:.9}
 .btn-g{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.65rem;border-radius:5px;background:transparent;border:1px solid var(--border2);color:var(--text);font-size:.83rem;font-weight:300;text-decoration:none;letter-spacing:.03em;cursor:none;transition:border-color .2s,background .2s,transform .2s}
 .btn-g:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04);transform:translateY(-2px)}
+
+/* HERO PHOTO */
+.hero-photo{width:210px;height:270px;border-radius:14px;overflow:hidden;border:1px solid rgba(168,85,247,.22);box-shadow:0 0 60px rgba(168,85,247,.1),0 0 0 1px rgba(168,85,247,.08);flex-shrink:0;position:relative;align-self:center}
+.hero-photo::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);z-index:2}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
 
 /* ABOUT */
 #about{padding:120px 0}
@@ -168,6 +173,7 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
 
 @media(max-width:900px){
   nav{padding:1rem 1.5rem}.nav-links{display:none}
+  .hero-photo{display:none}
   .about-grid{grid-template-columns:1fr;gap:2.5rem}
   .exp-item{grid-template-columns:1fr;gap:.4rem}.exp-item::before,.exp-item::after{display:none}
   .proj-grid{grid-template-columns:1fr}.proj-card.feat{grid-column:1}
@@ -196,22 +202,28 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
 <!-- HERO -->
 <section id="hero">
   <div class="hero-grid">
-    <div class="hero-tag"><span class="live"></span>Open to Summer Internship 2026 · Tampa, FL</div>
-    <h1 class="hero-name">Harshith<br><span class="last">Gujjeti.</span></h1>
-    <div class="hero-roles">
-      <div class="hero-role"><span class="acc">◈</span>AI / ML Engineer</div>
-      <div class="hero-role"><span class="acc">◈</span>Data Engineering</div>
-      <div class="hero-role"><span class="acc">◈</span>MS @ University of South Florida</div>
+    <div>
+      <div class="hero-tag"><span class="live"></span>Open to Summer Internship 2026 · Tampa, FL</div>
+      <h1 class="hero-name">Harshith<br><span class="last">Gujjeti.</span></h1>
+      <div class="hero-roles">
+        <div class="hero-role"><span class="acc">◈</span>AI / ML Engineer</div>
+        <div class="hero-role"><span class="acc">◈</span>Data Engineering</div>
+        <div class="hero-role"><span class="acc">◈</span>MS @ University of South Florida</div>
+      </div>
+      <p class="hero-sub">
+        Building <span class="shine">intelligent systems</span> from research to production —
+        multi-agent AI pipelines, <span class="shine">healthcare ML</span>,
+        and <span class="shine">data engineering</span> at scale.
+      </p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-p">View My Work →</a>
+        <a href="YOUR_RESUME_URL_HERE" target="_blank" class="btn-w">Download Résumé ↓</a>
+        <a href="mailto:Harshithgujjeti@icloud.com" class="btn-g">Get In Touch</a>
+      </div>
     </div>
-    <p class="hero-sub">
-      Building <span class="shine">intelligent systems</span> from research to production —
-      multi-agent AI pipelines, <span class="shine">satellite computer vision</span>,
-      healthcare ML, and data engineering at scale.
-    </p>
-    <div class="hero-ctas">
-      <a href="#projects" class="btn-p">View My Work →</a>
-      <a href="YOUR_RESUME_URL_HERE" target="_blank" class="btn-w">Download Résumé ↓</a>
-      <a href="mailto:Harshithgujjeti@icloud.com" class="btn-g">Get In Touch</a>
+    <!-- swap photo.jpeg with your new image anytime -->
+    <div class="hero-photo">
+      <img src="photo.jpeg" alt="Harshith Gujjeti"/>
     </div>
   </div>
 </section>
@@ -226,7 +238,7 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
         <h2 class="about-h">I don't just model data —<br>I <em>engineer intelligence.</em></h2>
         <div class="about-body">
           <p>AI/ML engineer and researcher with a sharp focus on <strong>production ML systems</strong>, generative AI pipelines, and healthcare analytics. I care about building things that actually work in the real world — not just in notebooks.</p>
-          <p>Currently pursuing my <strong>M.S. in AI & Business Analytics at USF</strong>, with hands-on research at the Muma College of Business and the Centre for Transportation Research. Previously did satellite super-resolution research at <span class="hl">ISRO</span>.</p>
+          <p>Currently pursuing my <strong>M.S. in AI & Business Analytics at USF</strong>, with hands-on research at the Muma College of Business and the Centre for Transportation Research. Previously an AI Research Intern at <span class="hl">ISRO</span>.</p>
           <p>I build at the intersection of <strong>multi-agent AI, computer vision, NLP, and data engineering</strong> — wherever hard problems meet real stakes.</p>
         </div>
       </div>
@@ -299,23 +311,6 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
           </ul>
           <div class="exp-tags">
             <span class="tag key">scikit-learn</span><span class="tag key">MLflow</span><span class="tag">Python</span><span class="tag">Healthcare ML</span><span class="tag">SQL</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="exp-item reveal">
-        <div>
-          <div class="exp-date">Jan 2025 – Jul 2025</div>
-          <div class="exp-co">ISRO — Indian Space Research Organisation</div>
-        </div>
-        <div>
-          <div class="exp-title">Artificial Intelligence Research Intern</div>
-          <ul class="exp-pts">
-            <li>Designed a satellite super-resolution pipeline using CNN and SRGAN in PyTorch — achieved <span class="metric">4× upscaling</span> from 10 m to 2.5 m ground sampling distance.</li>
-            <li>Preserved radiometric consistency enabling finer downstream analysis for <strong>national space research programs</strong>.</li>
-          </ul>
-          <div class="exp-tags">
-            <span class="tag key">PyTorch</span><span class="tag key">SRGAN</span><span class="tag">CNN</span><span class="tag">TensorFlow</span><span class="tag">Satellite Imaging</span>
           </div>
         </div>
       </div>
@@ -468,6 +463,8 @@ body::after{content:'';position:fixed;inset:0;z-index:200;background-image:url("
     </div>
   </div>
 </section>
+<div class="cdiv"></div>
+
 <section id="beyond">
   <div class="inner">
     <div class="sec-label">05 — When I'm Not Building</div>
