@@ -504,9 +504,13 @@ const DIAGRAMS={
 // ── BOOT ─────────────────────────────────────────────────────────────────────
 const BOOT=['INITIALIZING NEURAL ENGINE v3.1.4 ............. OK','Loading LangGraph agent mesh .................. OK','Mounting ChromaDB vector store ................ OK','Spawning FastAPI inference gateway ............ OK','YOLOv8 detection pipeline ready ............... OK','Calibrating RAGAS evaluation harness .......... OK','Entity resolution pipeline online ............. OK','Multi-agent orchestrator ready ................ OK','SYSTEM READY — Launching portfolio ...........',];
 (function boot(){
+  const loader=document.getElementById('loader');
+  const seen=sessionStorage.getItem('hg-seen')==='1';
+  if(seen){loader.style.display='none';sessionStorage.setItem('hg-seen','1');requestAnimationFrame(initAll);return;}
+  sessionStorage.setItem('hg-seen','1');
   const bl=document.getElementById('boot-lines'),pp=document.getElementById('boot-prog'),pt=document.getElementById('boot-pct');let i=0;
   const tick=setInterval(()=>{
-    if(i>=BOOT.length){clearInterval(tick);setTimeout(()=>{document.getElementById('loader').classList.add('hide');setTimeout(initAll,550);},380);return;}
+    if(i>=BOOT.length){clearInterval(tick);setTimeout(()=>{loader.classList.add('hide');setTimeout(initAll,550);},380);return;}
     const d=document.createElement('div');d.className='boot-line';
     d.style.color=BOOT[i].includes('READY')?'#E879F9':BOOT[i].includes('OK')?'#C084FC':'#5B3A7A';
     d.innerHTML=`<span style="color:#2A1245;margin-right:1rem">[${String(i).padStart(2,'0')}]</span>${BOOT[i]}`;
