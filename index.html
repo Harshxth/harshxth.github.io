@@ -17,8 +17,9 @@ html{scroll-behavior:smooth}
   --bg:#080010;--bg-rgb:8,0,16;--surf:#0D0018;--bord:#1A0835;
   --v1:#C084FC;--v2:#818CF8;--v3:#E879F9;--v4:#A78BFA;
   --text:#F0EAFF;--muted:#5B3A7A;--dim:#2A1245;
-  --body:var(--body);--hl:var(--hl);--on-accent:#080010;
+  --body:#6A5090;--hl:#C8B0E8;--on-accent:#080010;
   --grid:rgba(192,132,252,.04);--glow:rgba(192,132,252,.07);
+  --hm0:#1A0835;--hm1:#3D1B6B;--hm2:#6D28D9;--hm3:#A78BFA;--hm4:#E879F9;
   --cursor-blend:screen;
 }
 :root[data-theme="light"]{
@@ -27,6 +28,7 @@ html{scroll-behavior:smooth}
   --text:#1A0B2E;--muted:#6B5B8A;--dim:#BFB4D4;
   --body:#4C3F6B;--hl:#2A1245;--on-accent:#FFFFFF;
   --grid:rgba(109,40,217,.05);--glow:rgba(109,40,217,.08);
+  --hm0:#EDE6FA;--hm1:#C4B0F0;--hm2:#9F7EE6;--hm3:#6D28D9;--hm4:#4C1D95;
   --cursor-blend:multiply;
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;transition:background-color .4s ease,color .4s ease}
@@ -34,6 +36,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 .mono{font-family:'JetBrains Mono',monospace}.display{font-family:'Syne',sans-serif}
 #cur-o{position:fixed;pointer-events:none;z-index:9999;width:30px;height:30px;border-radius:50%;border:1px solid rgba(192,132,252,.45);transition:transform .06s linear;mix-blend-mode:var(--cursor-blend)}
 #cur-d{position:fixed;pointer-events:none;z-index:9999;width:7px;height:7px;border-radius:50%;background:var(--v1);box-shadow:0 0 10px var(--v1);mix-blend-mode:var(--cursor-blend)}
+@media(hover:none),(pointer:coarse){#cur-o,#cur-d{display:none}body,.btn-primary,.btn-ghost,.nav-links a,.theme-toggle{cursor:auto}}
 .scanlines{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(192,132,252,.01) 3px,rgba(192,132,252,.01) 4px)}
 /* LOADING */
 #loader{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;align-items:center;justify-content:center;padding:2rem;transition:opacity .5s ease}
@@ -58,7 +61,6 @@ nav.scrolled{background:rgba(var(--bg-rgb),.92);backdrop-filter:blur(16px);borde
 :root[data-theme="light"] .availability-badge{border-color:rgba(109,40,217,.45);background:rgba(109,40,217,.08);color:rgba(76,29,149,.92)}
 :root[data-theme="light"] .hero-type{color:var(--body)}
 :root[data-theme="light"] .hero-desc{color:var(--body)}
-@media(hover:none),(pointer:coarse){#cur-o,#cur-d{display:none}body,.btn-primary,.btn-ghost,.nav-links a,.theme-toggle{cursor:auto}}
 @media(max-width:768px){.nav-links{display:none}.theme-toggle{margin-left:0}}
 /* HERO */
 #hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:-4rem}
@@ -178,6 +180,42 @@ section>*{position:relative;z-index:1}
 .open-chips{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:1.5rem 0 2rem}
 .open-chip{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:100px;padding:.35rem .95rem;font-size:.72rem;color:var(--muted);letter-spacing:.04em;font-family:'JetBrains Mono',monospace}
 .open-chip.ac{background:rgba(192,132,252,.07);border-color:rgba(192,132,252,.22);color:var(--v1)}
+/* ACTIVITY / HEATMAP */
+#activity{max-width:1080px}
+.hm-wrap{margin-top:3rem;background:var(--surf);border:1px solid var(--bord);border-radius:14px;padding:2rem 1.8rem;transition:border-color .25s}
+.hm-wrap:hover{border-color:rgba(192,132,252,.3)}
+.hm-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:1rem;margin-bottom:1.4rem}
+.hm-total{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:700;color:var(--text)}
+.hm-total span{color:var(--v1)}
+.hm-sub{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.2em}
+.hm-scroll{overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;scrollbar-color:var(--dim) transparent}
+.hm-scroll::-webkit-scrollbar{height:4px}
+.hm-scroll::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.hm-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);gap:3px;min-width:760px}
+.hm-cell{width:12px;height:12px;border-radius:2px;background:var(--hm0);transition:transform .15s,outline .15s}
+.hm-cell[data-l="1"]{background:var(--hm1)}
+.hm-cell[data-l="2"]{background:var(--hm2)}
+.hm-cell[data-l="3"]{background:var(--hm3)}
+.hm-cell[data-l="4"]{background:var(--hm4)}
+.hm-cell:hover{transform:scale(1.4);outline:1px solid var(--v1);z-index:2}
+.hm-months{display:flex;gap:3px;margin-bottom:.45rem;min-width:760px;font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.1em}
+.hm-month{flex-shrink:0;text-transform:uppercase}
+.hm-legend{display:flex;align-items:center;justify-content:flex-end;gap:.5rem;margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.1em}
+.hm-legend-cells{display:flex;gap:3px}
+.hm-legend-cells .hm-cell{width:10px;height:10px;cursor:default}
+.hm-tip{position:fixed;z-index:2000;pointer-events:none;background:var(--surf);border:1px solid var(--bord);border-radius:6px;padding:.4rem .7rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;transition:opacity .15s;white-space:nowrap}
+.hm-tip.on{opacity:1}
+.hm-tip strong{color:var(--v1);font-weight:500}
+.hm-cta{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1.2rem;flex-wrap:wrap}
+.hm-stats{display:flex;gap:1.6rem;flex-wrap:wrap}
+.hm-stat .v{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--v1)}
+.hm-stat .k{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.15em;margin-top:.1rem}
+.hm-err{color:var(--muted);font-size:.85rem;text-align:center;padding:3rem 1rem;font-family:'JetBrains Mono',monospace}
+.hm-err a{color:var(--v1);text-decoration:none}
+.hm-skeleton .hm-cell{background:var(--hm0);animation:hmPulse 1.4s ease-in-out infinite}
+.hm-skeleton .hm-cell:nth-child(3n){animation-delay:.2s}
+.hm-skeleton .hm-cell:nth-child(5n){animation-delay:.4s}
+@keyframes hmPulse{0%,100%{opacity:.4}50%{opacity:.9}}
 /* FOOTER */
 footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
 .ft-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--text)}
@@ -215,6 +253,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
       <a href="#projects">projects</a>
       <a href="#skills">skills</a>
       <a href="#beyond">beyond</a>
+      <a href="#activity">activity</a>
       <a href="#contact">contact</a>
     </div>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
@@ -354,6 +393,38 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   </div>
 </section>
 
+<!-- ACTIVITY -->
+<section id="activity">
+  <div class="sec-label">07 // ACTIVITY</div>
+  <h2 class="sec-h2">Building <span style="color:var(--v1)">every day.</span></h2>
+  <p style="color:var(--muted);text-align:center;max-width:520px;margin:0 auto;line-height:1.8">A year of commits across my open-source work, research pipelines, and side projects.</p>
+  <div class="hm-wrap reveal">
+    <div class="hm-top">
+      <div class="hm-total" id="hm-total">Loading activity…</div>
+      <div class="hm-sub" id="hm-sub">· @HARSHXTH</div>
+    </div>
+    <div class="hm-scroll">
+      <div class="hm-months" id="hm-months"></div>
+      <div class="hm-grid hm-skeleton" id="hm-grid"></div>
+    </div>
+    <div class="hm-cta">
+      <div class="hm-stats" id="hm-stats"></div>
+      <div class="hm-legend">
+        <span>LESS</span>
+        <div class="hm-legend-cells">
+          <div class="hm-cell" data-l="0"></div>
+          <div class="hm-cell" data-l="1"></div>
+          <div class="hm-cell" data-l="2"></div>
+          <div class="hm-cell" data-l="3"></div>
+          <div class="hm-cell" data-l="4"></div>
+        </div>
+        <span>MORE</span>
+      </div>
+    </div>
+  </div>
+  <div id="hm-tip" class="hm-tip"></div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact" style="text-align:center;position:relative;max-width:1100px;padding-bottom:5rem">
   <div class="contact-glow"></div>
@@ -443,7 +514,7 @@ const BOOT=['INITIALIZING NEURAL ENGINE v3.1.4 ............. OK','Loading LangGr
   },185);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();}
+function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();}
 
 // ── THEME ────────────────────────────────────────────────────────────────────
 (function initTheme(){
@@ -459,7 +530,6 @@ function initAll(){initCursor();initNav();initBG();initTyping();initExp();initPr
       if(next==='light')document.documentElement.setAttribute('data-theme','light');
       else document.documentElement.removeAttribute('data-theme');
       localStorage.setItem('hg-theme',next);
-      window.dispatchEvent(new CustomEvent('hg:theme',{detail:{theme:next}}));
     });
   });
 })();
@@ -606,6 +676,95 @@ function initProj(){
     card.addEventListener('mouseleave',()=>{card.style.borderColor='';card.style.background='';const d=card.querySelector('.proj-diag');if(d)d.style.transform='scale(1)';});
     grid.appendChild(card);
   });
+}
+
+// ── HEATMAP ───────────────────────────────────────────────────────────────────
+async function initHeatmap(){
+  const grid=document.getElementById('hm-grid');
+  const monthsEl=document.getElementById('hm-months');
+  const totalEl=document.getElementById('hm-total');
+  const subEl=document.getElementById('hm-sub');
+  const statsEl=document.getElementById('hm-stats');
+  const tip=document.getElementById('hm-tip');
+  if(!grid)return;
+
+  // Calendar year: Jan 1 → today
+  const today=new Date();
+  const year=today.getFullYear();
+  const yearStart=new Date(year,0,1);
+  const firstSun=new Date(yearStart);firstSun.setDate(firstSun.getDate()-firstSun.getDay());
+  if(subEl)subEl.textContent=`IN ${year} · @HARSHXTH`;
+
+  const skeletonDays=Math.ceil((today-firstSun)/86400000)+1;
+  grid.innerHTML=Array.from({length:skeletonDays},()=>'<div class="hm-cell"></div>').join('');
+
+  try{
+    const res=await fetch(`https://github-contributions-api.jogruber.de/v4/Harshxth?y=${year}`);
+    if(!res.ok)throw new Error('fetch failed');
+    const data=await res.json();
+    const contribs=data.contributions||[];
+    const byDate={};contribs.forEach(c=>{byDate[c.date]=c;});
+
+    grid.classList.remove('hm-skeleton');
+    grid.innerHTML='';
+    const fmt=d=>d.toISOString().slice(0,10);
+    const monthPositions=[];let lastMonth=-1;
+    const d=new Date(firstSun);
+    let colIdx=0;
+    let total=0,maxDay=0,streak=0,curStreak=0;
+    const todayStr=fmt(today);
+    const yearStartStr=fmt(yearStart);
+
+    while(d<=today){
+      const ds=fmt(d);const rec=byDate[ds];
+      const count=rec?rec.count:0;const level=rec?rec.level:0;
+      const cell=document.createElement('div');
+      cell.className='hm-cell';cell.dataset.l=level;cell.dataset.d=ds;cell.dataset.c=count;
+      // Fade days outside the year window
+      if(ds<yearStartStr)cell.style.opacity='.25';
+      grid.appendChild(cell);
+      if(ds>=yearStartStr&&ds<=todayStr){
+        total+=count;
+        if(count>maxDay)maxDay=count;
+        if(count>0){curStreak++;if(curStreak>streak)streak=curStreak;}else{curStreak=0;}
+      }
+      if(d.getDay()===0){
+        const m=d.getMonth();
+        if(m!==lastMonth){monthPositions.push({col:colIdx,label:d.toLocaleString('en',{month:'short'})});lastMonth=m;}
+        colIdx++;
+      }
+      d.setDate(d.getDate()+1);
+    }
+
+    monthsEl.innerHTML=monthPositions.map((m,i)=>{
+      const next=monthPositions[i+1];const span=next?(next.col-m.col):3;
+      return `<div class="hm-month" style="width:${span*15}px">${m.label}</div>`;
+    }).join('');
+
+    totalEl.innerHTML=`<span>${total.toLocaleString()}</span> contributions in ${year}`;
+    statsEl.innerHTML=`
+      <div class="hm-stat"><div class="v">${streak}</div><div class="k">LONGEST STREAK · DAYS</div></div>
+      <div class="hm-stat"><div class="v">${maxDay}</div><div class="k">BEST DAY</div></div>
+      <div class="hm-stat"><div class="v"><a href="https://github.com/Harshxth" target="_blank" style="color:inherit;text-decoration:none">@Harshxth →</a></div><div class="k">GITHUB PROFILE</div></div>
+    `;
+
+    grid.addEventListener('mouseover',e=>{
+      const c=e.target.closest('.hm-cell');if(!c||!c.dataset.d)return;
+      const date=new Date(c.dataset.d+'T00:00:00');const df=date.toLocaleString('en',{month:'short',day:'numeric',year:'numeric'});
+      const n=parseInt(c.dataset.c,10);
+      tip.innerHTML=`<strong>${n} contribution${n===1?'':'s'}</strong> · ${df}`;
+      tip.classList.add('on');
+    });
+    grid.addEventListener('mousemove',e=>{
+      tip.style.left=(e.clientX+14)+'px';
+      tip.style.top=(e.clientY+14)+'px';
+    });
+    grid.addEventListener('mouseleave',()=>tip.classList.remove('on'));
+  }catch(err){
+    grid.classList.remove('hm-skeleton');
+    grid.parentElement.innerHTML=`<div class="hm-err">Couldn't load live contributions. <a href="https://github.com/Harshxth" target="_blank">View on GitHub →</a></div>`;
+    totalEl.textContent='GitHub activity';
+  }
 }
 
 // ── REVEAL ────────────────────────────────────────────────────────────────────
