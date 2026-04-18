@@ -37,6 +37,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 #cur-o{position:fixed;pointer-events:none;z-index:9999;width:30px;height:30px;border-radius:50%;border:1px solid rgba(192,132,252,.45);transition:transform .06s linear;mix-blend-mode:var(--cursor-blend)}
 #cur-d{position:fixed;pointer-events:none;z-index:9999;width:7px;height:7px;border-radius:50%;background:var(--v1);box-shadow:0 0 10px var(--v1);mix-blend-mode:var(--cursor-blend)}
 @media(hover:none),(pointer:coarse){#cur-o,#cur-d{display:none}body,.btn-primary,.btn-ghost,.nav-links a,.theme-toggle{cursor:auto}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  #cur-o,#cur-d{display:none}
+  body,.btn-primary,.btn-ghost,.nav-links a,.theme-toggle,.proj-card{cursor:auto}
+  #nn-canvas{opacity:.35}
+  .cursor-blink{animation:none}
+  .live-dot,.cur-dot-sm{animation:none}
+}
 .scanlines{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(192,132,252,.01) 3px,rgba(192,132,252,.01) 4px)}
 /* LOADING */
 #loader{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;align-items:center;justify-content:center;padding:2rem;transition:opacity .5s ease}
@@ -506,7 +514,8 @@ const BOOT=['INITIALIZING NEURAL ENGINE v3.1.4 ............. OK','Loading LangGr
 (function boot(){
   const loader=document.getElementById('loader');
   const seen=sessionStorage.getItem('hg-seen')==='1';
-  if(seen){loader.style.display='none';sessionStorage.setItem('hg-seen','1');requestAnimationFrame(initAll);return;}
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(seen||reduced){loader.style.display='none';sessionStorage.setItem('hg-seen','1');requestAnimationFrame(initAll);return;}
   sessionStorage.setItem('hg-seen','1');
   const bl=document.getElementById('boot-lines'),pp=document.getElementById('boot-prog'),pt=document.getElementById('boot-pct');let i=0;
   const tick=setInterval(()=>{
@@ -540,6 +549,9 @@ function initAll(){initCursor();initNav();initBG();initTyping();initExp();initPr
 
 // ── CURSOR ────────────────────────────────────────────────────────────────────
 function initCursor(){
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse=window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  if(reduced||coarse)return;
   const o=document.getElementById('cur-o'),d=document.getElementById('cur-d');
   let rx=0,ry=0,mx=-100,my=-100;
   document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
