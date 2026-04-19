@@ -217,8 +217,9 @@ section>*{position:relative;z-index:1}
 .hm-cell[data-l="3"]{background:var(--hm3)}
 .hm-cell[data-l="4"]{background:var(--hm4)}
 .hm-cell:hover{transform:scale(1.4);outline:1px solid var(--v1);z-index:2}
-.hm-months{display:flex;gap:3px;margin-bottom:.45rem;min-width:760px;font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.1em}
-.hm-month{flex-shrink:0;text-transform:uppercase}
+.hm-cell.hm-today{outline:1px solid var(--v1);outline-offset:1px}
+.hm-months{display:flex;margin-bottom:.45rem;min-width:760px;font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.1em}
+.hm-month{flex-shrink:0;text-transform:uppercase;overflow:hidden;white-space:nowrap}
 .hm-legend{display:flex;align-items:center;justify-content:flex-end;gap:.5rem;margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.1em}
 .hm-legend-cells{display:flex;gap:3px}
 .hm-legend-cells .hm-cell{width:10px;height:10px;cursor:default}
@@ -747,8 +748,9 @@ async function initHeatmap(){
       const count=rec?rec.count:0;const level=rec?rec.level:0;
       const cell=document.createElement('div');
       cell.className='hm-cell';cell.dataset.l=level;cell.dataset.d=ds;cell.dataset.c=count;
-      // Fade days outside the year window
-      if(ds<yearStartStr)cell.style.opacity='.25';
+      // Hide cells outside the current year so the grid starts at Jan 1
+      if(ds<yearStartStr)cell.style.visibility='hidden';
+      if(ds===todayStr)cell.classList.add('hm-today');
       grid.appendChild(cell);
       if(ds>=yearStartStr&&ds<=todayStr){
         total+=count;
@@ -762,10 +764,22 @@ async function initHeatmap(){
       }
       d.setDate(d.getDate()+1);
     }
+    const totalCols=colIdx;
 
-    monthsEl.innerHTML=monthPositions.map((m,i)=>{
-      const next=monthPositions[i+1];const span=next?(next.col-m.col):3;
-      return `<div class="hm-month" style="width:${span*15}px">${m.label}</div>`;
+    // Month labels: skip any with < 2 columns of territory so narrow wedges
+    // (like a DEC that only occupies one week before JAN) don't overflow into
+    // the next label. Keep absolute column positions so alignment stays true.
+    const MIN_SPAN=2,COL_PX=15;
+    const labels=monthPositions.map((m,i)=>{
+      const next=monthPositions[i+1];
+      const endCol=next?next.col:totalCols;
+      return {...m,span:endCol-m.col,endCol};
+    }).filter(l=>l.span>=MIN_SPAN);
+    let cursor=0;
+    monthsEl.innerHTML=labels.map(l=>{
+      const leftGap=(l.col-cursor)*COL_PX;
+      cursor=l.endCol;
+      return `<div class="hm-month" style="width:${l.span*COL_PX}px;margin-left:${leftGap}px">${l.label}</div>`;
     }).join('');
 
     totalEl.innerHTML=`<span>${total.toLocaleString()}</span> contributions in ${year}`;
