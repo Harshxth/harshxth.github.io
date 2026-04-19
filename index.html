@@ -875,6 +875,17 @@ const DIAGRAMS={
   pdf_rag:'assets/pdf_rag.jpg',
 };
 
+// ── KBD SYMBOL (OS-adaptive ⌘ / Ctrl) ────────────────────────────────────────
+(function initKbdSymbol(){
+  const isMac=/Mac|iPhone|iPad/i.test(navigator.platform||navigator.userAgent||'');
+  if(isMac)return; // default ⌘ is correct
+  document.querySelectorAll('.cmdk-kbd').forEach(el=>{
+    if(el.textContent.includes('⌘'))el.textContent=el.textContent.replace('⌘','Ctrl+');
+  });
+  const btn=document.getElementById('cmdk-open');
+  if(btn)btn.title='Command palette (Ctrl+K)';
+})();
+
 // ── BOOT ─────────────────────────────────────────────────────────────────────
 const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph agent mesh ............. OK','Mounting ChromaDB vector store ........... OK','YOLOv8 detection pipeline ready .......... OK','Multi-agent orchestrator ready ........... OK','SYSTEM READY — Launching portfolio .......',];
 (function boot(){
