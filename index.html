@@ -102,6 +102,13 @@ html{scroll-behavior:smooth;overflow-x:clip}
   --cursor-blend:multiply;
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;cursor:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;transition:background-color .4s ease,color .4s ease}
+/* View Transitions: circular reveal from the theme toggle button */
+@supports (view-transition-name: none){
+  ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+  ::view-transition-old(root){z-index:1}
+  ::view-transition-new(root){z-index:2;animation:vt-reveal .55s cubic-bezier(.4,0,.2,1) both}
+  @keyframes vt-reveal{from{clip-path:circle(0% at var(--vt-x,100%) var(--vt-y,0))}to{clip-path:circle(150% at var(--vt-x,100%) var(--vt-y,0))}}
+}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
 .mono{font-family:'JetBrains Mono',monospace}.display{font-family:'Syne',sans-serif}
 #cur-o{position:fixed;pointer-events:none;z-index:9999;width:30px;height:30px;border-radius:50%;border:1px solid rgba(192,132,252,.45);transition:transform .06s linear;mix-blend-mode:var(--cursor-blend)}
@@ -964,9 +971,18 @@ async function initResumeCounter(){
     btn.addEventListener('click',()=>{
       const cur=document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';
       const next=cur==='light'?'dark':'light';
-      if(next==='light')document.documentElement.setAttribute('data-theme','light');
-      else document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('hg-theme',next);
+      const apply=()=>{
+        if(next==='light')document.documentElement.setAttribute('data-theme','light');
+        else document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('hg-theme',next);
+      };
+      // Anchor the circular reveal at the toggle button's center
+      const r=btn.getBoundingClientRect();
+      document.documentElement.style.setProperty('--vt-x',(r.left+r.width/2)+'px');
+      document.documentElement.style.setProperty('--vt-y',(r.top+r.height/2)+'px');
+      const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(document.startViewTransition&&!reduced)document.startViewTransition(apply);
+      else apply();
     });
   });
 })();
