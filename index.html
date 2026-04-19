@@ -211,6 +211,9 @@ h1.hero-name{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.8rem);fo
 .hero-term-input .prompt{color:var(--v1);flex-shrink:0}
 .hero-term-input input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78rem;caret-color:var(--v1);padding:0;cursor:none}
 .hero-term-input input::placeholder{color:var(--dim)}
+.hero-term-hints{display:flex;justify-content:flex-end;align-items:center;gap:.8rem;flex-wrap:wrap;padding:.45rem 1rem .65rem;border-top:1px solid var(--bord);font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.08em;background:rgba(var(--bg-rgb),.4)}
+.hero-term-hints span{display:inline-flex;align-items:center;gap:.3rem}
+.hero-term-hints .cmdk-kbd{font-size:.52rem;padding:.05rem .3rem}
 @media(max-width:540px){.hero-term{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}.hero-term-body{font-size:.72rem;height:220px}.term-launcher{right:.75rem;bottom:.75rem}}
 .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(192,132,252,.75);animation:float 3s ease-in-out infinite;z-index:3}
 .scroll-hint span{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em}
@@ -785,6 +788,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
     <span class="prompt">$</span>
     <input id="term-input" placeholder="type a command (help, whoami, ls, skills…)" autocomplete="off" spellcheck="false"/>
   </form>
+  <div class="hero-term-hints" aria-hidden="true">
+    <span><span class="cmdk-kbd">Tab</span> complete</span>
+    <span><span class="cmdk-kbd">↑↓</span> history</span>
+    <span><span class="cmdk-kbd">⌘L</span> clear</span>
+    <span><span class="cmdk-kbd">Esc</span> close</span>
+  </div>
 </div>
 
 <!-- KONAMI · ATTENTION MODE -->
