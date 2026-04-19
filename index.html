@@ -205,6 +205,24 @@ section>*{position:relative;z-index:1}
 .open-chips{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:1.5rem 0 2rem}
 .open-chip{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:100px;padding:.35rem .95rem;font-size:.72rem;color:var(--muted);letter-spacing:.04em;font-family:'JetBrains Mono',monospace}
 .open-chip.ac{background:rgba(192,132,252,.07);border-color:rgba(192,132,252,.22);color:var(--v1)}
+/* PINNED REPOS */
+.pinned-wrap{margin-top:2rem}
+.pinned-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem;flex-wrap:wrap;gap:.6rem}
+.pinned-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text)}
+.pinned-sub{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.2em}
+.pinned-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.9rem}
+.pinned-card{display:block;background:var(--surf);border:1px solid var(--bord);border-radius:10px;padding:1rem 1.1rem;text-decoration:none;transition:border-color .2s,transform .2s;cursor:none}
+.pinned-card:hover{border-color:rgba(192,132,252,.32);transform:translateY(-2px)}
+.pinned-card .pn-top{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.pinned-card .pn-icon{width:14px;height:14px;color:var(--v1);flex-shrink:0}
+.pinned-card .pn-name{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--v1);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pinned-card .pn-desc{color:var(--body);font-size:.72rem;line-height:1.55;margin-bottom:.7rem;min-height:2.25rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pinned-card .pn-meta{display:flex;gap:.85rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.05em;align-items:center}
+.pinned-card .pn-lang{display:inline-flex;align-items:center;gap:.35rem}
+.pinned-card .pn-lang::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--lang,#888)}
+.pinned-skel .pinned-card{height:110px;animation:hmPulse 1.4s ease-in-out infinite;opacity:.5}
+.pinned-err{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.7rem;text-align:center;padding:1.5rem}
+.pinned-err a{color:var(--v1);text-decoration:none}
 /* HOW I THINK */
 #principles{max-width:960px}
 .pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
@@ -542,6 +560,19 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
     </div>
   </div>
   <div id="hm-tip" class="hm-tip"></div>
+
+  <div class="pinned-wrap reveal">
+    <div class="pinned-head">
+      <div class="pinned-title">Pinned repositories</div>
+      <div class="pinned-sub">LIVE FROM GITHUB</div>
+    </div>
+    <div class="pinned-grid pinned-skel" id="pinned-grid">
+      <a class="pinned-card"></a>
+      <a class="pinned-card"></a>
+      <a class="pinned-card"></a>
+      <a class="pinned-card"></a>
+    </div>
+  </div>
 </section>
 
 <!-- CONTACT -->
@@ -662,7 +693,38 @@ const BOOT=['INITIALIZING NEURAL ENGINE v3.1.4 ............. OK','Loading LangGr
   },185);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initResumeCounter();initCountUp();}
+function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initCountUp();}
+
+// ── PINNED REPOS ─────────────────────────────────────────────────────────────
+async function initPinned(){
+  const grid=document.getElementById('pinned-grid');if(!grid)return;
+  try{
+    const r=await fetch('https://gh-pinned-repos.egoist.dev/?username=Harshxth');
+    if(!r.ok)throw new Error('fetch');
+    const repos=await r.json();
+    if(!Array.isArray(repos)||!repos.length)throw new Error('empty');
+    grid.classList.remove('pinned-skel');
+    grid.innerHTML=repos.map(r=>{
+      const desc=(r.description||'').replace(/</g,'&lt;');
+      const lang=r.language||'';const langColor=r.languageColor||'#888';
+      return `<a class="pinned-card" href="${r.link}" target="_blank" rel="noopener">
+        <div class="pn-top">
+          <svg class="pn-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8zM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2z"/></svg>
+          <div class="pn-name">${r.repo}</div>
+        </div>
+        <div class="pn-desc">${desc||'&nbsp;'}</div>
+        <div class="pn-meta">
+          ${lang?`<span class="pn-lang" style="--lang:${langColor}">${lang}</span>`:''}
+          ${r.stars?`<span>★ ${r.stars}</span>`:''}
+          ${r.forks?`<span>⑂ ${r.forks}</span>`:''}
+        </div>
+      </a>`;
+    }).join('');
+  }catch{
+    grid.classList.remove('pinned-skel');
+    grid.innerHTML=`<div class="pinned-err" style="grid-column:1/-1">Couldn't load pinned repos. <a href="https://github.com/Harshxth" target="_blank">Browse on GitHub →</a></div>`;
+  }
+}
 
 // ── COUNT UP ─────────────────────────────────────────────────────────────────
 function initCountUp(){
