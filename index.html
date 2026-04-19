@@ -199,6 +199,21 @@ section>*{position:relative;z-index:1}
 .open-chips{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:1.5rem 0 2rem}
 .open-chip{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:100px;padding:.35rem .95rem;font-size:.72rem;color:var(--muted);letter-spacing:.04em;font-family:'JetBrains Mono',monospace}
 .open-chip.ac{background:rgba(192,132,252,.07);border-color:rgba(192,132,252,.22);color:var(--v1)}
+/* HOW I THINK */
+#principles{max-width:960px}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+@media(max-width:860px){.pr-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.pr-grid{grid-template-columns:1fr}}
+.pr-card{background:var(--surf);border:1px solid var(--bord);border-radius:12px;padding:1.5rem 1.4rem;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
+.pr-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--v1),transparent);opacity:0;transition:opacity .3s}
+.pr-card:hover{border-color:rgba(192,132,252,.32);transform:translateY(-3px)}
+.pr-card:hover::before{opacity:1}
+.pr-num{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--v1);letter-spacing:.25em;margin-bottom:.8rem}
+.pr-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.6rem;line-height:1.3}
+.pr-body{color:var(--body);font-size:.83rem;line-height:1.75;margin-bottom:1rem}
+.pr-body strong{color:var(--hl);font-weight:500}
+.pr-tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.pr-tags span{font-family:'JetBrains Mono',monospace;font-size:.58rem;padding:.2rem .55rem;border-radius:4px;background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.2);color:var(--v1);letter-spacing:.04em}
 /* ACTIVITY / HEATMAP */
 #activity{max-width:1080px}
 .hm-wrap{margin-top:3rem;background:var(--surf);border:1px solid var(--bord);border-radius:14px;padding:2rem 1.8rem;transition:border-color .25s}
@@ -441,6 +456,51 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   </div>
 </section>
 
+<!-- HOW I THINK -->
+<section id="principles">
+  <div class="sec-label">06 // HOW I THINK</div>
+  <h2 class="sec-h2">Principles I <span style="color:var(--v1)">build by.</span></h2>
+  <p style="color:var(--muted);text-align:center;max-width:560px;margin:0 auto;line-height:1.8">Short opinions, held with conviction. Subject to change when the data says so.</p>
+  <div class="pr-grid reveal">
+    <div class="pr-card">
+      <div class="pr-num">01</div>
+      <h3 class="pr-title">Evals before architecture.</h3>
+      <p class="pr-body">If I can't measure the system, I can't improve it. Every LLM pipeline starts with a <strong>golden set + RAGAS-style eval loop</strong> before I touch the graph. Faithfulness, context precision, answer relevance — numbers first, vibes second.</p>
+      <div class="pr-tags"><span>RAGAS</span><span>LangSmith</span><span>Golden sets</span></div>
+    </div>
+    <div class="pr-card">
+      <div class="pr-num">02</div>
+      <h3 class="pr-title">RAG before fine-tune.</h3>
+      <p class="pr-body">Fine-tuning is a last resort. <strong>90% of "we need a custom model"</strong> is really "we need better retrieval + prompting." I reach for RAG, tool use, and structured output first — cheaper, safer, and swap-in-a-better-model friendly.</p>
+      <div class="pr-tags"><span>Retrieval</span><span>Structured output</span></div>
+    </div>
+    <div class="pr-card">
+      <div class="pr-num">03</div>
+      <h3 class="pr-title">Ship narrow, ship real.</h3>
+      <p class="pr-body">A working demo on one small surface beats a roadmap slide forever. Every project I own has a <strong>Docker image, a FastAPI endpoint, and one metric I can defend</strong> — not just a notebook that runs on my laptop.</p>
+      <div class="pr-tags"><span>FastAPI</span><span>Docker</span><span>Observability</span></div>
+    </div>
+    <div class="pr-card">
+      <div class="pr-num">04</div>
+      <h3 class="pr-title">Agents are pipelines in disguise.</h3>
+      <p class="pr-body">"Multi-agent" is glamorous. But every agent loop eventually becomes a <strong>deterministic graph with guardrails</strong>. I design for that reality — explicit edges, retry budgets, failure modes — instead of hoping the LLM figures it out.</p>
+      <div class="pr-tags"><span>LangGraph</span><span>Guardrails</span></div>
+    </div>
+    <div class="pr-card">
+      <div class="pr-num">05</div>
+      <h3 class="pr-title">Data engineering is 60% of ML.</h3>
+      <p class="pr-body">The model is the easy part. Making sure the <strong>150K-row entity resolution actually matches the right companies</strong>, or that the 100hr of traffic video gets labeled without drift — that's where the work hides. Own the pipeline end-to-end.</p>
+      <div class="pr-tags"><span>Entity resolution</span><span>pandas</span><span>SQL</span></div>
+    </div>
+    <div class="pr-card">
+      <div class="pr-num">06</div>
+      <h3 class="pr-title">Boring infra, bold ideas.</h3>
+      <p class="pr-body">Kubernetes for a weekend project is a red flag. I pick the <strong>smallest stack that survives the next 6 months</strong>, then spend the saved energy on the part that's actually interesting — the research question, the eval, the user experience.</p>
+      <div class="pr-tags"><span>Docker</span><span>CI/CD</span><span>Pragmatism</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ACTIVITY -->
 <section id="activity">
   <div class="sec-label">07 // ACTIVITY</div>
@@ -612,8 +672,9 @@ function initAll(){initCursor();initNav();initBG();initTyping();initExp();initPr
     {g:'Jump to',t:'Projects',d:'production systems',k:'projects',ic:'03',act:()=>go('#projects')},
     {g:'Jump to',t:'Currently Building',d:'active work',k:'building current',ic:'04',act:()=>go('#building')},
     {g:'Jump to',t:'Skills',d:'tech & tools',k:'skills arsenal',ic:'05',act:()=>go('#skills')},
-    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'06',act:()=>go('#beyond')},
-    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'07',act:()=>go('#contact')},
+    {g:'Jump to',t:'How I Think',d:'principles + philosophy',k:'principles philosophy how think',ic:'06',act:()=>go('#principles')},
+    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'07',act:()=>go('#beyond')},
+    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'08',act:()=>go('#contact')},
     {g:'Projects',t:'CiteIQ',d:'agentic RAG system',k:'citeiq rag langgraph',ic:'◈',act:()=>open('https://github.com/Harshxth/citeiq')},
     {g:'Projects',t:'Speech-to-Note',d:'clinical SOAP notes',k:'whisper speech soap',ic:'◈',act:()=>open('https://github.com/Harshxth/Speech-to-Note-Assistant')},
     {g:'Actions',t:'Email Harshith',d:'harshithgujjeti@gmail.com',k:'mail email contact',ic:'✉',act:()=>open('mailto:harshithgujjeti@gmail.com')},
