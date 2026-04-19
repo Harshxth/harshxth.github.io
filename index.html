@@ -654,7 +654,41 @@ const BOOT=['INITIALIZING NEURAL ENGINE v3.1.4 ............. OK','Loading LangGr
   },185);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initResumeCounter();}
+function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initResumeCounter();initCountUp();}
+
+// ── COUNT UP ─────────────────────────────────────────────────────────────────
+function initCountUp(){
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const run=(el)=>{
+    if(el.dataset.counted)return;
+    const txt=el.textContent;
+    const m=txt.match(/([\d,]+(?:\.\d+)?)/);
+    if(!m){el.dataset.counted='1';return;}
+    const target=parseFloat(m[1].replace(/,/g,''));
+    const prefix=txt.slice(0,m.index);
+    const suffix=txt.slice(m.index+m[1].length);
+    const hasComma=m[1].includes(',');
+    const hasDecimal=m[1].includes('.');
+    el.dataset.counted='1';
+    if(reduced)return;
+    const dur=Math.min(1400,800+target*4);
+    const start=performance.now();
+    function tick(t){
+      const p=Math.min(1,(t-start)/dur);
+      const e=1-Math.pow(1-p,3);
+      let cur=target*e;
+      cur=hasDecimal?cur.toFixed(1):Math.round(cur);
+      const display=hasComma?Number(cur).toLocaleString():cur;
+      el.textContent=prefix+display+suffix;
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  };
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)run(e.target);});
+  },{threshold:.35});
+  document.querySelectorAll('.metric, .proj-desc .m').forEach(el=>obs.observe(el));
+}
 
 // ── RESUME COUNTER ───────────────────────────────────────────────────────────
 async function initResumeCounter(){
