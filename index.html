@@ -168,6 +168,38 @@ h1.hero-name{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.8rem);fo
 .btn-primary:hover{box-shadow:0 0 52px rgba(192,132,252,.6);transform:translateY(-1px)}
 .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;background:transparent;border:1px solid rgba(192,132,252,.25);border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;letter-spacing:.08em;color:var(--v1);text-decoration:none;cursor:none;transition:border-color .3s,background .3s}
 .btn-ghost:hover{border-color:rgba(192,132,252,.6);background:rgba(192,132,252,.07)}
+/* FLOATING TERMINAL */
+.term-launcher{position:fixed;right:1.25rem;bottom:1.25rem;z-index:2400;display:inline-flex;align-items:center;gap:.5rem;background:var(--surf);border:1px solid var(--bord);color:var(--v1);border-radius:100px;padding:.55rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;cursor:none;box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 1px rgba(192,132,252,.06);transition:transform .22s,border-color .22s,box-shadow .22s;animation:termPulse 2.4s ease-in-out infinite}
+.term-launcher:hover{transform:translateY(-2px);border-color:var(--v1);box-shadow:0 10px 32px rgba(192,132,252,.28)}
+.term-launcher .dot{width:6px;height:6px;border-radius:50%;background:var(--v1);box-shadow:0 0 8px var(--v1)}
+.term-launcher .kbd{font-size:.52rem;color:var(--muted);border:1px solid var(--bord);border-radius:3px;padding:.05rem .28rem;letter-spacing:.05em}
+.term-launcher.hidden{opacity:0;pointer-events:none;transform:translateY(10px)}
+@keyframes termPulse{0%,100%{box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 1px rgba(192,132,252,.06)}50%{box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 3px rgba(192,132,252,.15)}}
+.hero-term{position:fixed;right:1.25rem;bottom:1.25rem;z-index:2500;width:min(520px,calc(100vw - 2.5rem));background:rgba(var(--bg-rgb),.92);border:1px solid var(--bord);border-radius:12px;overflow:hidden;text-align:left;backdrop-filter:blur(12px);box-shadow:0 24px 70px rgba(0,0,0,.55);opacity:0;transform:translateY(20px) scale(.96);pointer-events:none;transition:opacity .26s ease,transform .26s cubic-bezier(.2,.9,.3,1.2)}
+.hero-term.on{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.hero-term-bar{display:flex;align-items:center;gap:.55rem;padding:.55rem .9rem;background:rgba(var(--bg-rgb),.65);border-bottom:1px solid var(--bord)}
+.hero-term-dots{display:flex;gap:.35rem}
+.hero-term-dots span{width:11px;height:11px;border-radius:50%;opacity:.85;cursor:none}
+.hero-term-dots span:nth-child(1){background:#ff5f57}
+.hero-term-dots span:nth-child(1):hover{filter:brightness(1.2)}
+.hero-term-dots span:nth-child(2){background:#febc2e}
+.hero-term-dots span:nth-child(3){background:#28c840}
+.hero-term-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.2em;margin-left:auto}
+.hero-term-body{padding:.8rem 1rem 0.5rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.65;height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--dim) transparent}
+.hero-term-body::-webkit-scrollbar{width:4px}
+.hero-term-body::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.hero-term-line{color:var(--hl);white-space:pre-wrap;word-break:break-word}
+.hero-term-line.cmd{color:var(--text)}
+.hero-term-line.cmd::before{content:'$ ';color:var(--v1);margin-right:.1rem}
+.hero-term-line.sys{color:var(--v1);font-size:.72rem}
+.hero-term-line.dim{color:var(--muted)}
+.hero-term-line a{color:var(--v3);text-decoration:none;border-bottom:1px dashed rgba(232,121,249,.35)}
+.hero-term-line a:hover{color:var(--v1);border-bottom-color:var(--v1)}
+.hero-term-input{display:flex;align-items:center;gap:.35rem;padding:.45rem 1rem .85rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;border-top:1px solid var(--bord)}
+.hero-term-input .prompt{color:var(--v1);flex-shrink:0}
+.hero-term-input input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78rem;caret-color:var(--v1);padding:0;cursor:none}
+.hero-term-input input::placeholder{color:var(--dim)}
+@media(max-width:540px){.hero-term{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}.hero-term-body{font-size:.72rem;height:220px}.term-launcher{right:.75rem;bottom:.75rem}}
 .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(192,132,252,.75);animation:float 3s ease-in-out infinite;z-index:3}
 .scroll-hint span{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em}
 @keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
@@ -345,38 +377,6 @@ section>*{position:relative;z-index:1}
 .resume-counter{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.15em;margin:-1.5rem auto 2.5rem;padding:.4rem .9rem;border:1px solid var(--bord);border-radius:100px;background:var(--surf);text-transform:uppercase}
 .resume-counter .rc-dot{width:5px;height:5px;border-radius:50%;background:var(--v1);box-shadow:0 0 6px var(--v1);animation:pulse 2s ease-in-out infinite}
 .resume-counter .rc-val{color:var(--v1);font-weight:600;font-variant-numeric:tabular-nums}
-/* FLOATING TERMINAL */
-.term-launcher{position:fixed;right:1.25rem;bottom:1.25rem;z-index:2400;display:inline-flex;align-items:center;gap:.5rem;background:var(--surf);border:1px solid var(--bord);color:var(--v1);border-radius:100px;padding:.55rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;cursor:none;box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 1px rgba(192,132,252,.06);transition:transform .22s,border-color .22s,box-shadow .22s;animation:termPulse 2.4s ease-in-out infinite}
-.term-launcher:hover{transform:translateY(-2px);border-color:var(--v1);box-shadow:0 10px 32px rgba(192,132,252,.28)}
-.term-launcher .dot{width:6px;height:6px;border-radius:50%;background:var(--v1);box-shadow:0 0 8px var(--v1)}
-.term-launcher .kbd{font-size:.52rem;color:var(--muted);border:1px solid var(--bord);border-radius:3px;padding:.05rem .28rem;letter-spacing:.05em}
-.term-launcher.hidden{opacity:0;pointer-events:none;transform:translateY(10px)}
-@keyframes termPulse{0%,100%{box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 1px rgba(192,132,252,.06)}50%{box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 3px rgba(192,132,252,.15)}}
-.hero-term{position:fixed;right:1.25rem;bottom:1.25rem;z-index:2500;width:min(520px,calc(100vw - 2.5rem));background:rgba(var(--bg-rgb),.92);border:1px solid var(--bord);border-radius:12px;overflow:hidden;text-align:left;backdrop-filter:blur(12px);box-shadow:0 24px 70px rgba(0,0,0,.55);opacity:0;transform:translateY(20px) scale(.96);pointer-events:none;transition:opacity .26s ease,transform .26s cubic-bezier(.2,.9,.3,1.2)}
-.hero-term.on{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
-.hero-term-bar{display:flex;align-items:center;gap:.55rem;padding:.55rem .9rem;background:rgba(var(--bg-rgb),.65);border-bottom:1px solid var(--bord)}
-.hero-term-dots{display:flex;gap:.35rem}
-.hero-term-dots span{width:11px;height:11px;border-radius:50%;opacity:.85;cursor:none}
-.hero-term-dots span:nth-child(1){background:#ff5f57}
-.hero-term-dots span:nth-child(1):hover{filter:brightness(1.2)}
-.hero-term-dots span:nth-child(2){background:#febc2e}
-.hero-term-dots span:nth-child(3){background:#28c840}
-.hero-term-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.2em;margin-left:auto}
-.hero-term-body{padding:.8rem 1rem 0.5rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.65;height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--dim) transparent}
-.hero-term-body::-webkit-scrollbar{width:4px}
-.hero-term-body::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
-.hero-term-line{color:var(--hl);white-space:pre-wrap;word-break:break-word}
-.hero-term-line.cmd{color:var(--text)}
-.hero-term-line.cmd::before{content:'$ ';color:var(--v1);margin-right:.1rem}
-.hero-term-line.sys{color:var(--v1);font-size:.72rem}
-.hero-term-line.dim{color:var(--muted)}
-.hero-term-line a{color:var(--v3);text-decoration:none;border-bottom:1px dashed rgba(232,121,249,.35)}
-.hero-term-line a:hover{color:var(--v1);border-bottom-color:var(--v1)}
-.hero-term-input{display:flex;align-items:center;gap:.35rem;padding:.45rem 1rem .85rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;border-top:1px solid var(--bord)}
-.hero-term-input .prompt{color:var(--v1);flex-shrink:0}
-.hero-term-input input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78rem;caret-color:var(--v1);padding:0;cursor:none}
-.hero-term-input input::placeholder{color:var(--dim)}
-@media(max-width:540px){.hero-term{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}.hero-term-body{font-size:.72rem;height:220px}.term-launcher{right:.75rem;bottom:.75rem}}
 /* KONAMI · ATTENTION MODE */
 #att-overlay{position:fixed;inset:0;z-index:2500;pointer-events:none;opacity:0;transition:opacity .4s ease}
 #att-overlay.on{opacity:1}
@@ -457,6 +457,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 .ft-right{display:flex;align-items:center;gap:1rem}
 .ft-konami{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:.15em;opacity:.6;transition:color .25s,opacity .25s;cursor:none}
 .ft-konami:hover{color:var(--v1);opacity:1}
+.ft-updated{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.1em;opacity:0;transition:opacity .3s}
+.ft-updated.on{opacity:.85}
+.ft-updated::before{content:'● ';color:var(--v1)}
 </style>
 </head>
 <body>
@@ -775,12 +778,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 <div id="att-overlay" aria-hidden="true">
   <canvas id="att-canvas"></canvas>
 </div>
+<div id="kon-progress" aria-hidden="true"></div>
 <div id="att-toast" class="att-toast" role="status" aria-live="polite">
   <span class="att-pulse"></span>
   <span>ATTENTION MODE ACTIVATED</span>
   <span class="att-hint">· press any key to exit</span>
 </div>
-<div id="kon-progress" aria-hidden="true"></div>
 
 <!-- COMMAND PALETTE -->
 <div id="cmdk-root" role="dialog" aria-label="Command palette">
@@ -804,6 +807,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   <div>Harshith Gujjeti · AI/ML Engineer · Tampa, FL</div>
   <div class="ft-right">
     <span class="ft-konami" title="Try it" aria-hidden="true">↑↑↓↓←→←→BA</span>
+    <span class="ft-updated" id="ft-updated" title="last commit on main"></span>
     <span>© 2026</span>
   </div>
 </footer>
@@ -876,7 +880,33 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   },110);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initCountUp();}
+function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initCountUp();initLastUpdated();}
+
+// ── LAST UPDATED ─────────────────────────────────────────────────────────────
+async function initLastUpdated(){
+  const el=document.getElementById('ft-updated');if(!el)return;
+  const rel=(ts)=>{
+    const s=Math.max(1,(Date.now()-ts)/1000);
+    if(s<60)return 'just now';
+    if(s<3600)return Math.floor(s/60)+' min ago';
+    if(s<86400)return Math.floor(s/3600)+'h ago';
+    const d=Math.floor(s/86400);
+    if(d===1)return 'yesterday';
+    if(d<30)return d+' days ago';
+    const m=Math.floor(d/30);
+    if(m<12)return m+' month'+(m>1?'s':'')+' ago';
+    return Math.floor(d/365)+'y ago';
+  };
+  try{
+    const r=await fetch('https://api.github.com/repos/Harshxth/harshxth.github.io/commits?per_page=1');
+    if(!r.ok)throw 0;
+    const arr=await r.json();
+    if(!arr||!arr.length)throw 0;
+    const ts=Date.parse(arr[0].commit.committer.date);
+    el.textContent='updated '+rel(ts);
+    el.classList.add('on');
+  }catch{/* silent: just leave footer clean */}
+}
 
 // ── PINNED REPOS ─────────────────────────────────────────────────────────────
 async function initPinned(){
@@ -975,8 +1005,9 @@ async function initResumeCounter(){
         if(next==='light')document.documentElement.setAttribute('data-theme','light');
         else document.documentElement.removeAttribute('data-theme');
         localStorage.setItem('hg-theme',next);
+        window.dispatchEvent(new CustomEvent('hg:theme',{detail:{theme:next}}));
       };
-      // Anchor the circular reveal at the toggle button's center
+      // Anchor the circular reveal at the toggle's center
       const r=btn.getBoundingClientRect();
       document.documentElement.style.setProperty('--vt-x',(r.left+r.width/2)+'px');
       document.documentElement.style.setProperty('--vt-y',(r.top+r.height/2)+'px');
@@ -997,18 +1028,6 @@ async function initResumeCounter(){
   const input=document.getElementById('term-input');
   if(!body||!form||!input||!panel)return;
 
-  const history=[];let histIdx=-1;
-
-  function line(text,cls=''){
-    const d=document.createElement('div');
-    d.className='hero-term-line'+(cls?' '+cls:'');
-    d.innerHTML=text;
-    body.appendChild(d);
-    body.scrollTop=body.scrollHeight;
-    return d;
-  }
-  function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-
   let welcomed=false;
   function openTerm(){
     panel.classList.add('on');
@@ -1028,6 +1047,7 @@ async function initResumeCounter(){
   }
   launcher.addEventListener('click',openTerm);
   closeBtn.addEventListener('click',closeTerm);
+  // Global shortcut: ~ opens/closes when not typing in another input
   document.addEventListener('keydown',e=>{
     if(e.key==='Escape'&&panel.classList.contains('on')){e.preventDefault();closeTerm();return;}
     if(e.key==='`'||e.key==='~'){
@@ -1037,6 +1057,18 @@ async function initResumeCounter(){
       panel.classList.contains('on')?closeTerm():openTerm();
     }
   });
+
+  const history=[];let histIdx=-1;
+
+  function line(text,cls=''){
+    const d=document.createElement('div');
+    d.className='hero-term-line'+(cls?' '+cls:'');
+    d.innerHTML=text;
+    body.appendChild(d);
+    body.scrollTop=body.scrollHeight;
+    return d;
+  }
+  function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
   const COMMANDS={
     help:{d:'list available commands',run(){
@@ -1116,9 +1148,10 @@ async function initResumeCounter(){
     echo:{d:'print text',run(arg,full){line((full||'').replace(/^echo\s*/,'')||'');}},
     sudo:{d:'try to elevate',run(){line('harshith is not in the sudoers file. This incident will be reported.','dim');}},
     clear:{d:'clear the screen',run(){body.innerHTML='';}},
-    exit:{d:'close the terminal',run(){closeTerm();}},
+    exit:{d:'close the terminal',run(){line('can\'t exit — this is your portfolio','dim');}},
   };
 
+  function prompt(){ input.focus(); }
   function handle(raw){
     const cmd=raw.trim();
     line(cmd,'cmd');
@@ -1149,6 +1182,7 @@ async function initResumeCounter(){
     }
     else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='l'){e.preventDefault();body.innerHTML='';}
   });
+  // click anywhere inside terminal body → focus input (skip links and the close dot)
   panel.addEventListener('click',e=>{
     if(e.target===closeBtn)return;
     if(e.target.tagName==='A')return;
@@ -1187,10 +1221,13 @@ async function initResumeCounter(){
   function frame(t){
     const W=window.innerWidth,H=window.innerHeight;
     ctx.clearRect(0,0,W,H);
+    // compute attention weights: neg squared distance / scale
     const scores=tokens.map(tk=>{const dx=tk.x-mx,dy=tk.y-my;return -(dx*dx+dy*dy)/(Math.min(W,H)*18);});
     const w=softmax(scores);
     const wmax=Math.max(...w);
+    // fade background tint (subtle)
     ctx.fillStyle='rgba(8,0,16,0.18)';ctx.fillRect(0,0,W,H);
+    // draw tokens sized/lit by weight
     tokens.forEach((tk,i)=>{
       const wi=w[i]/wmax;
       const pulse=0.85+Math.sin(t/300+tk.ph)*0.15;
@@ -1203,6 +1240,7 @@ async function initResumeCounter(){
       ctx.beginPath();ctx.roundRect(tk.x-size/2,tk.y-size/2,size,size,3);ctx.fill();
       ctx.restore();
     });
+    // top-K attention arcs from cursor
     const ranked=tokens.map((tk,i)=>({tk,wi:w[i]})).sort((a,b)=>b.wi-a.wi).slice(0,5);
     ranked.forEach(({tk,wi})=>{
       const rel=wi/wmax;
@@ -1210,15 +1248,18 @@ async function initResumeCounter(){
       ctx.lineWidth=1+rel*2;
       ctx.beginPath();
       ctx.moveTo(mx,my);
+      // slight curve via quadratic midpoint offset
       const midx=(mx+tk.x)/2,midy=(my+tk.y)/2-20*rel;
       ctx.quadraticCurveTo(midx,midy,tk.x,tk.y);
       ctx.stroke();
     });
+    // cursor "query" token
     ctx.save();
     ctx.shadowColor='#E879F9';ctx.shadowBlur=24;
     ctx.fillStyle='rgba(232,121,249,0.95)';
     ctx.beginPath();ctx.arc(mx,my,9,0,Math.PI*2);ctx.fill();
     ctx.restore();
+    // label "Q"
     ctx.fillStyle='rgba(240,234,255,.9)';
     ctx.font='600 11px "JetBrains Mono", monospace';
     ctx.fillText('Q',mx+14,my-10);
@@ -1236,15 +1277,17 @@ async function initResumeCounter(){
     toast.classList.add('on');
     document.addEventListener('mousemove',onMove);
     raf=requestAnimationFrame(frame);
+    // auto-exit after 12s
     setTimeout(()=>{if(active)deactivate('timeout');},12000);
   }
-  function deactivate(){
+  function deactivate(reason){
     if(!active)return;
     active=false;exitAt=Date.now()+500;
     document.body.classList.remove('att-mode');
     overlay.classList.remove('on');
     toast.classList.remove('on');
     document.removeEventListener('mousemove',onMove);
+    // canvas fades via overlay opacity; stop raf soon after
     setTimeout(()=>{cancelAnimationFrame(raf);ctx.clearRect(0,0,canvas.width,canvas.height);},500);
   }
   const prog=document.getElementById('kon-progress');
@@ -1263,8 +1306,11 @@ async function initResumeCounter(){
     progTimeout=setTimeout(()=>prog.classList.remove('on'),2500);
   }
   document.addEventListener('keydown',e=>{
-    if(active){if(!['Shift','Meta','Control','Alt'].includes(e.key))deactivate();return;}
+    // exit on any key while active
+    if(active){if(!['Shift','Meta','Control','Alt'].includes(e.key))deactivate('key');return;}
     const k=e.key.length===1?e.key.toLowerCase():e.key;
+    // Check if this key matches the next expected step given current prefix
+    // Find longest prefix of buf+[k] that matches SEQ
     const tentative=[...buf,k];
     let matchedLen=0;
     for(let start=0;start<tentative.length;start++){
@@ -1277,6 +1323,7 @@ async function initResumeCounter(){
     if(matchedLen===SEQ.length){buf=[];renderProgress(0);activate();}
   });
   window.addEventListener('resize',()=>{if(active){resize();buildTokens();}});
+  // Console easter egg hint
   try{console.log('%c◆ Harshith','color:#C084FC;font-weight:700;font-size:14px','· try the Konami code: ↑↑↓↓←→←→ B A');}catch{}
 })();
 
