@@ -102,12 +102,20 @@ html{scroll-behavior:smooth;overflow-x:clip}
   --cursor-blend:multiply;
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;cursor:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;transition:background-color .4s ease,color .4s ease}
-/* View Transitions: circular reveal from the theme toggle button */
+/* View Transitions: soft circular reveal with defocus-to-focus from the theme toggle */
 @supports (view-transition-name: none){
   ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
-  ::view-transition-old(root){z-index:1}
-  ::view-transition-new(root){z-index:2;animation:vt-reveal .55s cubic-bezier(.4,0,.2,1) both}
-  @keyframes vt-reveal{from{clip-path:circle(0% at var(--vt-x,100%) var(--vt-y,0))}to{clip-path:circle(150% at var(--vt-x,100%) var(--vt-y,0))}}
+  ::view-transition-old(root){z-index:1;animation:vt-fade-out .75s cubic-bezier(.33,1,.68,1) both}
+  ::view-transition-new(root){z-index:2;animation:vt-reveal .8s cubic-bezier(.33,1,.68,1) both}
+  @keyframes vt-reveal{
+    from{clip-path:circle(0% at var(--vt-x,100%) var(--vt-y,0));filter:blur(10px) saturate(.7);opacity:.85}
+    50%{filter:blur(3px) saturate(.9);opacity:.95}
+    to{clip-path:circle(150% at var(--vt-x,100%) var(--vt-y,0));filter:blur(0) saturate(1);opacity:1}
+  }
+  @keyframes vt-fade-out{
+    from{opacity:1;filter:blur(0)}
+    to{opacity:.6;filter:blur(4px)}
+  }
 }
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
 .mono{font-family:'JetBrains Mono',monospace}.display{font-family:'Syne',sans-serif}
