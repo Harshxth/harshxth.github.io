@@ -303,19 +303,19 @@ section>*{position:relative;z-index:1}
 .hm-scroll{overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;scrollbar-color:var(--dim) transparent}
 .hm-scroll::-webkit-scrollbar{height:4px}
 .hm-scroll::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
-.hm-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);gap:3px;min-width:760px}
-.hm-cell{width:12px;height:12px;border-radius:2px;background:var(--hm0);transition:transform .15s,outline .15s}
+.hm-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,10px);grid-auto-columns:10px;gap:2px;width:max-content}
+.hm-cell{width:10px;height:10px;border-radius:2px;background:var(--hm0);transition:transform .15s,outline .15s}
 .hm-cell[data-l="1"]{background:var(--hm1)}
 .hm-cell[data-l="2"]{background:var(--hm2)}
 .hm-cell[data-l="3"]{background:var(--hm3)}
 .hm-cell[data-l="4"]{background:var(--hm4)}
 .hm-cell:hover{transform:scale(1.4);outline:1px solid var(--v1);z-index:2}
 .hm-cell.hm-today{outline:1px solid var(--v1);outline-offset:1px}
-.hm-months{display:flex;margin-bottom:.45rem;min-width:760px;font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.1em}
+.hm-months{display:flex;margin-bottom:.45rem;width:max-content;font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.1em}
 .hm-month{flex-shrink:0;text-transform:uppercase;overflow:hidden;white-space:nowrap}
 .hm-legend{display:flex;align-items:center;justify-content:flex-end;gap:.5rem;margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.1em}
-.hm-legend-cells{display:flex;gap:3px}
-.hm-legend-cells .hm-cell{width:10px;height:10px;cursor:default}
+.hm-legend-cells{display:flex;gap:2px}
+.hm-legend-cells .hm-cell{width:9px;height:9px;cursor:default}
 .hm-tip{position:fixed;z-index:2000;pointer-events:none;background:var(--surf);border:1px solid var(--bord);border-radius:6px;padding:.4rem .7rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;transition:opacity .15s;white-space:nowrap}
 .hm-tip.on{opacity:1}
 .hm-tip strong{color:var(--v1);font-weight:500}
@@ -1175,7 +1175,7 @@ async function initHeatmap(){
     // Month labels: skip any with < 2 columns of territory so narrow wedges
     // (like a DEC that only occupies one week before JAN) don't overflow into
     // the next label. Keep absolute column positions so alignment stays true.
-    const MIN_SPAN=2,COL_PX=15;
+    const MIN_SPAN=2,COL_PX=12;
     const labels=monthPositions.map((m,i)=>{
       const next=monthPositions[i+1];
       const endCol=next?next.col:totalCols;
