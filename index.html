@@ -303,6 +303,39 @@ section>*{position:relative;z-index:1}
 .cmdk-open-btn:hover{border-color:var(--v1);color:var(--v1)}
 .cmdk-open-btn .cmdk-kbd{border-color:var(--bord)}
 @media(max-width:768px){.cmdk-open-btn{display:none}}
+/* PRINT */
+@media print{
+  @page{margin:0.6in}
+  *{cursor:auto!important;animation:none!important;transition:none!important;text-shadow:none!important;box-shadow:none!important;background-attachment:scroll!important}
+  html,body{background:#fff!important;color:#111!important;overflow:visible!important;background-image:none!important}
+  body{font-size:10pt;line-height:1.45}
+  #loader,#cur-o,#cur-d,#cmdk-root,#cmdk-open,nav,.scanlines,#nn-canvas,.hero-vignette,.hero-grid-hint,.hero-bottom-fade,.scroll-hint,.availability-badge,#theme-toggle,.hero-ctas,.cmdk-open-btn,.hm-tip,.flow-wrap,.hm-scroll,.pinned-sub,.contact-glow,.contact-links,.resume-counter,.hm-legend,.proj-filters,.cur-badge{display:none!important}
+  #hero{height:auto!important;min-height:0!important;padding:0 0 .5in;margin:0!important;page-break-after:avoid}
+  .hero-content{padding:0!important}
+  h1.hero-name{font-size:28pt!important;text-align:left;color:#111!important;-webkit-text-fill-color:#111!important;background:none!important}
+  .hero-last{color:#5B21B6!important;-webkit-text-fill-color:#5B21B6!important;background:none!important}
+  .hero-type,.hero-desc{color:#333!important;text-align:left!important}
+  section{padding:.2in 0!important;max-width:100%!important;page-break-inside:avoid}
+  section::before{display:none!important}
+  .sec-label{color:#5B21B6!important;text-align:left!important;font-size:7pt!important;margin-bottom:.3rem!important}
+  .sec-h2{font-size:15pt!important;text-align:left!important;color:#111!important;margin-bottom:.2in!important}
+  .sec-h2 span{color:#5B21B6!important}
+  .about-grid,.pr-grid,.sk-grid,.bey-grid,.projects-grid,.pinned-grid,.hm-cta{grid-template-columns:1fr 1fr!important;gap:.2in!important}
+  .edu-card,.exp-card,.proj-card,.bey-card,.pr-card,.sk-group,.hm-wrap,.pinned-card{background:#fff!important;border:1px solid #ddd!important;color:#222!important;page-break-inside:avoid}
+  .proj-card{padding:.18in!important}
+  .proj-card .proj-diag,.proj-card .flow-wrap{display:none!important}
+  .exp-bullets li,.pr-body,.proj-desc,.about-body,.bey-card p{color:#333!important}
+  strong,.hl,.exp-bullets li strong,.pr-body strong{color:#111!important}
+  .metric,.proj-desc .m,.pr-tags span,.tag,.sk-pill{color:#5B21B6!important;background:#f5efff!important;border-color:#d4c2f5!important}
+  #building{display:none!important}
+  #activity .hm-wrap{display:none!important}
+  .timeline-line{display:none!important}
+  .exp-dot{display:none!important}
+  .exp-item{padding-left:0!important;margin-bottom:.18in!important;opacity:1!important;transform:none!important}
+  footer{border-top:1px solid #ccc;padding:.15in 0!important;color:#666!important;font-size:8pt!important}
+  a{color:#5B21B6!important;text-decoration:none}
+  a[href^="http"]::after{content:" [" attr(href) "]";font-size:7pt;color:#999}
+}
 /* FOOTER */
 footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
 .ft-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--text)}
