@@ -251,6 +251,10 @@ section>*{position:relative;z-index:1}
 .hm-skeleton .hm-cell:nth-child(3n){animation-delay:.2s}
 .hm-skeleton .hm-cell:nth-child(5n){animation-delay:.4s}
 @keyframes hmPulse{0%,100%{opacity:.4}50%{opacity:.9}}
+/* RESUME COUNTER */
+.resume-counter{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.15em;margin:-1.5rem auto 2.5rem;padding:.4rem .9rem;border:1px solid var(--bord);border-radius:100px;background:var(--surf);text-transform:uppercase}
+.resume-counter .rc-dot{width:5px;height:5px;border-radius:50%;background:var(--v1);box-shadow:0 0 6px var(--v1);animation:pulse 2s ease-in-out infinite}
+.resume-counter .rc-val{color:var(--v1);font-weight:600;font-variant-numeric:tabular-nums}
 /* COMMAND PALETTE */
 #cmdk-root{position:fixed;inset:0;z-index:3000;display:none;align-items:flex-start;justify-content:center;padding:12vh 1rem 1rem;background:rgba(var(--bg-rgb),.65);backdrop-filter:blur(8px)}
 #cmdk-root.on{display:flex}
@@ -339,7 +343,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
     <p class="hero-desc">Building <strong style="color:var(--hl)">intelligent systems</strong> from research to production — multi-agent AI pipelines, <strong style="color:var(--hl)">healthcare ML</strong>, and <strong style="color:var(--hl)">computer vision</strong> at scale.</p>
     <div class="hero-ctas">
       <a href="#projects" class="btn-primary">VIEW WORK →</a>
-      <a href="Harshith_Gujjeti_Resume.pdf" download class="btn-ghost" style="color:var(--text);border-color:rgba(255,255,255,.2)">↓ RÉSUMÉ</a>
+      <a href="Harshith_Gujjeti_Resume.pdf" download class="btn-ghost resume-link" style="color:var(--text);border-color:rgba(255,255,255,.2)">↓ RÉSUMÉ</a>
       <a href="mailto:harshithgujjeti@gmail.com" class="btn-ghost">✉ CONTACT</a>
     </div>
   </div>
@@ -547,9 +551,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   </div>
   <div class="contact-links">
     <a href="mailto:harshithgujjeti@gmail.com" class="btn-primary">✉ EMAIL ME</a>
-    <a href="Harshith_Gujjeti_Resume.pdf" download class="btn-ghost" style="color:var(--text);border-color:rgba(255,255,255,.2)">↓ RÉSUMÉ</a>
+    <a href="Harshith_Gujjeti_Resume.pdf" download class="btn-ghost resume-link" style="color:var(--text);border-color:rgba(255,255,255,.2)">↓ RÉSUMÉ</a>
     <a href="https://github.com/Harshxth" target="_blank" class="btn-ghost">⎇ GITHUB</a>
     <a href="https://linkedin.com/in/harshithgujjeti" target="_blank" class="btn-ghost" style="color:var(--v3);border-color:rgba(232,121,249,.25)">in LINKEDIN</a>
+  </div>
+  <div class="resume-counter" id="resume-counter" aria-live="polite">
+    <span class="rc-dot"></span>
+    <span class="rc-label">Résumé downloaded</span>
+    <span class="rc-val" id="rc-val">—</span>
+    <span class="rc-label">times</span>
   </div>
   <div class="contact-footer">HARSHITH GUJJETI // AI/ML ENGINEER // TAMPA, FL // 2026</div>
 </section>
@@ -644,7 +654,23 @@ const BOOT=['INITIALIZING NEURAL ENGINE v3.1.4 ............. OK','Loading LangGr
   },185);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();}
+function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initResumeCounter();}
+
+// ── RESUME COUNTER ───────────────────────────────────────────────────────────
+async function initResumeCounter(){
+  const valEl=document.getElementById('rc-val');
+  const KEY='harshxth-portfolio';const NS='resume';
+  const base=`https://api.counterapi.dev/v1/${KEY}/${NS}`;
+  try{
+    const r=await fetch(base+'/');
+    if(r.ok){const d=await r.json();if(valEl&&typeof d.count==='number')valEl.textContent=d.count.toLocaleString();}
+  }catch{}
+  document.querySelectorAll('.resume-link').forEach(a=>{
+    a.addEventListener('click',()=>{
+      fetch(base+'/up').then(r=>r.json()).then(d=>{if(valEl&&typeof d.count==='number')valEl.textContent=d.count.toLocaleString();}).catch(()=>{});
+    });
+  });
+}
 
 // ── THEME ────────────────────────────────────────────────────────────────────
 (function initTheme(){
