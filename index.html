@@ -350,6 +350,7 @@ section>*{position:relative;z-index:1}
 .cmdk-item .lbl{flex:1;display:flex;flex-direction:column;min-width:0}
 .cmdk-item .lbl .t{color:var(--text);font-weight:500}
 .cmdk-item .lbl .d{color:var(--muted);font-size:.68rem;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;margin-top:.1rem}
+.cmdk-item .sh{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted)}
 .cmdk-empty{padding:2rem 1rem;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em}
 .cmdk-hint{display:flex;justify-content:space-between;align-items:center;padding:.55rem 1rem;border-top:1px solid var(--bord);font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.08em}
 .cmdk-hint span{display:inline-flex;align-items:center;gap:.35rem}
@@ -425,9 +426,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
       <a href="#about">about</a>
       <a href="#experience">experience</a>
       <a href="#projects">projects</a>
-      <a href="#skills">skills</a>
-      <a href="#beyond">beyond</a>
-      <a href="#activity">activity</a>
+      <a href="#principles">principles</a>
       <a href="#contact">contact</a>
     </div>
     <button id="cmdk-open" class="cmdk-open-btn" aria-label="Open command palette" title="Command palette (⌘K)">
@@ -562,16 +561,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   </div>
 </section>
 
-<!-- BEYOND -->
-<section id="beyond" style="max-width:860px">
-  <div class="sec-label">06 // WHEN I'M NOT BUILDING</div>
-  <h2 class="sec-h2">Outside <span style="color:var(--v3)">the terminal.</span></h2>
-  <div class="bey-grid reveal">
-    <div class="bey-card"><span class="bey-icon">🏋️</span><h3>Iron &amp; Discipline</h3><p>Training keeps me sharp. The gym teaches progressive overload — a principle I apply just as hard to engineering. Consistency over intensity, every single day.</p></div>
-    <div class="bey-card"><span class="bey-icon">🌱</span><h3>Growing Things</h3><p>Gardening grounds me. Watching something you planted grow over time — patience, care, long-term thinking. The same mindset I bring to building ML systems.</p></div>
-  </div>
-</section>
-
 <!-- HOW I THINK -->
 <section id="principles">
   <div class="sec-label">06 // HOW I THINK</div>
@@ -662,10 +651,20 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   </div>
 </section>
 
+<!-- BEYOND -->
+<section id="beyond" style="max-width:860px">
+  <div class="sec-label">08 // WHEN I'M NOT BUILDING</div>
+  <h2 class="sec-h2">Outside <span style="color:var(--v3)">the terminal.</span></h2>
+  <div class="bey-grid reveal">
+    <div class="bey-card"><span class="bey-icon">🏋️</span><h3>Iron &amp; Discipline</h3><p>Training keeps me sharp. The gym teaches progressive overload — a principle I apply just as hard to engineering. Consistency over intensity, every single day.</p></div>
+    <div class="bey-card"><span class="bey-icon">🌱</span><h3>Growing Things</h3><p>Gardening grounds me. Watching something you planted grow over time — patience, care, long-term thinking. The same mindset I bring to building ML systems.</p></div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact" style="text-align:center;position:relative;max-width:1100px;padding-bottom:5rem">
   <div class="contact-glow"></div>
-  <div class="sec-label">08 // CONTACT</div>
+  <div class="sec-label">09 // CONTACT</div>
   <h2 class="sec-h2" style="max-width:700px;margin:0 auto 1rem">Open to what's <span style="color:var(--v1)">next.</span></h2>
   <p style="color:var(--muted);max-width:460px;margin:0 auto;line-height:1.85">Actively looking for AI/ML and Data Engineering internship opportunities for Summer 2026. Let's talk.</p>
   <div class="open-chips">
@@ -858,6 +857,7 @@ async function initResumeCounter(){
   }catch{}
   document.querySelectorAll('.resume-link').forEach(a=>{
     a.addEventListener('click',()=>{
+      // fire-and-forget; don't block the download
       fetch(base+'/up').then(r=>r.json()).then(d=>{if(valEl&&typeof d.count==='number')valEl.textContent=d.count.toLocaleString();}).catch(()=>{});
     });
   });
@@ -890,8 +890,9 @@ async function initResumeCounter(){
     {g:'Jump to',t:'Currently Building',d:'active work',k:'building current',ic:'04',act:()=>go('#building')},
     {g:'Jump to',t:'Skills',d:'tech & tools',k:'skills arsenal',ic:'05',act:()=>go('#skills')},
     {g:'Jump to',t:'How I Think',d:'principles + philosophy',k:'principles philosophy how think',ic:'06',act:()=>go('#principles')},
-    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'07',act:()=>go('#beyond')},
-    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'08',act:()=>go('#contact')},
+    {g:'Jump to',t:'Activity',d:'github heatmap',k:'activity heatmap github',ic:'07',act:()=>go('#activity')},
+    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'08',act:()=>go('#beyond')},
+    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'09',act:()=>go('#contact')},
     {g:'Projects',t:'CiteIQ',d:'agentic RAG system',k:'citeiq rag langgraph',ic:'◈',act:()=>open('https://github.com/Harshxth/citeiq')},
     {g:'Projects',t:'Speech-to-Note',d:'clinical SOAP notes',k:'whisper speech soap',ic:'◈',act:()=>open('https://github.com/Harshxth/Speech-to-Note-Assistant')},
     {g:'Actions',t:'Email Harshith',d:'harshithgujjeti@gmail.com',k:'mail email contact',ic:'✉',act:()=>open('mailto:harshithgujjeti@gmail.com')},
