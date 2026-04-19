@@ -338,6 +338,38 @@ section>*{position:relative;z-index:1}
 .resume-counter{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.15em;margin:-1.5rem auto 2.5rem;padding:.4rem .9rem;border:1px solid var(--bord);border-radius:100px;background:var(--surf);text-transform:uppercase}
 .resume-counter .rc-dot{width:5px;height:5px;border-radius:50%;background:var(--v1);box-shadow:0 0 6px var(--v1);animation:pulse 2s ease-in-out infinite}
 .resume-counter .rc-val{color:var(--v1);font-weight:600;font-variant-numeric:tabular-nums}
+/* FLOATING TERMINAL */
+.term-launcher{position:fixed;right:1.25rem;bottom:1.25rem;z-index:2400;display:inline-flex;align-items:center;gap:.5rem;background:var(--surf);border:1px solid var(--bord);color:var(--v1);border-radius:100px;padding:.55rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;cursor:none;box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 1px rgba(192,132,252,.06);transition:transform .22s,border-color .22s,box-shadow .22s;animation:termPulse 2.4s ease-in-out infinite}
+.term-launcher:hover{transform:translateY(-2px);border-color:var(--v1);box-shadow:0 10px 32px rgba(192,132,252,.28)}
+.term-launcher .dot{width:6px;height:6px;border-radius:50%;background:var(--v1);box-shadow:0 0 8px var(--v1)}
+.term-launcher .kbd{font-size:.52rem;color:var(--muted);border:1px solid var(--bord);border-radius:3px;padding:.05rem .28rem;letter-spacing:.05em}
+.term-launcher.hidden{opacity:0;pointer-events:none;transform:translateY(10px)}
+@keyframes termPulse{0%,100%{box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 1px rgba(192,132,252,.06)}50%{box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 3px rgba(192,132,252,.15)}}
+.hero-term{position:fixed;right:1.25rem;bottom:1.25rem;z-index:2500;width:min(520px,calc(100vw - 2.5rem));background:rgba(var(--bg-rgb),.92);border:1px solid var(--bord);border-radius:12px;overflow:hidden;text-align:left;backdrop-filter:blur(12px);box-shadow:0 24px 70px rgba(0,0,0,.55);opacity:0;transform:translateY(20px) scale(.96);pointer-events:none;transition:opacity .26s ease,transform .26s cubic-bezier(.2,.9,.3,1.2)}
+.hero-term.on{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.hero-term-bar{display:flex;align-items:center;gap:.55rem;padding:.55rem .9rem;background:rgba(var(--bg-rgb),.65);border-bottom:1px solid var(--bord)}
+.hero-term-dots{display:flex;gap:.35rem}
+.hero-term-dots span{width:11px;height:11px;border-radius:50%;opacity:.85;cursor:none}
+.hero-term-dots span:nth-child(1){background:#ff5f57}
+.hero-term-dots span:nth-child(1):hover{filter:brightness(1.2)}
+.hero-term-dots span:nth-child(2){background:#febc2e}
+.hero-term-dots span:nth-child(3){background:#28c840}
+.hero-term-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.2em;margin-left:auto}
+.hero-term-body{padding:.8rem 1rem 0.5rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.65;height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--dim) transparent}
+.hero-term-body::-webkit-scrollbar{width:4px}
+.hero-term-body::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.hero-term-line{color:var(--hl);white-space:pre-wrap;word-break:break-word}
+.hero-term-line.cmd{color:var(--text)}
+.hero-term-line.cmd::before{content:'$ ';color:var(--v1);margin-right:.1rem}
+.hero-term-line.sys{color:var(--v1);font-size:.72rem}
+.hero-term-line.dim{color:var(--muted)}
+.hero-term-line a{color:var(--v3);text-decoration:none;border-bottom:1px dashed rgba(232,121,249,.35)}
+.hero-term-line a:hover{color:var(--v1);border-bottom-color:var(--v1)}
+.hero-term-input{display:flex;align-items:center;gap:.35rem;padding:.45rem 1rem .85rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;border-top:1px solid var(--bord)}
+.hero-term-input .prompt{color:var(--v1);flex-shrink:0}
+.hero-term-input input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78rem;caret-color:var(--v1);padding:0;cursor:none}
+.hero-term-input input::placeholder{color:var(--dim)}
+@media(max-width:540px){.hero-term{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}.hero-term-body{font-size:.72rem;height:220px}.term-launcher{right:.75rem;bottom:.75rem}}
 /* KONAMI · ATTENTION MODE */
 #att-overlay{position:fixed;inset:0;z-index:2500;pointer-events:none;opacity:0;transition:opacity .4s ease}
 #att-overlay.on{opacity:1}
@@ -711,6 +743,27 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   <div class="contact-footer">HARSHITH GUJJETI // AI/ML ENGINEER // TAMPA, FL // 2026</div>
 </section>
 
+<!-- FLOATING TERMINAL -->
+<button id="term-launcher" class="term-launcher" aria-label="Open terminal" title="Open terminal (~)">
+  <span class="dot"></span>
+  <span>TERMINAL</span>
+  <span class="kbd">~</span>
+</button>
+<div class="hero-term" id="hero-term" role="region" aria-label="Interactive terminal" aria-hidden="true">
+  <div class="hero-term-bar">
+    <div class="hero-term-dots">
+      <span id="term-close" title="Close" role="button" aria-label="Close terminal"></span>
+      <span></span><span></span>
+    </div>
+    <div class="hero-term-title">HARSHITH@PORTFOLIO ~ % TRY <b style="color:var(--v1)">help</b></div>
+  </div>
+  <div class="hero-term-body" id="term-body"></div>
+  <form class="hero-term-input" id="term-form" autocomplete="off">
+    <span class="prompt">$</span>
+    <input id="term-input" placeholder="type a command (help, whoami, ls, skills…)" autocomplete="off" spellcheck="false"/>
+  </form>
+</div>
+
 <!-- KONAMI · ATTENTION MODE -->
 <div id="att-overlay" aria-hidden="true">
   <canvas id="att-canvas"></canvas>
@@ -915,6 +968,175 @@ async function initResumeCounter(){
       else document.documentElement.removeAttribute('data-theme');
       localStorage.setItem('hg-theme',next);
     });
+  });
+})();
+
+// ── FLOATING TERMINAL ────────────────────────────────────────────────────────
+(function initTerm(){
+  const panel=document.getElementById('hero-term');
+  const launcher=document.getElementById('term-launcher');
+  const closeBtn=document.getElementById('term-close');
+  const body=document.getElementById('term-body');
+  const form=document.getElementById('term-form');
+  const input=document.getElementById('term-input');
+  if(!body||!form||!input||!panel)return;
+
+  const history=[];let histIdx=-1;
+
+  function line(text,cls=''){
+    const d=document.createElement('div');
+    d.className='hero-term-line'+(cls?' '+cls:'');
+    d.innerHTML=text;
+    body.appendChild(d);
+    body.scrollTop=body.scrollHeight;
+    return d;
+  }
+  function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+  let welcomed=false;
+  function openTerm(){
+    panel.classList.add('on');
+    panel.setAttribute('aria-hidden','false');
+    launcher.classList.add('hidden');
+    if(!welcomed){
+      line('<span style="color:var(--v1)">harshith@portfolio</span> · type <span style="color:var(--v1)">help</span> to see what this thing can do','sys');
+      welcomed=true;
+    }
+    setTimeout(()=>input.focus(),160);
+  }
+  function closeTerm(){
+    panel.classList.remove('on');
+    panel.setAttribute('aria-hidden','true');
+    launcher.classList.remove('hidden');
+    input.blur();
+  }
+  launcher.addEventListener('click',openTerm);
+  closeBtn.addEventListener('click',closeTerm);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&panel.classList.contains('on')){e.preventDefault();closeTerm();return;}
+    if(e.key==='`'||e.key==='~'){
+      const tag=(e.target.tagName||'').toLowerCase();
+      if(tag==='input'||tag==='textarea'){if(e.target!==input)return;}
+      e.preventDefault();
+      panel.classList.contains('on')?closeTerm():openTerm();
+    }
+  });
+
+  const COMMANDS={
+    help:{d:'list available commands',run(){
+      Object.entries(COMMANDS).forEach(([k,v])=>line(`<span style="color:var(--v1)">${k.padEnd(14)}</span><span class="dim">${v.d}</span>`));
+    }},
+    whoami:{d:'about me',run(){
+      line('<b style="color:var(--hl)">Harshith Gujjeti</b> · AI/ML Engineer');
+      line('MS AI &amp; Business Analytics @ USF Tampa','dim');
+      line('Building multi-agent systems, RAG pipelines, production CV.','dim');
+    }},
+    ls:{d:'list sections & projects',run(arg){
+      if(arg==='projects'||arg==='proj'){
+        line('citeiq/','');
+        line('healthcare-research-agent/','');
+        line('hospital-los-prediction/','');
+        line('pdf-rag-chatbot/','');
+        line('speech-to-note-assistant/','');
+        line('pharmacy-doc-intelligence/','');
+        return;
+      }
+      line('about/  experience/  projects/  building/  skills/  principles/  activity/  beyond/  contact/');
+      line('try: <span style="color:var(--v1)">ls projects</span>','dim');
+    }},
+    cat:{d:'read a section — cat [name]',run(arg){
+      const pages={
+        resume:`<a href="Harshith_Gujjeti_Resume.pdf" download>↓ Harshith_Gujjeti_Resume.pdf</a>`,
+        contact:'harshithgujjeti@gmail.com · <a href="https://github.com/Harshxth" target="_blank">github.com/Harshxth</a> · <a href="https://linkedin.com/in/harshithgujjeti" target="_blank">linkedin.com/in/harshithgujjeti</a>',
+        about:'AI/ML engineer at USF. Research at CUTR &amp; Muma College. Previously ISRO.',
+        skills:'PyTorch · LangGraph · CrewAI · YOLOv8 · ChromaDB · FastAPI · Docker · Snowflake',
+        citeiq:'agentic RAG system — LangGraph orchestration, 90%+ faithfulness, FastAPI + Docker. <a href="https://github.com/Harshxth/citeiq" target="_blank">github.com/Harshxth/citeiq</a>',
+      };
+      if(!arg){line('usage: cat [resume|contact|about|skills|citeiq]','dim');return;}
+      if(pages[arg])line(pages[arg]);
+      else line(`cat: ${arg}: No such file or directory`,'dim');
+    }},
+    skills:{d:'quick skills readout',run(){
+      line('<b>ML &amp; AI</b>       PyTorch · XGBoost · scikit-learn · MLflow');
+      line('<b>GenAI / LLM</b>   LangChain · LangGraph · CrewAI · OpenAI · RAG · Ollama');
+      line('<b>Vision</b>        YOLOv8 · ByteTrack · SRGAN · CNN');
+      line('<b>Data Eng</b>      Snowflake · Docker · ChromaDB · PostgreSQL');
+      line('<b>Cloud</b>         Azure OpenAI · AWS · Kubernetes · CI/CD');
+    }},
+    neofetch:{d:'system info',run(){
+      const art=[
+        '    <span style="color:var(--v1)">▗▖ ▗▖ ▗▄▄▄</span>   harshith@portfolio',
+        '    <span style="color:var(--v1)">▐▌ ▐▌▐▌  ▌</span>  ─────────────────',
+        '    <span style="color:var(--v1)">▐▛▀▜▌▐▌▗▟▙</span>  OS     : USF Tampa Edition',
+        '    <span style="color:var(--v1)">▐▌ ▐▌ ▜▄▛▘</span>  Kernel : AI/ML 4.0.0-gpa',
+        '    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Shell  : bash + LangGraph',
+        '    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Uptime : since 2021',
+        '    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   CPU    : producción-grade RAG × 12',
+      ];
+      art.forEach(a=>line(a));
+    }},
+    'deploy':{d:'simulate a deploy — deploy [project]',async run(arg){
+      const name=arg||'citeiq';
+      const steps=[
+        `[step 1/5] pulling ${name}...`,
+        '[step 2/5] building docker image...',
+        '[step 3/5] pushing to registry...',
+        '[step 4/5] rolling out containers...',
+        '[step 5/5] warming inference pool...',
+      ];
+      for(const s of steps){line(s,'dim');await sleep(340);}
+      line(`✓ deployed <b>${name}</b> to production`,'sys');
+      line(`  → <a href="https://github.com/Harshxth/${name}" target="_blank">github.com/Harshxth/${name}</a>`,'dim');
+    }},
+    open:{d:'open a url — open github/linkedin/resume',run(arg){
+      const map={github:'https://github.com/Harshxth',linkedin:'https://linkedin.com/in/harshithgujjeti',resume:'Harshith_Gujjeti_Resume.pdf',site:'https://harshxth.github.io/'};
+      if(!arg){line('usage: open [github|linkedin|resume|site]','dim');return;}
+      const u=map[arg];if(!u){line(`open: unknown target: ${arg}`,'dim');return;}
+      line(`opening ${arg}…`,'dim');
+      window.open(u,'_blank');
+    }},
+    theme:{d:'toggle light / dark',run(){document.getElementById('theme-toggle').click();line('theme toggled','sys');}},
+    date:{d:'current date',run(){line(new Date().toString(),'dim');}},
+    echo:{d:'print text',run(arg,full){line((full||'').replace(/^echo\s*/,'')||'');}},
+    sudo:{d:'try to elevate',run(){line('harshith is not in the sudoers file. This incident will be reported.','dim');}},
+    clear:{d:'clear the screen',run(){body.innerHTML='';}},
+    exit:{d:'close the terminal',run(){closeTerm();}},
+  };
+
+  function handle(raw){
+    const cmd=raw.trim();
+    line(cmd,'cmd');
+    if(!cmd)return;
+    history.push(cmd);histIdx=history.length;
+    const [name,...rest]=cmd.split(/\s+/);
+    const arg=rest[0];
+    const fn=COMMANDS[name.toLowerCase()];
+    if(!fn){line(`command not found: ${name}. try <span style="color:var(--v1)">help</span>.`,'dim');return;}
+    const res=fn.run(arg,cmd);
+    if(res&&res.then)res.catch(()=>{});
+  }
+
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const v=input.value;
+    handle(v);
+    input.value='';
+  });
+  input.addEventListener('keydown',e=>{
+    if(e.key==='ArrowUp'){e.preventDefault();if(histIdx>0){histIdx--;input.value=history[histIdx]||'';}}
+    else if(e.key==='ArrowDown'){e.preventDefault();if(histIdx<history.length-1){histIdx++;input.value=history[histIdx]||'';}else{histIdx=history.length;input.value='';}}
+    else if(e.key==='Tab'){
+      e.preventDefault();
+      const v=input.value.trim();if(!v)return;
+      const match=Object.keys(COMMANDS).find(k=>k.startsWith(v));
+      if(match)input.value=match;
+    }
+    else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='l'){e.preventDefault();body.innerHTML='';}
+  });
+  panel.addEventListener('click',e=>{
+    if(e.target===closeBtn)return;
+    if(e.target.tagName==='A')return;
+    input.focus();
   });
 })();
 
