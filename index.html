@@ -236,6 +236,30 @@ section>*{position:relative;z-index:1}
 .hm-skeleton .hm-cell:nth-child(3n){animation-delay:.2s}
 .hm-skeleton .hm-cell:nth-child(5n){animation-delay:.4s}
 @keyframes hmPulse{0%,100%{opacity:.4}50%{opacity:.9}}
+/* COMMAND PALETTE */
+#cmdk-root{position:fixed;inset:0;z-index:3000;display:none;align-items:flex-start;justify-content:center;padding:12vh 1rem 1rem;background:rgba(var(--bg-rgb),.65);backdrop-filter:blur(8px)}
+#cmdk-root.on{display:flex}
+.cmdk-box{width:100%;max-width:560px;background:var(--surf);border:1px solid var(--bord);border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 0 1px rgba(192,132,252,.05)}
+.cmdk-input-wrap{display:flex;align-items:center;gap:.6rem;padding:.9rem 1.1rem;border-bottom:1px solid var(--bord)}
+.cmdk-input-wrap svg{width:14px;height:14px;color:var(--muted);flex-shrink:0}
+#cmdk-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem}
+#cmdk-input::placeholder{color:var(--muted)}
+.cmdk-kbd{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);border:1px solid var(--bord);border-radius:4px;padding:.1rem .35rem;letter-spacing:.05em}
+.cmdk-list{max-height:48vh;overflow-y:auto;padding:.4rem 0}
+.cmdk-group{padding:.4rem .6rem .2rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
+.cmdk-item{display:flex;align-items:center;gap:.7rem;padding:.55rem .9rem;margin:0 .4rem;border-radius:7px;cursor:none;font-size:.83rem;color:var(--text);transition:background .12s}
+.cmdk-item.sel{background:rgba(192,132,252,.12)}
+.cmdk-item .ic{width:26px;height:26px;border-radius:6px;background:rgba(192,132,252,.1);color:var(--v1);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.75rem;flex-shrink:0}
+.cmdk-item .lbl{flex:1;display:flex;flex-direction:column;min-width:0}
+.cmdk-item .lbl .t{color:var(--text);font-weight:500}
+.cmdk-item .lbl .d{color:var(--muted);font-size:.68rem;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;margin-top:.1rem}
+.cmdk-empty{padding:2rem 1rem;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em}
+.cmdk-hint{display:flex;justify-content:space-between;align-items:center;padding:.55rem 1rem;border-top:1px solid var(--bord);font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.08em}
+.cmdk-hint span{display:inline-flex;align-items:center;gap:.35rem}
+.cmdk-open-btn{display:inline-flex;align-items:center;gap:.45rem;background:var(--surf);border:1px solid var(--bord);color:var(--muted);border-radius:7px;padding:.35rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;cursor:none;margin-right:.7rem;transition:border-color .2s,color .2s}
+.cmdk-open-btn:hover{border-color:var(--v1);color:var(--v1)}
+.cmdk-open-btn .cmdk-kbd{border-color:var(--bord)}
+@media(max-width:768px){.cmdk-open-btn{display:none}}
 /* FOOTER */
 footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
 .ft-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--text)}
@@ -276,6 +300,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
       <a href="#activity">activity</a>
       <a href="#contact">contact</a>
     </div>
+    <button id="cmdk-open" class="cmdk-open-btn" aria-label="Open command palette" title="Command palette (⌘K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><circle cx="11" cy="11" r="7"/><path d="m21 21-3.5-3.5"/></svg>
+      <span class="cmdk-kbd">⌘K</span>
+    </button>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -466,6 +494,23 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   <div class="contact-footer">HARSHITH GUJJETI // AI/ML ENGINEER // TAMPA, FL // 2026</div>
 </section>
 
+<!-- COMMAND PALETTE -->
+<div id="cmdk-root" role="dialog" aria-label="Command palette">
+  <div class="cmdk-box" role="document">
+    <div class="cmdk-input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-3.5-3.5"/></svg>
+      <input id="cmdk-input" placeholder="Jump to a section, project, or action…" autocomplete="off" spellcheck="false"/>
+      <span class="cmdk-kbd">ESC</span>
+    </div>
+    <div class="cmdk-list" id="cmdk-list"></div>
+    <div class="cmdk-hint">
+      <span><span class="cmdk-kbd">↑↓</span> navigate</span>
+      <span><span class="cmdk-kbd">↵</span> open</span>
+      <span><span class="cmdk-kbd">⌘K</span> toggle</span>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="ft-logo">H<span>G</span></div>
   <div>Harshith Gujjeti · AI/ML Engineer · Tampa, FL</div>
@@ -557,6 +602,65 @@ function initAll(){initCursor();initNav();initBG();initTyping();initExp();initPr
       localStorage.setItem('hg-theme',next);
     });
   });
+})();
+
+// ── COMMAND PALETTE ──────────────────────────────────────────────────────────
+(function initCmdk(){
+  const CMDS=[
+    {g:'Jump to',t:'About',d:'intro + education',k:'about',ic:'01',act:()=>go('#about')},
+    {g:'Jump to',t:'Experience',d:'work timeline',k:'experience',ic:'02',act:()=>go('#experience')},
+    {g:'Jump to',t:'Projects',d:'production systems',k:'projects',ic:'03',act:()=>go('#projects')},
+    {g:'Jump to',t:'Currently Building',d:'active work',k:'building current',ic:'04',act:()=>go('#building')},
+    {g:'Jump to',t:'Skills',d:'tech & tools',k:'skills arsenal',ic:'05',act:()=>go('#skills')},
+    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'06',act:()=>go('#beyond')},
+    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'07',act:()=>go('#contact')},
+    {g:'Projects',t:'CiteIQ',d:'agentic RAG system',k:'citeiq rag langgraph',ic:'◈',act:()=>open('https://github.com/Harshxth/citeiq')},
+    {g:'Projects',t:'Speech-to-Note',d:'clinical SOAP notes',k:'whisper speech soap',ic:'◈',act:()=>open('https://github.com/Harshxth/Speech-to-Note-Assistant')},
+    {g:'Actions',t:'Email Harshith',d:'harshithgujjeti@gmail.com',k:'mail email contact',ic:'✉',act:()=>open('mailto:harshithgujjeti@gmail.com')},
+    {g:'Actions',t:'Download résumé',d:'PDF',k:'resume cv pdf',ic:'↓',act:()=>open('Harshith_Gujjeti_Resume.pdf')},
+    {g:'Actions',t:'GitHub profile',d:'@Harshxth',k:'github profile',ic:'⎇',act:()=>open('https://github.com/Harshxth')},
+    {g:'Actions',t:'LinkedIn',d:'in/harshithgujjeti',k:'linkedin',ic:'in',act:()=>open('https://linkedin.com/in/harshithgujjeti')},
+    {g:'Actions',t:'Toggle theme',d:'light / dark',k:'theme dark light mode',ic:'◐',act:()=>document.getElementById('theme-toggle').click()},
+    {g:'Actions',t:'Print portfolio',d:'print-optimized layout',k:'print resume',ic:'⎙',act:()=>window.print()},
+  ];
+  const root=document.getElementById('cmdk-root');
+  const input=document.getElementById('cmdk-input');
+  const list=document.getElementById('cmdk-list');
+  const openBtn=document.getElementById('cmdk-open');
+  let sel=0,filtered=[...CMDS];
+  function go(h){close();setTimeout(()=>{const el=document.querySelector(h);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
+  function open(u){close();window.open(u,u.startsWith('http')||u.startsWith('mailto:')?'_blank':'_self');}
+  function render(){
+    if(!filtered.length){list.innerHTML='<div class="cmdk-empty">No matches</div>';return;}
+    let html='',lastG='';
+    filtered.forEach((c,i)=>{
+      if(c.g!==lastG){html+=`<div class="cmdk-group">${c.g}</div>`;lastG=c.g;}
+      html+=`<div class="cmdk-item${i===sel?' sel':''}" data-i="${i}"><div class="ic">${c.ic}</div><div class="lbl"><div class="t">${c.t}</div><div class="d">${c.d}</div></div></div>`;
+    });
+    list.innerHTML=html;
+    const selEl=list.querySelector('.cmdk-item.sel');if(selEl)selEl.scrollIntoView({block:'nearest'});
+  }
+  function refilter(){
+    const q=input.value.trim().toLowerCase();
+    if(!q){filtered=[...CMDS];}
+    else{filtered=CMDS.filter(c=>(c.t+' '+c.d+' '+c.k+' '+c.g).toLowerCase().includes(q));}
+    sel=0;render();
+  }
+  function openPalette(){root.classList.add('on');input.value='';filtered=[...CMDS];sel=0;render();setTimeout(()=>input.focus(),10);}
+  function close(){root.classList.remove('on');}
+  function toggle(){root.classList.contains('on')?close():openPalette();}
+  document.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();toggle();return;}
+    if(!root.classList.contains('on'))return;
+    if(e.key==='Escape'){e.preventDefault();close();}
+    else if(e.key==='ArrowDown'){e.preventDefault();sel=(sel+1)%filtered.length;render();}
+    else if(e.key==='ArrowUp'){e.preventDefault();sel=(sel-1+filtered.length)%filtered.length;render();}
+    else if(e.key==='Enter'){e.preventDefault();if(filtered[sel])filtered[sel].act();}
+  });
+  if(openBtn)openBtn.addEventListener('click',openPalette);
+  if(input)input.addEventListener('input',refilter);
+  if(list)list.addEventListener('click',e=>{const it=e.target.closest('.cmdk-item');if(!it)return;const i=parseInt(it.dataset.i,10);if(!isNaN(i)&&filtered[i])filtered[i].act();});
+  if(root)root.addEventListener('click',e=>{if(e.target===root)close();});
 })();
 
 // ── CURSOR ────────────────────────────────────────────────────────────────────
