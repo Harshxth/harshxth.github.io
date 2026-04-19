@@ -338,6 +338,21 @@ section>*{position:relative;z-index:1}
 .resume-counter{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.15em;margin:-1.5rem auto 2.5rem;padding:.4rem .9rem;border:1px solid var(--bord);border-radius:100px;background:var(--surf);text-transform:uppercase}
 .resume-counter .rc-dot{width:5px;height:5px;border-radius:50%;background:var(--v1);box-shadow:0 0 6px var(--v1);animation:pulse 2s ease-in-out infinite}
 .resume-counter .rc-val{color:var(--v1);font-weight:600;font-variant-numeric:tabular-nums}
+/* KONAMI · ATTENTION MODE */
+#att-overlay{position:fixed;inset:0;z-index:2500;pointer-events:none;opacity:0;transition:opacity .4s ease}
+#att-overlay.on{opacity:1}
+#att-canvas{position:absolute;inset:0;width:100%;height:100%}
+.att-toast{position:fixed;top:5rem;left:50%;transform:translateX(-50%) translateY(-60px);z-index:2600;background:var(--surf);border:1px solid var(--v1);border-radius:100px;padding:.7rem 1.4rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--v1);letter-spacing:.2em;box-shadow:0 0 40px rgba(192,132,252,.45),0 8px 30px rgba(0,0,0,.5);display:flex;align-items:center;gap:.6rem;opacity:0;transition:transform .35s cubic-bezier(.2,.9,.3,1.3),opacity .35s}
+.att-toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+.att-toast .att-pulse{width:8px;height:8px;border-radius:50%;background:var(--v1);box-shadow:0 0 10px var(--v1);animation:pulse 1.2s ease-in-out infinite}
+.att-toast .att-hint{color:var(--muted);letter-spacing:.15em;font-weight:400}
+body.att-mode #nn-canvas{filter:saturate(1.4) brightness(1.2)}
+body.att-mode{animation:attShake 12s linear 1}
+@keyframes attShake{0%,100%{filter:none}50%{filter:hue-rotate(30deg)}}
+#kon-progress{position:fixed;bottom:1.2rem;left:1.2rem;z-index:2700;background:var(--surf);border:1px solid var(--bord);border-radius:100px;padding:.4rem .8rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--v1);letter-spacing:.15em;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none;display:flex;gap:.35rem;align-items:center}
+#kon-progress.on{opacity:1;transform:translateY(0)}
+#kon-progress .key{display:inline-block;min-width:14px;text-align:center}
+#kon-progress .pending{color:var(--dim);opacity:.4}
 /* COMMAND PALETTE */
 #cmdk-root{position:fixed;inset:0;z-index:3000;display:none;align-items:flex-start;justify-content:center;padding:12vh 1rem 1rem;background:rgba(var(--bg-rgb),.65);backdrop-filter:blur(8px)}
 #cmdk-root.on{display:flex}
@@ -400,6 +415,9 @@ section>*{position:relative;z-index:1}
 footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
 .ft-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--text)}
 .ft-logo span{color:var(--v1)}
+.ft-right{display:flex;align-items:center;gap:1rem}
+.ft-konami{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--dim);letter-spacing:.15em;opacity:.6;transition:color .25s,opacity .25s;cursor:none}
+.ft-konami:hover{color:var(--v1);opacity:1}
 </style>
 </head>
 <body>
@@ -693,6 +711,17 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   <div class="contact-footer">HARSHITH GUJJETI // AI/ML ENGINEER // TAMPA, FL // 2026</div>
 </section>
 
+<!-- KONAMI · ATTENTION MODE -->
+<div id="att-overlay" aria-hidden="true">
+  <canvas id="att-canvas"></canvas>
+</div>
+<div id="att-toast" class="att-toast" role="status" aria-live="polite">
+  <span class="att-pulse"></span>
+  <span>ATTENTION MODE ACTIVATED</span>
+  <span class="att-hint">· press any key to exit</span>
+</div>
+<div id="kon-progress" aria-hidden="true"></div>
+
 <!-- COMMAND PALETTE -->
 <div id="cmdk-root" role="dialog" aria-label="Command palette">
   <div class="cmdk-box" role="document">
@@ -713,7 +742,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 <footer>
   <div class="ft-logo">H<span>G</span></div>
   <div>Harshith Gujjeti · AI/ML Engineer · Tampa, FL</div>
-  <div>© 2026</div>
+  <div class="ft-right">
+    <span class="ft-konami" title="Try it" aria-hidden="true">↑↑↓↓←→←→BA</span>
+    <span>© 2026</span>
+  </div>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -884,6 +916,130 @@ async function initResumeCounter(){
       localStorage.setItem('hg-theme',next);
     });
   });
+})();
+
+// ── KONAMI · ATTENTION MODE ──────────────────────────────────────────────────
+(function initKonami(){
+  const SEQ=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let buf=[];
+  const overlay=document.getElementById('att-overlay');
+  const toast=document.getElementById('att-toast');
+  const canvas=document.getElementById('att-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let active=false,raf=0,tokens=[],mx=window.innerWidth/2,my=window.innerHeight/2,exitAt=0;
+
+  function resize(){canvas.width=window.innerWidth*devicePixelRatio;canvas.height=window.innerHeight*devicePixelRatio;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.setTransform(1,0,0,1,0,0);ctx.scale(devicePixelRatio,devicePixelRatio);}
+  function buildTokens(){
+    tokens=[];
+    const W=window.innerWidth,H=window.innerHeight;
+    const step=Math.max(80,Math.min(W,H)/10);
+    const cols=Math.ceil(W/step),rows=Math.ceil(H/step);
+    const ox=(W-(cols-1)*step)/2,oy=(H-(rows-1)*step)/2;
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+      tokens.push({x:ox+c*step+(Math.random()-.5)*12,y:oy+r*step+(Math.random()-.5)*12,ph:Math.random()*Math.PI*2});
+    }
+  }
+  function softmax(scores){
+    const max=Math.max(...scores);
+    const exp=scores.map(s=>Math.exp(s-max));
+    const sum=exp.reduce((a,b)=>a+b,0);
+    return exp.map(e=>e/sum);
+  }
+  function frame(t){
+    const W=window.innerWidth,H=window.innerHeight;
+    ctx.clearRect(0,0,W,H);
+    const scores=tokens.map(tk=>{const dx=tk.x-mx,dy=tk.y-my;return -(dx*dx+dy*dy)/(Math.min(W,H)*18);});
+    const w=softmax(scores);
+    const wmax=Math.max(...w);
+    ctx.fillStyle='rgba(8,0,16,0.18)';ctx.fillRect(0,0,W,H);
+    tokens.forEach((tk,i)=>{
+      const wi=w[i]/wmax;
+      const pulse=0.85+Math.sin(t/300+tk.ph)*0.15;
+      const size=6+wi*18;
+      const alpha=0.12+wi*0.75;
+      ctx.save();
+      ctx.shadowColor='rgba(192,132,252,'+(wi*0.9)+')';
+      ctx.shadowBlur=wi*28;
+      ctx.fillStyle='rgba(192,132,252,'+alpha*pulse+')';
+      ctx.beginPath();ctx.roundRect(tk.x-size/2,tk.y-size/2,size,size,3);ctx.fill();
+      ctx.restore();
+    });
+    const ranked=tokens.map((tk,i)=>({tk,wi:w[i]})).sort((a,b)=>b.wi-a.wi).slice(0,5);
+    ranked.forEach(({tk,wi})=>{
+      const rel=wi/wmax;
+      ctx.strokeStyle='rgba(232,121,249,'+(rel*0.7)+')';
+      ctx.lineWidth=1+rel*2;
+      ctx.beginPath();
+      ctx.moveTo(mx,my);
+      const midx=(mx+tk.x)/2,midy=(my+tk.y)/2-20*rel;
+      ctx.quadraticCurveTo(midx,midy,tk.x,tk.y);
+      ctx.stroke();
+    });
+    ctx.save();
+    ctx.shadowColor='#E879F9';ctx.shadowBlur=24;
+    ctx.fillStyle='rgba(232,121,249,0.95)';
+    ctx.beginPath();ctx.arc(mx,my,9,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+    ctx.fillStyle='rgba(240,234,255,.9)';
+    ctx.font='600 11px "JetBrains Mono", monospace';
+    ctx.fillText('Q',mx+14,my-10);
+
+    if(!active&&Date.now()>exitAt&&exitAt){cancelAnimationFrame(raf);return;}
+    raf=requestAnimationFrame(frame);
+  }
+  function onMove(e){mx=e.clientX;my=e.clientY;}
+  function activate(){
+    if(active)return;
+    active=true;exitAt=0;
+    document.body.classList.add('att-mode');
+    resize();buildTokens();
+    overlay.classList.add('on');
+    toast.classList.add('on');
+    document.addEventListener('mousemove',onMove);
+    raf=requestAnimationFrame(frame);
+    setTimeout(()=>{if(active)deactivate('timeout');},12000);
+  }
+  function deactivate(){
+    if(!active)return;
+    active=false;exitAt=Date.now()+500;
+    document.body.classList.remove('att-mode');
+    overlay.classList.remove('on');
+    toast.classList.remove('on');
+    document.removeEventListener('mousemove',onMove);
+    setTimeout(()=>{cancelAnimationFrame(raf);ctx.clearRect(0,0,canvas.width,canvas.height);},500);
+  }
+  const prog=document.getElementById('kon-progress');
+  const GLYPH={ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→',b:'B',a:'A'};
+  let progTimeout=0;
+  function renderProgress(matched){
+    if(!prog)return;
+    if(!matched){prog.classList.remove('on');return;}
+    prog.innerHTML=SEQ.map((k,i)=>{
+      const g=GLYPH[k]||k;
+      const cls=i<matched?'key':'key pending';
+      return `<span class="${cls}">${g}</span>`;
+    }).join('');
+    prog.classList.add('on');
+    clearTimeout(progTimeout);
+    progTimeout=setTimeout(()=>prog.classList.remove('on'),2500);
+  }
+  document.addEventListener('keydown',e=>{
+    if(active){if(!['Shift','Meta','Control','Alt'].includes(e.key))deactivate();return;}
+    const k=e.key.length===1?e.key.toLowerCase():e.key;
+    const tentative=[...buf,k];
+    let matchedLen=0;
+    for(let start=0;start<tentative.length;start++){
+      const slice=tentative.slice(start);
+      if(slice.every((v,i)=>v===SEQ[i])){matchedLen=slice.length;break;}
+    }
+    if(matchedLen>0){buf=tentative.slice(tentative.length-matchedLen);}
+    else{buf=[];}
+    if(matchedLen>0)renderProgress(matchedLen);
+    if(matchedLen===SEQ.length){buf=[];renderProgress(0);activate();}
+  });
+  window.addEventListener('resize',()=>{if(active){resize();buildTokens();}});
+  try{console.log('%c◆ Harshith','color:#C084FC;font-weight:700;font-size:14px','· try the Konami code: ↑↑↓↓←→←→ B A');}catch{}
 })();
 
 // ── COMMAND PALETTE ──────────────────────────────────────────────────────────
