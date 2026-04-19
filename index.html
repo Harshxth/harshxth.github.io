@@ -148,7 +148,13 @@ section>*{position:relative;z-index:1}
 .exp-bullets li .metric{color:var(--v1);font-weight:500;font-family:'JetBrains Mono',monospace;font-size:.82rem}
 .exp-bullets li strong{color:var(--hl);font-weight:400}
 /* PROJECTS */
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:1.4rem;margin-top:4rem}
+.proj-filters{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:2.5rem auto 0;max-width:620px}
+.proj-filter{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.38rem .9rem;border-radius:100px;border:1px solid var(--bord);background:var(--surf);color:var(--muted);cursor:none;transition:all .2s}
+.proj-filter:hover{border-color:var(--v1);color:var(--v1)}
+.proj-filter.active{background:var(--v1);color:var(--on-accent);border-color:var(--v1);box-shadow:0 0 18px rgba(192,132,252,.35)}
+.proj-filter .count{margin-left:.4rem;opacity:.7;font-size:.55rem}
+.proj-card.hide{opacity:0;transform:scale(.96);pointer-events:none;position:absolute;visibility:hidden}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:1.4rem;margin-top:2rem}
 @media(max-width:960px){.projects-grid{grid-template-columns:1fr}}
 .proj-card{padding:2rem;border:1px solid var(--bord);border-radius:14px;background:var(--surf);transition:all .35s ease;cursor:none;display:flex;flex-direction:column;position:relative;overflow:hidden}
 .proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,currentColor,transparent);opacity:0;transition:opacity .3s}
@@ -393,6 +399,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   <div class="sec-label">03 // PROJECTS</div>
   <h2 class="sec-h2">Systems I've <span style="color:var(--v2)">built</span></h2>
   <p style="color:var(--muted);text-align:center;max-width:480px;margin:0 auto;line-height:1.8">Production-ready systems with real data, real metrics, real impact.</p>
+  <div class="proj-filters" id="proj-filters"></div>
   <div class="projects-grid" id="projects-grid"></div>
 </section>
 
@@ -608,19 +615,20 @@ const EXP=[
 ];
 
 const PROJ=[
-  {name:'CiteIQ',sub:'Agentic RAG System',color:'#C084FC',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',
+  {name:'CiteIQ',sub:'Agentic RAG System',color:'#C084FC',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',cats:['rag','agents'],
    desc:'Production multi-agent citation intelligence system. <strong>LangGraph</strong> orchestrates Router, Retriever, Evaluator, and Generator agents over ChromaDB — deployed via FastAPI + Docker with <span class="m">LangSmith</span> tracing and RAGAS evaluation.',
    tags:['LangGraph','FastAPI','ChromaDB','Groq','RAGAS','Docker','LangSmith'],flow:['Query','Router','Retriever','Evaluator','Response']},
-  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#818CF8',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',diag:'hc_agent',
+  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#818CF8',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',diag:'hc_agent',cats:['agents','healthcare'],
    desc:'Autonomous 4-agent system (Researcher / Analyzer / Validator / Reporter) built with <strong>CrewAI</strong>. Conducts end-to-end PubMed research and generates executive reports. Processed <span class="m">50+ healthcare queries</span> at <span class="m">95% accuracy</span> vs manual review.',
    tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
-  {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#A78BFA',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',
+  {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#A78BFA',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',cats:['healthcare','ml'],
    desc:'<strong>XGBoost</strong> on <span class="m">100,000 patient records</span>. Evaluated <span class="m">230+ hyperparameter configs</span> — <span class="m">5–6× improvement</span> over published benchmarks. Potential <span class="m">$1.7–2.6M</span> annual savings per 400-bed hospital.',
    tags:['XGBoost','SHAP','scikit-learn','Healthcare ML','Python'],flow:['Patient Data','Feature Eng','XGBoost','SHAP','Insight']},
-  {name:'Local PDF RAG Chatbot',sub:'Fully-Local RAG',color:'#E879F9',metric:'<2s · 90%+ faithful',wip:false,link:'https://github.com/Harshxth/pdf-rag-chatbot',diag:'pdf_rag',
+  {name:'Local PDF RAG Chatbot',sub:'Fully-Local RAG',color:'#E879F9',metric:'<2s · 90%+ faithful',wip:false,link:'https://github.com/Harshxth/pdf-rag-chatbot',diag:'pdf_rag',cats:['rag'],
    desc:'Fully-local RAG with <strong>LangChain</strong>, Ollama Llama 3.1, ChromaDB. Natural-language Q&amp;A over any PDF — <span class="m">&lt;2s query time</span>, zero hallucinations, <span class="m">90%+ faithfulness</span> score.',
    tags:['LangChain','Ollama','ChromaDB','Streamlit','Python'],flow:['PDF','Chunk','Embed','Retrieve','Answer']},
 ];
+const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Classical ML'};
 
 const LOGOS={
   jntu:'data:image/jpeg;base64,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',
@@ -927,7 +935,31 @@ function initProj(){
       </div>`;
     card.addEventListener('mouseenter',()=>{card.style.borderColor=p.color+'44';card.style.background=`linear-gradient(145deg,var(--surf),${p.color}07)`;const d=card.querySelector('.proj-diag');if(d)d.style.transform='scale(1.04)';});
     card.addEventListener('mouseleave',()=>{card.style.borderColor='';card.style.background='';const d=card.querySelector('.proj-diag');if(d)d.style.transform='scale(1)';});
+    card.dataset.cats=(p.cats||[]).join(' ');
     grid.appendChild(card);
+  });
+  initProjFilters();
+}
+
+function initProjFilters(){
+  const wrap=document.getElementById('proj-filters');if(!wrap)return;
+  const grid=document.getElementById('projects-grid');
+  const all=new Set();
+  PROJ.forEach(p=>(p.cats||[]).forEach(c=>all.add(c)));
+  const order=['all','rag','agents','healthcare','ml'];
+  const ordered=order.filter(c=>c==='all'||all.has(c));
+  const counts={all:PROJ.length};
+  PROJ.forEach(p=>(p.cats||[]).forEach(c=>counts[c]=(counts[c]||0)+1));
+  wrap.innerHTML=ordered.map((c,i)=>`<button class="proj-filter${i===0?' active':''}" data-cat="${c}">${CAT_LABELS[c]||c}<span class="count">${counts[c]||0}</span></button>`).join('');
+  wrap.addEventListener('click',e=>{
+    const btn=e.target.closest('.proj-filter');if(!btn)return;
+    wrap.querySelectorAll('.proj-filter').forEach(b=>b.classList.toggle('active',b===btn));
+    const cat=btn.dataset.cat;
+    grid.querySelectorAll('.proj-card').forEach(card=>{
+      const cats=(card.dataset.cats||'').split(' ').filter(Boolean);
+      const show=cat==='all'||cats.includes(cat);
+      card.classList.toggle('hide',!show);
+    });
   });
 }
 
