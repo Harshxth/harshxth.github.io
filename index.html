@@ -12,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:clip}
 :root{
   --bg:#080010;--bg-rgb:8,0,16;--surf:#0D0018;--bord:#1A0835;
   --v1:#C084FC;--v2:#818CF8;--v3:#E879F9;--v4:#A78BFA;
@@ -31,7 +31,7 @@ html{scroll-behavior:smooth}
   --hm0:#EDE6FA;--hm1:#C4B0F0;--hm2:#9F7EE6;--hm3:#6D28D9;--hm4:#4C1D95;
   --cursor-blend:multiply;
 }
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;transition:background-color .4s ease,color .4s ease}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;cursor:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;transition:background-color .4s ease,color .4s ease}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
 .mono{font-family:'JetBrains Mono',monospace}.display{font-family:'Syne',sans-serif}
 #cur-o{position:fixed;pointer-events:none;z-index:9999;width:30px;height:30px;border-radius:50%;border:1px solid rgba(192,132,252,.45);transition:transform .06s linear;mix-blend-mode:var(--cursor-blend)}
