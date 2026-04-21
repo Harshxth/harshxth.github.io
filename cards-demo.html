@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Card style demo · Harshith Gujjeti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0B0B0D;--surf:#141418;--surf-2:#1C1C22;--bord:#2A2A30;--bord-h:#3F3F46;
+  --text:#F9FAFB;--text-2:#B4B4BC;--text-3:#6B7280;--dim:#3F3F46;
+  --v1:#E5E7EB;--v2:#9CA3AF;--v3:#F3F4F6;--v4:#6B7280;--hl:#F3F4F6;
+  --card:#161619;--card-h:#1A1A1F;
+  --pill-rag:#A78BFA;    --pill-rag-bg:rgba(167,139,250,.08);
+  --pill-cv:#38BDF8;     --pill-cv-bg:rgba(56,189,248,.08);
+  --pill-agents:#F472B6; --pill-agents-bg:rgba(244,114,182,.08);
+  --pill-hc:#FB923C;     --pill-hc-bg:rgba(251,146,60,.08);
+  --pill-ml:#FACC15;     --pill-ml-bg:rgba(250,204,21,.08);
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+  --shadow-h:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(229,231,235,.04);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --font:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;--display:'Syne',sans-serif;
+}
+html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+body{background-image:linear-gradient(rgba(229,231,235,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(229,231,235,.025) 1px,transparent 1px);background-size:48px 48px}
+.wrap{max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+header{margin-bottom:3rem}
+.title{font-family:var(--display);font-weight:800;font-size:1.4rem;letter-spacing:-.01em}
+.title span{color:var(--v2)}
+.sub{font-family:var(--mono);font-size:.6rem;color:var(--text-3);letter-spacing:.25em;margin-top:.3rem}
+.section-tag{font-family:var(--mono);font-size:.6rem;color:var(--text-3);letter-spacing:.3em;text-transform:uppercase;margin-bottom:.6rem}
+.section-h{font-family:var(--display);font-weight:700;font-size:2rem;letter-spacing:-.02em;margin-bottom:.6rem}
+.section-h .accent{color:var(--v2)}
+.section-desc{color:var(--text-2);font-size:.95rem;line-height:1.65;max-width:540px;margin-bottom:2.5rem}
+section{margin-bottom:5rem}
+
+/* ─────────────────── HERO MINI (stats strip demo) ─────────────────── */
+.hero-demo{background:var(--card);border:1px solid var(--bord);border-radius:22px;padding:3rem 3rem 3.5rem;position:relative;overflow:hidden}
+.hero-demo::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 300px at 30% 30%,rgba(229,231,235,.04) 0%,transparent 70%);pointer-events:none}
+.hero-demo > *{position:relative;z-index:1}
+.hero-pill{display:inline-flex;align-items:center;gap:.55rem;padding:.45rem 1.15rem;border:1px solid rgba(229,231,235,.25);border-radius:100px;font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;color:var(--v1);background:rgba(229,231,235,.03);margin-bottom:1.5rem}
+.hero-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--v1);box-shadow:0 0 8px var(--v1)}
+.hero-name{font-family:var(--display);font-weight:800;font-size:clamp(2.8rem,6vw,4.6rem);line-height:1.02;letter-spacing:-.03em;margin-bottom:.4rem}
+.hero-name .last{background:linear-gradient(130deg,var(--v1) 0%,var(--v2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-family:var(--mono);font-size:.78rem;color:var(--text-3);margin-bottom:1.4rem}
+.hero-desc{color:var(--text-2);font-size:1rem;line-height:1.7;max-width:580px;margin-bottom:1.8rem}
+.hero-desc strong{color:var(--hl);font-weight:500}
+/* LOGO GARDEN */
+.logo-garden{display:flex;align-items:center;gap:1rem;margin-top:1.4rem;flex-wrap:wrap}
+.logo-garden .label{font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:var(--text-3);text-transform:uppercase;padding-right:.5rem;border-right:1px solid var(--bord);margin-right:.2rem}
+.logo-chip{display:inline-flex;align-items:center;gap:.55rem;padding:.45rem .8rem .45rem .55rem;background:var(--surf);border:1px solid var(--bord);border-radius:100px;text-decoration:none;transition:transform .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease)}
+.logo-chip:hover{transform:translateY(-2px);border-color:var(--bord-h);background:var(--surf-2)}
+.logo-chip .img{width:28px;height:28px;border-radius:50%;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.logo-chip .img img{width:100%;height:100%;object-fit:contain;display:block}
+.logo-chip .name{font-family:var(--mono);font-size:.66rem;color:var(--v1);letter-spacing:.08em;font-weight:500}
+.logo-chip .name em{color:var(--text-3);font-style:normal;font-weight:400;letter-spacing:.12em;font-size:.58rem;margin-right:.35rem;text-transform:uppercase}
+
+/* ─────────────────── EXPERIENCE (new style: giant faded bg + em-dash bullets) ─────────────────── */
+.exp-list{display:flex;flex-direction:column;gap:1rem}
+.exp-card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--bord);border-radius:22px;padding:2.2rem 2.6rem;transition:border-color .4s var(--ease),background .4s var(--ease),box-shadow .4s var(--ease),transform .25s var(--ease);box-shadow:var(--shadow);transform-style:preserve-3d;will-change:transform}
+.exp-card:hover{border-color:var(--bord-h);background:var(--card-h);box-shadow:var(--shadow-h)}
+.exp-card:hover .exp-bg-name{opacity:.06}
+.exp-bg-name{position:absolute;bottom:-1rem;right:1.5rem;font-family:var(--display);font-weight:800;font-size:clamp(5rem,14vw,11rem);line-height:.82;letter-spacing:-.05em;color:var(--text);opacity:.028;pointer-events:none;user-select:none;transition:opacity .5s ease;white-space:nowrap}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.3rem;position:relative;z-index:1}
+.exp-left{display:flex;flex-direction:column;gap:.3rem}
+.exp-num{font-family:var(--mono);font-size:.58rem;color:var(--text-3);letter-spacing:.25em;margin-bottom:.45rem}
+.exp-headrow{display:flex;align-items:center;gap:.85rem}
+.exp-logo{width:40px;height:40px;border-radius:10px;background:#fff;padding:4px;flex-shrink:0;border:1px solid rgba(229,231,235,.2);display:flex;align-items:center;justify-content:center}
+.exp-logo img{width:100%;height:100%;object-fit:contain;display:block}
+.exp-titlewrap{display:flex;flex-direction:column;gap:.2rem}
+.exp-role{font-family:var(--display);font-size:1.18rem;font-weight:700;letter-spacing:-.015em;color:var(--text);line-height:1.3}
+.exp-company{font-family:var(--mono);font-size:.74rem;color:var(--v2);letter-spacing:.03em;margin-top:.15rem}
+.exp-company a{color:var(--v1);text-decoration:none;border-bottom:1px dashed var(--bord-h);padding-bottom:1px}
+.exp-right{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;flex-shrink:0}
+.exp-date{font-family:var(--mono);font-size:.68rem;color:var(--text-3);letter-spacing:.04em;white-space:nowrap}
+.exp-badge{font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;padding:.22rem .65rem;border-radius:100px;text-transform:uppercase;background:rgba(229,231,235,.06);color:var(--v1);border:1px solid rgba(229,231,235,.18);display:inline-flex;align-items:center;gap:.35rem}
+.exp-badge.current::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--v1);box-shadow:0 0 6px var(--v1);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:.55rem;padding-left:1.1rem;margin-bottom:1.2rem;position:relative;z-index:1}
+.exp-bullets li{font-size:.9rem;color:var(--text-2);line-height:1.72;position:relative}
+.exp-bullets li::before{content:'—';position:absolute;left:-1.1rem;color:var(--v4)}
+.exp-bullets strong{color:var(--hl);font-weight:500}
+.exp-bullets .m{color:var(--v1);font-family:var(--mono);font-weight:500;font-size:.85rem}
+.exp-tags{display:flex;flex-wrap:wrap;gap:.4rem;position:relative;z-index:1}
+.exp-tags span{font-family:var(--mono);font-size:.62rem;padding:.22rem .65rem;border-radius:5px;background:rgba(255,255,255,.03);color:var(--text-3);border:1px solid var(--bord);letter-spacing:.04em;transition:color .3s ease,border-color .3s ease}
+.exp-card:hover .exp-tags span{color:var(--text-2);border-color:var(--bord-h)}
+
+/* ─────────────────── PROJECTS (bento grid, AI-themed decorations) ─────────────────── */
+.proj-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.2rem;grid-auto-rows:auto}
+.proj-card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--bord);border-radius:22px;display:flex;flex-direction:column;transition:border-color .4s var(--ease),background .4s var(--ease),box-shadow .4s var(--ease),transform .25s var(--ease);box-shadow:var(--shadow);transform-style:preserve-3d;will-change:transform}
+/* shine overlay — follows the cursor */
+.proj-card .shine,.exp-card .shine{position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .35s var(--ease);background:radial-gradient(circle 220px at var(--mx,50%) var(--my,50%),rgba(229,231,235,.10) 0%,transparent 60%);z-index:3}
+.proj-card:hover .shine,.exp-card:hover .shine{opacity:1}
+.proj-grid,.exp-list{perspective:1400px}
+.proj-card:hover{border-color:var(--bord-h);background:var(--card-h);box-shadow:var(--shadow-h);transform:translateY(-2px)}
+.proj-card:hover .proj-viz{opacity:1}
+.proj-card:hover .proj-bg-metric{opacity:.18}
+/* Feature card: spans 8 of 12 cols, horizontal split */
+.proj-card.feature{grid-column:span 8;display:grid;grid-template-columns:1.1fr 1fr;gap:0;padding:0;min-height:320px}
+.proj-card.feature .proj-viz{border-radius:22px 0 0 22px;min-height:320px}
+.proj-card.feature .proj-body{padding:2.2rem 2.4rem}
+.proj-card.regular{grid-column:span 4;display:flex;flex-direction:column}
+.proj-card.wide{grid-column:span 6;display:flex;flex-direction:column}
+@media(max-width:900px){.proj-card.feature{grid-column:1/-1;grid-template-columns:1fr}.proj-card.regular,.proj-card.wide{grid-column:1/-1}.proj-card.feature .proj-viz{border-radius:22px 22px 0 0}}
+.proj-viz{position:relative;height:180px;overflow:hidden;border-radius:22px 22px 0 0;background:linear-gradient(135deg,rgba(229,231,235,.03) 0%,rgba(156,163,175,.02) 50%,var(--card) 100%);display:flex;align-items:center;justify-content:center;transition:opacity .4s ease;opacity:.92}
+.proj-bg-metric{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--display);font-weight:800;font-size:4.6rem;letter-spacing:-.04em;color:var(--text);opacity:.13;pointer-events:none;user-select:none;transition:opacity .4s ease;white-space:nowrap}
+.proj-card.feature .proj-bg-metric{font-size:6rem}
+.proj-viz-label{position:absolute;top:1rem;left:1rem;font-family:var(--mono);font-size:.58rem;color:var(--text-3);letter-spacing:.18em;z-index:2}
+/* AI-THEMED DECORATION LAYERS (SVG patterns on top of the gradient) */
+.proj-deco{position:absolute;inset:0;opacity:.35;pointer-events:none}
+/* RAG: attention matrix grid */
+.proj-deco.rag{background-image:linear-gradient(rgba(167,139,250,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,.25) 1px,transparent 1px);background-size:28px 28px;mask:radial-gradient(ellipse 70% 70% at 50% 50%,black 40%,transparent 90%);-webkit-mask:radial-gradient(ellipse 70% 70% at 50% 50%,black 40%,transparent 90%)}
+/* CV: convolution kernel grid */
+.proj-deco.cv{background-image:linear-gradient(rgba(56,189,248,.28) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.28) 1px,transparent 1px);background-size:20px 20px;mask:linear-gradient(180deg,black 0%,transparent 100%);-webkit-mask:linear-gradient(180deg,black 0%,transparent 100%)}
+/* AGENTS: radial node cluster */
+.proj-deco.agents{background-image:radial-gradient(circle at 20% 30%,rgba(244,114,182,.35) 2px,transparent 3px),radial-gradient(circle at 70% 50%,rgba(244,114,182,.35) 2px,transparent 3px),radial-gradient(circle at 40% 70%,rgba(244,114,182,.35) 2px,transparent 3px),radial-gradient(circle at 85% 20%,rgba(244,114,182,.35) 2px,transparent 3px),radial-gradient(circle at 55% 25%,rgba(244,114,182,.35) 2px,transparent 3px)}
+/* HEALTHCARE: plus-sign medical pattern */
+.proj-deco.hc{background-image:radial-gradient(circle at center,rgba(251,146,60,.25) 1px,transparent 2px);background-size:32px 32px}
+/* ML: scatter plot dots */
+.proj-deco.ml{background-image:radial-gradient(circle at 10% 80%,rgba(250,204,21,.3) 1.5px,transparent 2px),radial-gradient(circle at 30% 40%,rgba(250,204,21,.3) 1.5px,transparent 2px),radial-gradient(circle at 55% 65%,rgba(250,204,21,.3) 1.5px,transparent 2px),radial-gradient(circle at 75% 30%,rgba(250,204,21,.3) 1.5px,transparent 2px),radial-gradient(circle at 88% 75%,rgba(250,204,21,.3) 1.5px,transparent 2px),radial-gradient(circle at 45% 15%,rgba(250,204,21,.3) 1.5px,transparent 2px)}
+/* Viz highlight overlay */
+.proj-viz-shine{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(229,231,235,.35),transparent);opacity:.6}
+.proj-body{padding:1.8rem 1.9rem 1.9rem;display:flex;flex-direction:column;flex:1}
+.proj-pill{font-family:var(--mono);font-size:.58rem;letter-spacing:.15em;padding:.25rem .7rem;border-radius:5px;display:inline-flex;align-items:center;gap:.4rem;width:fit-content;margin-bottom:.9rem;text-transform:uppercase}
+.proj-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.8}
+.proj-pill.rag{color:var(--pill-rag);background:var(--pill-rag-bg);border:1px solid rgba(167,139,250,.25)}
+.proj-pill.cv{color:var(--pill-cv);background:var(--pill-cv-bg);border:1px solid rgba(56,189,248,.25)}
+.proj-pill.agents{color:var(--pill-agents);background:var(--pill-agents-bg);border:1px solid rgba(244,114,182,.25)}
+.proj-pill.hc{color:var(--pill-hc);background:var(--pill-hc-bg);border:1px solid rgba(251,146,60,.25)}
+.proj-pill.ml{color:var(--pill-ml);background:var(--pill-ml-bg);border:1px solid rgba(250,204,21,.25)}
+.proj-title{font-family:var(--display);font-size:1.15rem;font-weight:700;letter-spacing:-.01em;line-height:1.3;margin-bottom:.6rem}
+.proj-card.feature .proj-title{font-size:1.55rem}
+.proj-desc{font-size:.87rem;color:var(--text-2);line-height:1.7;margin-bottom:1rem;flex:1}
+.proj-desc strong{color:var(--hl);font-weight:500}
+.proj-desc .m{color:var(--v1);font-family:var(--mono);font-weight:500;font-size:.82rem}
+.proj-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem}
+.proj-tags span{font-family:var(--mono);font-size:.58rem;padding:.2rem .55rem;border-radius:4px;background:rgba(255,255,255,.03);color:var(--text-3);border:1px solid var(--bord);letter-spacing:.03em}
+.proj-meta{display:flex;justify-content:space-between;align-items:center;padding-top:.8rem;border-top:1px solid var(--bord);font-family:var(--mono);font-size:.62rem;color:var(--text-3);margin-top:auto}
+.proj-meta a{color:var(--v1);text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}
+.proj-meta a:hover{color:var(--v3)}
+
+/* back-to-main */
+.back{position:fixed;top:1.2rem;right:1.2rem;font-family:var(--mono);font-size:.6rem;color:var(--v2);text-decoration:none;border:1px solid var(--bord);padding:.45rem .9rem;border-radius:6px;letter-spacing:.15em;background:var(--surf);z-index:50}
+.back:hover{border-color:var(--v1);color:var(--v1)}
+</style>
+</head>
+<body>
+
+<a href="/" class="back">← back to main</a>
+
+<div class="wrap">
+  <header>
+    <div class="title"><span>{</span>HG<span>}</span> · card style exploration</div>
+    <div class="sub">PREVIEW ONLY · INSPIRED BY REF + AI-THEMED</div>
+  </header>
+
+  <!-- ═══════════════ HERO MINI + LOGO GARDEN DEMO ═══════════════ -->
+  <section>
+    <div class="section-tag">01 // HERO WITH LOGO GARDEN</div>
+    <h2 class="section-h">The <span class="accent">logo garden</span> demo</h2>
+    <p class="section-desc">Tiny horizontal row of the places you've worked with, surfaced in the hero so recruiters see your credentials without scrolling to Experience. Circular chip + name + short label for each. Hover lifts the chip.</p>
+
+    <div class="hero-demo">
+      <div class="hero-pill">AI/ML ENGINEER · MS @ USF · TAMPA, FL</div>
+      <h1 class="hero-name">Harshith<br><span class="last">Gujjeti.</span></h1>
+      <p class="hero-sub">▸ AI / ML Engineer<span style="color:var(--v1);animation:blink 1s step-end infinite">|</span></p>
+      <p class="hero-desc">I <strong>build</strong> production AI systems, <strong>understand</strong> the math that makes them work, and <strong>ship</strong> the ones that move revenue.</p>
+
+      <div class="logo-garden">
+        <span class="label">AFFILIATIONS</span>
+        <a class="logo-chip" href="#" title="University of South Florida — MS in AI &amp; Business Analytics">
+          <span class="img"><img src="assets/usf.jpg" alt="USF"/></span>
+          <span class="name"><em>MS</em>USF</span>
+        </a>
+        <a class="logo-chip" href="#" title="Indian Space Research Organisation — AI Research Intern">
+          <span class="img"><img src="assets/isro.jpg" alt="ISRO"/></span>
+          <span class="name"><em>R&amp;D</em>ISRO</span>
+        </a>
+        <a class="logo-chip" href="#" title="Center for Urban Transportation Research — CV Analyst">
+          <span class="img"><img src="assets/cutr.jpg" alt="CUTR"/></span>
+          <span class="name"><em>CV</em>CUTR</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ EXPERIENCE CARDS (new style) ═══════════════ -->
+  <section>
+    <div class="section-tag">02 // EXPERIENCE CARDS</div>
+    <h2 class="section-h">Where I've <span class="accent">shipped.</span></h2>
+    <p class="section-desc">New exp cards: generous padding, giant faded company name in the background (brightens on hover), em-dash bullets instead of dots, metric highlights in mono, subtle numbered hierarchy.</p>
+
+    <div class="exp-list">
+
+      <div class="exp-card"><span class="shine"></span>
+        <div class="exp-bg-name">CUTR</div>
+        <div class="exp-header">
+          <div class="exp-left">
+            <div class="exp-num">01</div>
+            <div class="exp-headrow">
+              <div class="exp-logo"><img src="assets/cutr.jpg" alt="CUTR"/></div>
+              <div class="exp-titlewrap">
+                <div class="exp-role">Computer Vision Video Analyst</div>
+                <div class="exp-company">CUTR · <a href="#">University of South Florida</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="exp-right">
+            <span class="exp-date">MAR 2026 – PRESENT</span>
+            <span class="exp-badge current">CURRENT</span>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Deployed production <strong>YOLOv8 + ByteTrack</strong> pipeline processing <span class="m">100+ hours</span> of traffic video — tracked <span class="m">1,200+ unique motorcycles</span> across Tampa Bay for FDOT injury prevention research.</li>
+          <li>Automated manual counting workflows; delivered <span class="m">50+ annotated videos</span>, CSV datasets, and batch scripts supporting SS4A grant deliverables.</li>
+        </ul>
+        <div class="exp-tags"><span>YOLOv8</span><span>ByteTrack</span><span>Computer Vision</span><span>Python</span><span>FDOT</span></div>
+      </div>
+
+      <div class="exp-card"><span class="shine"></span>
+        <div class="exp-bg-name">ISRO</div>
+        <div class="exp-header">
+          <div class="exp-left">
+            <div class="exp-num">04</div>
+            <div class="exp-headrow">
+              <div class="exp-logo"><img src="assets/isro.jpg" alt="ISRO"/></div>
+              <div class="exp-titlewrap">
+                <div class="exp-role">AI Research Intern</div>
+                <div class="exp-company">Indian Space Research Organisation · <a href="#">ISRO</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="exp-right">
+            <span class="exp-date">JAN 2025 – JUL 2025</span>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Designed a satellite image super-resolution pipeline using <strong>CNN + SRGAN</strong> in PyTorch — achieved <span class="m">4× upscaling</span> from 10m to 2.5m ground sampling distance.</li>
+          <li>Preserved radiometric consistency enabling finer downstream analysis for <strong>national space research programs</strong>.</li>
+        </ul>
+        <div class="exp-tags"><span>PyTorch</span><span>SRGAN</span><span>CNN</span><span>TensorFlow</span><span>Satellite Imaging</span></div>
+      </div>
+
+      <div class="exp-card"><span class="shine"></span>
+        <div class="exp-bg-name">MUMA</div>
+        <div class="exp-header">
+          <div class="exp-left">
+            <div class="exp-num">02</div>
+            <div class="exp-headrow">
+              <div class="exp-logo"><img src="assets/usf.jpg" alt="USF Muma"/></div>
+              <div class="exp-titlewrap">
+                <div class="exp-role">Research Assistant — Entity Resolution</div>
+                <div class="exp-company">USF · <a href="#">Muma College of Business</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="exp-right">
+            <span class="exp-date">JAN 2026 – PRESENT</span>
+            <span class="exp-badge current">CURRENT</span>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Engineering a <strong>fuzzy logic entity resolution pipeline</strong> to deduplicate and canonically merge <span class="m">150,000+ company names</span> across messy real-world datasets — handling abbreviations, misspellings, and structural variance at scale.</li>
+          <li>Driving <strong>exploratory data analysis</strong> across the unified corpus to surface business trends and research-grade insights.</li>
+        </ul>
+        <div class="exp-tags"><span>Fuzzy Logic</span><span>Entity Resolution</span><span>Python</span><span>pandas</span><span>SQL</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════ PROJECTS (bento + AI themed) ═══════════════ -->
+  <section>
+    <div class="section-tag">03 // PROJECT CARDS</div>
+    <h2 class="section-h">Systems I've <span class="accent">built.</span></h2>
+    <p class="section-desc">Bento grid: feature card spans 8/12 columns with horizontal split, others are 4/12 or 6/12. Each card's "viz" area has a category-specific AI decoration (attention matrix for RAG, convnet grid for CV, node constellation for agents, token stream for NLP, scatter for ML, medical dots for healthcare). Giant faded metric sits behind.</p>
+
+    <div class="proj-grid">
+
+      <!-- Feature card: CiteIQ -->
+      <article class="proj-card feature"><span class="shine"></span>
+        <div class="proj-viz">
+          <div class="proj-deco rag"></div>
+          <div class="proj-viz-shine"></div>
+          <span class="proj-viz-label">RAG · AGENTIC</span>
+          <div class="proj-bg-metric">90%+</div>
+        </div>
+        <div class="proj-body">
+          <span class="proj-pill rag">RAG · Agents</span>
+          <h3 class="proj-title">CiteIQ — Agentic Citation Intelligence</h3>
+          <p class="proj-desc">Production multi-agent citation intelligence system. <strong>LangGraph</strong> orchestrates Router, Retriever, Evaluator, and Generator agents over ChromaDB — deployed via FastAPI + Docker with <span class="m">LangSmith</span> tracing and <span class="m">RAGAS</span> evaluation. Hits <span class="m">90%+ faithfulness</span> on the held-out eval set.</p>
+          <div class="proj-tags"><span>LangGraph</span><span>ChromaDB</span><span>RAGAS</span><span>FastAPI</span><span>Docker</span><span>Groq</span></div>
+          <div class="proj-meta">
+            <span>4 AGENTS · 7 TOOLS</span>
+            <a href="#">GitHub ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Regular: Healthcare Research Agent -->
+      <article class="proj-card regular"><span class="shine"></span>
+        <div class="proj-viz">
+          <div class="proj-deco agents"></div>
+          <div class="proj-viz-shine"></div>
+          <span class="proj-viz-label">MULTI-AGENT</span>
+          <div class="proj-bg-metric">95%</div>
+        </div>
+        <div class="proj-body">
+          <span class="proj-pill agents">Agents</span>
+          <h3 class="proj-title">Healthcare Research Agent</h3>
+          <p class="proj-desc">Autonomous 4-agent system (Researcher / Analyzer / Validator / Reporter) built with <strong>CrewAI</strong>. PubMed research + executive reports at <span class="m">95% accuracy</span>.</p>
+          <div class="proj-tags"><span>CrewAI</span><span>PubMed</span><span>LangChain</span></div>
+          <div class="proj-meta"><span>PUBMED API</span><a href="#">GitHub ↗</a></div>
+        </div>
+      </article>
+
+      <!-- Regular: Traffic CV -->
+      <article class="proj-card regular"><span class="shine"></span>
+        <div class="proj-viz">
+          <div class="proj-deco cv"></div>
+          <div class="proj-viz-shine"></div>
+          <span class="proj-viz-label">COMPUTER VISION</span>
+          <div class="proj-bg-metric">1.2K</div>
+        </div>
+        <div class="proj-body">
+          <span class="proj-pill cv">CV · Tracking</span>
+          <h3 class="proj-title">FDOT Traffic Video Analyst</h3>
+          <p class="proj-desc"><strong>YOLOv8 + ByteTrack</strong> pipeline on <span class="m">100+ hours</span> of traffic footage, tracking <span class="m">1,200+ motorcycles</span> for SS4A injury prevention research.</p>
+          <div class="proj-tags"><span>YOLOv8</span><span>ByteTrack</span><span>OpenCV</span></div>
+          <div class="proj-meta"><span>FDOT GRANT</span><a href="#">Report ↗</a></div>
+        </div>
+      </article>
+
+      <!-- Wide: Hospital LOS -->
+      <article class="proj-card wide"><span class="shine"></span>
+        <div class="proj-viz">
+          <div class="proj-deco hc"></div>
+          <div class="proj-viz-shine"></div>
+          <span class="proj-viz-label">HEALTHCARE ML</span>
+          <div class="proj-bg-metric">$2.6M</div>
+        </div>
+        <div class="proj-body">
+          <span class="proj-pill hc">Healthcare</span>
+          <h3 class="proj-title">Hospital Length-of-Stay Prediction</h3>
+          <p class="proj-desc"><strong>XGBoost</strong> on <span class="m">100,000 patient records</span>. Evaluated <span class="m">230+ hyperparameter configs</span> — <span class="m">5–6× improvement</span> over published benchmarks. Potential <span class="m">$1.7–2.6M</span> annual savings per 400-bed hospital.</p>
+          <div class="proj-tags"><span>XGBoost</span><span>SHAP</span><span>scikit-learn</span><span>Python</span></div>
+          <div class="proj-meta"><span>100K PATIENTS</span><a href="#">GitHub ↗</a></div>
+        </div>
+      </article>
+
+      <!-- Wide: ISRO SRGAN -->
+      <article class="proj-card wide"><span class="shine"></span>
+        <div class="proj-viz">
+          <div class="proj-deco cv"></div>
+          <div class="proj-viz-shine"></div>
+          <span class="proj-viz-label">SATELLITE · DL</span>
+          <div class="proj-bg-metric">4×</div>
+        </div>
+        <div class="proj-body">
+          <span class="proj-pill cv">CV · Research</span>
+          <h3 class="proj-title">ISRO Satellite Super-Resolution</h3>
+          <p class="proj-desc">Satellite image super-resolution with <strong>CNN + SRGAN</strong> in PyTorch — <span class="m">4× upscaling</span> from 10m to 2.5m GSD. Preserved radiometric consistency for national space research programs.</p>
+          <div class="proj-tags"><span>PyTorch</span><span>SRGAN</span><span>CNN</span><span>TensorFlow</span></div>
+          <div class="proj-meta"><span>ISRO INTERNSHIP</span><a href="#">Paper ↗</a></div>
+        </div>
+      </article>
+
+      <!-- Regular: PDF RAG (re-categorized to RAG with attention-matrix deco) -->
+      <article class="proj-card regular"><span class="shine"></span>
+        <div class="proj-viz">
+          <div class="proj-deco rag"></div>
+          <div class="proj-viz-shine"></div>
+          <span class="proj-viz-label">LOCAL · RAG</span>
+          <div class="proj-bg-metric">&lt;2s</div>
+        </div>
+        <div class="proj-body">
+          <span class="proj-pill rag">RAG · Local</span>
+          <h3 class="proj-title">Local PDF RAG Chatbot</h3>
+          <p class="proj-desc">Fully-local RAG with <strong>LangChain</strong> + Ollama Llama 3.1 + ChromaDB. <span class="m">&lt;2s query time</span>, <span class="m">90%+ faithfulness</span>, zero hallucinations on held-out.</p>
+          <div class="proj-tags"><span>LangChain</span><span>Ollama</span><span>ChromaDB</span></div>
+          <div class="proj-meta"><span>FULLY LOCAL</span><a href="#">GitHub ↗</a></div>
+        </div>
+      </article>
+
+      <!-- Regular: SIREN -->
+      <article class="proj-card regular"><span class="shine"></span>
+        <div class="proj-viz">
+          <div class="proj-deco ml"></div>
+          <div class="proj-viz-shine"></div>
+          <span class="proj-viz-label">RESEARCH · DL</span>
+          <div class="proj-bg-metric">SIREN</div>
+        </div>
+        <div class="proj-body">
+          <span class="proj-pill ml">Research · DL</span>
+          <h3 class="proj-title">Implicit Neural Representations</h3>
+          <p class="proj-desc">Exploration of <strong>SIREN MLPs</strong> — fitting images, audio signals, and solving Poisson's equation with sinusoidal activations. Periodic activation functions for representing fine detail.</p>
+          <div class="proj-tags"><span>PyTorch</span><span>SIREN</span><span>Fourier</span></div>
+          <div class="proj-meta"><span>UNDERGRAD RESEARCH</span><a href="#">GitHub ↗</a></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section style="padding:1.8rem 2rem;background:var(--surf);border:1px dashed var(--bord);border-radius:14px;color:var(--text-2);font-size:.9rem;line-height:1.7">
+    <strong style="color:var(--v1)">Demo notes.</strong> All three are in <em>this preview page only</em> — the main portfolio is unchanged. Pick one, pick all three, pick parts of one — tell me what you want merged into <code>index.html</code> and I'll port it over and schedule commits.
+    <ul style="padding-left:1.5rem;margin-top:.6rem;color:var(--text-3);font-size:.82rem">
+      <li>Logo garden: horizontal chip row under the subtitle — USF / ISRO / CUTR with circular logos + short role tag. Easy to add Venkusa or a new internship when you're ready.</li>
+      <li>Exp cards: giant faded company name in the background, 40px white-backed logo next to role, em-dash bullets, numbered hierarchy</li>
+      <li>Projects: bento grid (feature 8 cols + regulars 4–6 cols). Category pills + AI decorations differentiate each card (RAG attention matrix, CV convnet grid, Agents radial nodes, Healthcare medical dots, Research scatter plot)</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+// Mouse-tilt + cursor-tracked shine for cards.
+// Cheap, smooth, no libs. Respects prefers-reduced-motion.
+(function(){
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced)return;
+  const MAX_TILT=2;         // degrees — very subtle, premium feel
+  const DAMP=0.18;          // smaller = smoother but laggier
+  const cards=document.querySelectorAll('.proj-card, .exp-card');
+  cards.forEach(card=>{
+    let targetX=0,targetY=0,currX=0,currY=0,rafId=0,active=false,mx=50,my=50,tmx=50,tmy=50;
+    function tick(){
+      currX+=(targetX-currX)*DAMP;
+      currY+=(targetY-currY)*DAMP;
+      mx+=(tmx-mx)*DAMP;
+      my+=(tmy-my)*DAMP;
+      card.style.transform=`perspective(1400px) rotateX(${currY}deg) rotateY(${currX}deg) translateZ(0)`;
+      card.style.setProperty('--mx',mx+'%');
+      card.style.setProperty('--my',my+'%');
+      if(active||Math.abs(targetX-currX)>.05||Math.abs(targetY-currY)>.05){
+        rafId=requestAnimationFrame(tick);
+      }else{
+        cancelAnimationFrame(rafId);rafId=0;
+        card.style.transform='';
+      }
+    }
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const nx=(e.clientX-r.left)/r.width;   // 0..1
+      const ny=(e.clientY-r.top)/r.height;
+      targetX=(nx-.5)*MAX_TILT*2;      // rotateY  (left/right)
+      targetY=(.5-ny)*MAX_TILT*2;      // rotateX  (up/down)
+      tmx=nx*100;tmy=ny*100;
+      active=true;
+      if(!rafId)rafId=requestAnimationFrame(tick);
+    });
+    card.addEventListener('mouseleave',()=>{
+      targetX=0;targetY=0;tmx=50;tmy=50;active=false;
+      if(!rafId)rafId=requestAnimationFrame(tick);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
