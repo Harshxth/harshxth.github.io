@@ -106,6 +106,7 @@ html{scroll-behavior:smooth;overflow-x:clip}
   --hm0:#EDE6FA;--hm1:#C4B0F0;--hm2:#9F7EE6;--hm3:#6D28D9;--hm4:#4C1D95;
   --cursor-blend:multiply;
 }
+.hero-last{background:linear-gradient(130deg,var(--v1) 0%,var(--v2) 100%)!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;background-clip:text!important}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;cursor:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;transition:background-color .4s ease,color .4s ease}
 /* View Transitions: soft circular reveal with defocus-to-focus from the theme toggle */
 @supports (view-transition-name: none){
@@ -1456,6 +1457,10 @@ function initCursor(){
 function initNav(){const n=document.getElementById('nav');window.addEventListener('scroll',()=>n.classList.toggle('scrolled',window.scrollY>60));}
 
 // ── HERO BG ───────────────────────────────────────────────────────────────────
+// 18-second narrative loop. First 5 seconds is the exact deployed ambient
+// (38x28 tile grid + kernel scan + conv maps + particles). Then one chunk
+// gets "chosen" and we smoothly transition into the RAG retrieval → attention
+// zoom → answer ejection → fade back to ambient.
 function initBG(){
   const canvas=document.getElementById('nn-canvas'),hero=document.getElementById('hero');
   const GW=()=>hero.offsetWidth,GH=()=>hero.offsetHeight;
@@ -1463,8 +1468,24 @@ function initBG(){
   camera.position.set(0,4,38);
   const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
   renderer.setSize(GW(),GH());renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0x000000,0);
-  const TC=[0xC084FC,0xA855F7,0x818CF8,0xE879F9,0x7C3AED,0x6366F1],MC=[0x818CF8,0xC084FC,0xE879F9];
-  // Much wider grid to fill full canvas — more columns, tighter cells
+
+  // Palette-aware colour map (reads the CSS data-palette attr on <html>)
+  const isPurple=document.documentElement.getAttribute('data-palette')==='purple';
+  const TC=isPurple?[0xC084FC,0xA855F7,0x818CF8,0xE879F9,0x7C3AED,0x6366F1]
+                   :[0xE5E7EB,0xD1D5DB,0x9CA3AF,0xF3F4F6,0x6B7280,0xB4B4BC];
+  const MC=isPurple?[0x818CF8,0xC084FC,0xE879F9]
+                   :[0x9CA3AF,0xE5E7EB,0xF3F4F6];
+  const COL_SCAN  =isPurple?0xA855F7:0xD1D5DB;
+  const COL_KFILL =isPurple?0xC084FC:0xF3F4F6;
+  const COL_KBORD =isPurple?0xE879F9:0xF9FAFB;
+  const COL_PARTS =isPurple?0xC084FC:0xE5E7EB;
+  const COL_Q     =isPurple?0xE879F9:0xF9FAFB;
+  const COL_A     =isPurple?0xC084FC:0xD1D5DB;
+  const COL_CHUNK =isPurple?0x818CF8:0x9CA3AF;
+  const COL_ACC   =isPurple?0xA78BFA:0xB4B4BC;
+  const COL_TRAIL =isPurple?0xE879F9:0xE5E7EB;
+
+  // ═══════════ AMBIENT SCENE (exact deployed visuals) ═══════════
   const TCOLS=38,TROWS=28,TCW=3.2,TCH=2.6;
   const cells=[],cg=new THREE.PlaneGeometry(TCW-.16,TCH-.16);
   for(let r=0;r<TROWS;r++)for(let c=0;c<TCOLS;c++){
@@ -1472,42 +1493,393 @@ function initBG(){
     const m=new THREE.Mesh(cg,mat);m.position.set((c-TCOLS/2)*TCW,(r-TROWS/2)*TCH,-10+(Math.random()-.5)*5);
     m.userData={ph:Math.random()*Math.PI*2,sp:.2+Math.random()*.7,tgt:Math.random()*.42};scene.add(m);cells.push(m);
   }
-  const scans=[];for(let i=0;i<8;i++){const sl=new THREE.Mesh(new THREE.PlaneGeometry(TCW*.82,TROWS*TCH),new THREE.MeshBasicMaterial({color:0xA855F7,transparent:true,opacity:.1}));sl.userData={ph:i*(Math.PI*2/8)};sl.position.z=-9;scene.add(sl);scans.push(sl);}
-  // Conv maps bigger, pushed to right half
+  const scans=[];
+  for(let i=0;i<8;i++){
+    const sl=new THREE.Mesh(new THREE.PlaneGeometry(TCW*.82,TROWS*TCH),new THREE.MeshBasicMaterial({color:COL_SCAN,transparent:true,opacity:.1}));
+    sl.userData={ph:i*(Math.PI*2/8)};sl.position.z=-9;scene.add(sl);scans.push(sl);
+  }
   const MAPS=[{cols:18,rows:14,z:-2,rx:.18,ry:-.22,s:3.0,ox:28},{cols:14,rows:10,z:3,rx:.12,ry:-.16,s:3.0,ox:22},{cols:10,rows:8,z:8,rx:.08,ry:-.1,s:3.0,ox:18}];
   const cc=[];
+  const mapLines=[]; // collect line materials so we can fade them
   MAPS.forEach((mp,mi)=>{
     const CW=mp.s,CH=mp.s*.9,ox=-(mp.cols/2)*CW+mp.ox,oy=-(mp.rows/2)*CH,mc=MC[mi];
     const grp=new THREE.Group();grp.rotation.x=mp.rx;grp.rotation.y=mp.ry;
-    for(let r=0;r<mp.rows;r++)for(let c=0;c<mp.cols;c++){const mat=new THREE.MeshBasicMaterial({color:mc,transparent:true,opacity:.12});const m=new THREE.Mesh(new THREE.PlaneGeometry(CW-.1,CH-.08),mat);m.position.set(ox+c*CW+CW/2,oy+r*CH+CH/2,mp.z);m.userData={mi,r,c,cols:mp.cols,rows:mp.rows,ph:Math.random()*Math.PI*2};grp.add(m);cc.push(m);}
-    for(let r=0;r<=mp.rows;r++){const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(ox,oy+r*CH,mp.z),new THREE.Vector3(ox+mp.cols*CW,oy+r*CH,mp.z)]);grp.add(new THREE.Line(g,new THREE.LineBasicMaterial({color:mc,transparent:true,opacity:.18})));}
-    for(let c=0;c<=mp.cols;c++){const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(ox+c*CW,oy,mp.z),new THREE.Vector3(ox+c*CW,oy+mp.rows*CH,mp.z)]);grp.add(new THREE.Line(g,new THREE.LineBasicMaterial({color:mc,transparent:true,opacity:.18})));}
+    for(let r=0;r<mp.rows;r++)for(let c=0;c<mp.cols;c++){
+      const mat=new THREE.MeshBasicMaterial({color:mc,transparent:true,opacity:.12});
+      const m=new THREE.Mesh(new THREE.PlaneGeometry(CW-.1,CH-.08),mat);
+      m.position.set(ox+c*CW+CW/2,oy+r*CH+CH/2,mp.z);
+      m.userData={mi,r,c,cols:mp.cols,rows:mp.rows,ph:Math.random()*Math.PI*2};grp.add(m);cc.push(m);
+    }
+    for(let r=0;r<=mp.rows;r++){
+      const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(ox,oy+r*CH,mp.z),new THREE.Vector3(ox+mp.cols*CW,oy+r*CH,mp.z)]);
+      const mat=new THREE.LineBasicMaterial({color:mc,transparent:true,opacity:.18});
+      grp.add(new THREE.Line(g,mat));mapLines.push(mat);
+    }
+    for(let c=0;c<=mp.cols;c++){
+      const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(ox+c*CW,oy,mp.z),new THREE.Vector3(ox+c*CW,oy+mp.rows*CH,mp.z)]);
+      const mat=new THREE.LineBasicMaterial({color:mc,transparent:true,opacity:.18});
+      grp.add(new THREE.Line(g,mat));mapLines.push(mat);
+    }
     scene.add(grp);
   });
-  const K=3,mp0=MAPS[0],CW0=mp0.s,CH0=mp0.s*.9,kW=K*CW0,kH=K*CH0;
-  const kFill=new THREE.Mesh(new THREE.PlaneGeometry(kW-.08,kH-.08),new THREE.MeshBasicMaterial({color:0xC084FC,transparent:true,opacity:.16}));
-  const kBorder=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-kW/2,-kH/2,0),new THREE.Vector3(kW/2,-kH/2,0),new THREE.Vector3(kW/2,kH/2,0),new THREE.Vector3(-kW/2,kH/2,0)]),new THREE.LineBasicMaterial({color:0xE879F9,transparent:true,opacity:.95}));
+  const K_AMB=3,mp0=MAPS[0],CW0=mp0.s,CH0=mp0.s*.9,kW=K_AMB*CW0,kH=K_AMB*CH0;
+  const kFill=new THREE.Mesh(new THREE.PlaneGeometry(kW-.08,kH-.08),new THREE.MeshBasicMaterial({color:COL_KFILL,transparent:true,opacity:.16}));
+  const kBorder=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-kW/2,-kH/2,0),new THREE.Vector3(kW/2,-kH/2,0),new THREE.Vector3(kW/2,kH/2,0),new THREE.Vector3(-kW/2,kH/2,0)]),new THREE.LineBasicMaterial({color:COL_KBORD,transparent:true,opacity:.95}));
   const tG=new THREE.Group(),tL=kW*.18;
-  [[-kW/2,-kH/2],[kW/2,-kH/2],[kW/2,kH/2],[-kW/2,kH/2]].forEach(([cx,cy])=>{const sx=Math.sign(cx),sy=Math.sign(cy);tG.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(cx,cy,0),new THREE.Vector3(cx-sx*tL,cy,0)]),new THREE.LineBasicMaterial({color:0xE879F9,transparent:true,opacity:.85})));tG.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(cx,cy,0),new THREE.Vector3(cx,cy-sy*tL,0)]),new THREE.LineBasicMaterial({color:0xE879F9,transparent:true,opacity:.85})));});
+  [[-kW/2,-kH/2],[kW/2,-kH/2],[kW/2,kH/2],[-kW/2,kH/2]].forEach(([cx,cy])=>{
+    const sx=Math.sign(cx),sy=Math.sign(cy);
+    tG.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(cx,cy,0),new THREE.Vector3(cx-sx*tL,cy,0)]),new THREE.LineBasicMaterial({color:COL_KBORD,transparent:true,opacity:.85})));
+    tG.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(cx,cy,0),new THREE.Vector3(cx,cy-sy*tL,0)]),new THREE.LineBasicMaterial({color:COL_KBORD,transparent:true,opacity:.85})));
+  });
   const kern=new THREE.Group();kern.add(kFill);kern.add(kBorder);kern.add(tG);kern.position.z=mp0.z+.15;scene.add(kern);
-  const PN=600,pP=new Float32Array(PN*3),pV=[];for(let i=0;i<PN;i++){pP[i*3]=(Math.random()-.5)*(TCOLS*TCW*1.1);pP[i*3+1]=(Math.random()-.5)*(TROWS*TCH);pP[i*3+2]=-12+Math.random()*22;pV.push(.025+Math.random()*.07);}
-  const pG=new THREE.BufferGeometry();pG.setAttribute('position',new THREE.BufferAttribute(pP,3));scene.add(new THREE.Points(pG,new THREE.PointsMaterial({color:0xC084FC,size:.11,transparent:true,opacity:.55})));
-  for(let i=0;i<22;i++){const x=(Math.random()-.5)*(TCOLS*TCW),y=(Math.random()-.5)*(TROWS*TCH);scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,y,-8),new THREE.Vector3(x+(Math.random()-.5)*6,y+(Math.random()-.5)*3,8)]),new THREE.LineBasicMaterial({color:0xC084FC,transparent:true,opacity:.03})));}
-  const maxR=mp0.rows-K,maxC=mp0.cols-K,OfX=-(mp0.cols/2)*CW0+mp0.ox,OfY=-(mp0.rows/2)*CH0;
-  let hmx=0,hmy=0,t=0;
+  // Collect all kernel line materials so we can fade them
+  const kernLines=[];kBorder.material&&kernLines.push(kBorder.material);
+  tG.children.forEach(c=>c.material&&kernLines.push(c.material));
+
+  const PN=600,pP=new Float32Array(PN*3),pV=[];
+  for(let i=0;i<PN;i++){pP[i*3]=(Math.random()-.5)*(TCOLS*TCW*1.1);pP[i*3+1]=(Math.random()-.5)*(TROWS*TCH);pP[i*3+2]=-12+Math.random()*22;pV.push(.025+Math.random()*.07);}
+  const pG=new THREE.BufferGeometry();pG.setAttribute('position',new THREE.BufferAttribute(pP,3));
+  const particlesMat=new THREE.PointsMaterial({color:COL_PARTS,size:.11,transparent:true,opacity:.55});
+  const particles=new THREE.Points(pG,particlesMat);scene.add(particles);
+  const rayMats=[];
+  for(let i=0;i<22;i++){
+    const x=(Math.random()-.5)*(TCOLS*TCW),y=(Math.random()-.5)*(TROWS*TCH);
+    const mat=new THREE.LineBasicMaterial({color:COL_PARTS,transparent:true,opacity:.03});
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,y,-8),new THREE.Vector3(x+(Math.random()-.5)*6,y+(Math.random()-.5)*3,8)]),mat));
+    rayMats.push(mat);
+  }
+  const maxR=mp0.rows-K_AMB,maxC=mp0.cols-K_AMB,OfX=-(mp0.cols/2)*CW0+mp0.ox,OfY=-(mp0.rows/2)*CH0;
+
+  // ═══════════ RAG SCENE (overlaid, invisible during ambient) ═══════════
+  function doc(w,h,col,op,bo){
+    const g=new THREE.Group();
+    const f=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op}));
+    const b=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-w/2,-h/2,0),new THREE.Vector3(w/2,-h/2,0),new THREE.Vector3(w/2,h/2,0),new THREE.Vector3(-w/2,h/2,0)]),new THREE.LineBasicMaterial({color:col,transparent:true,opacity:bo}));
+    g.add(f);g.add(b);return{g,f,b};
+  }
+  // RAG scene is offset to the right so it doesn't sit behind the hero text.
+  // The camera stays viewport-centered during zoom — RAG_X puts the query in
+  // the right third of the canvas, well clear of the centered hero copy.
+  const RAG_X=12;
+  const QW=7.5,QH=4.3;
+  const q=doc(QW,QH,COL_Q,0,0);q.g.position.set(RAG_X,0,2);
+  const qLines=[];
+  for(let i=0;i<4;i++){
+    const w=[6.2,5.2,4.0,4.8][i];
+    const ln=new THREE.Mesh(new THREE.PlaneGeometry(w,.18),new THREE.MeshBasicMaterial({color:COL_Q,transparent:true,opacity:0}));
+    ln.position.set(-.6,1.3-i*.82,.01);q.g.add(ln);qLines.push(ln);
+  }
+  scene.add(q.g);
+
+  // Attention stack inside query
+  // Attention group lives inside the query but is shifted slightly left in
+  // the query's local space so when camera frames it, the grid sits in the
+  // right third of the viewport without extending off the canvas edge.
+  const attnGroup=new THREE.Group();attnGroup.position.set(-1.2,0,.8);attnGroup.visible=false;
+  const COLS=6,ROWS_A=8,CELL_W=.88,CELL_H=.4,COL_GAP=.18;
+  const stackW=COLS*(CELL_W+COL_GAP)-COL_GAP,stackH=ROWS_A*CELL_H;
+  const attnCells=[];
+  for(let col=0;col<COLS;col++){
+    for(let row=0;row<ROWS_A;row++){
+      const m=new THREE.Mesh(new THREE.PlaneGeometry(CELL_W-.06,CELL_H-.06),new THREE.MeshBasicMaterial({color:COL_ACC,transparent:true,opacity:0}));
+      m.position.set(col*(CELL_W+COL_GAP)-stackW/2+CELL_W/2,row*CELL_H-stackH/2+CELL_H/2,0);
+      attnGroup.add(m);attnCells.push({m,col,row,ph:col*.18+row*.09});
+    }
+    const cx=col*(CELL_W+COL_GAP)-stackW/2+CELL_W/2;
+    attnGroup.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(cx-CELL_W/2,-stackH/2,.01),new THREE.Vector3(cx+CELL_W/2,-stackH/2,.01),new THREE.Vector3(cx+CELL_W/2,stackH/2,.01),new THREE.Vector3(cx-CELL_W/2,stackH/2,.01)]),new THREE.LineBasicMaterial({color:COL_Q,transparent:true,opacity:0})));
+  }
+  const flowLines=[];
+  for(let col=0;col<COLS-1;col++){
+    const x1=col*(CELL_W+COL_GAP)-stackW/2+CELL_W/2+CELL_W/2;
+    const x2=(col+1)*(CELL_W+COL_GAP)-stackW/2+CELL_W/2-CELL_W/2;
+    for(let row=0;row<ROWS_A;row+=2){
+      const y=row*CELL_H-stackH/2+CELL_H/2;
+      const geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x1,y,.02),new THREE.Vector3(x2,y,.02)]);
+      const mat=new THREE.LineBasicMaterial({color:COL_TRAIL,transparent:true,opacity:0});
+      attnGroup.add(new THREE.Line(geo,mat));flowLines.push({mat,col,row});
+    }
+  }
+  q.g.add(attnGroup);
+
+  const a=doc(5.5,3.2,COL_A,0,0);a.g.position.set(RAG_X+14,0,2);
+  const aL=[];
+  for(let i=0;i<3;i++){
+    const w=[4.6,4,3.2][i];
+    const ln=new THREE.Mesh(new THREE.PlaneGeometry(w,.16),new THREE.MeshBasicMaterial({color:COL_A,transparent:true,opacity:0}));
+    ln.position.set(-.4,.85-i*.85,.01);a.g.add(ln);aL.push(ln);
+  }
+  scene.add(a.g);
+
+  // RAG chunks positioned in a ring (separate from the tile grid)
+  const CH=[],NC=70;
+  for(let i=0;i<NC;i++){
+    const w=1.6+Math.random()*1.8,h=.85+Math.random()*1.0;
+    const c=doc(w,h,COL_CHUNK,0,0);
+    const angle=Math.random()*Math.PI*2;
+    const radius=12+Math.random()*20;
+    const px=Math.cos(angle)*radius+(Math.random()-.5)*6+RAG_X;
+    const py=Math.sin(angle)*radius*.55+(Math.random()-.5)*4;
+    const pz=-6+Math.random()*16;
+    c.g.position.set(px,py,pz);
+    const tx=new THREE.Mesh(new THREE.PlaneGeometry(w*.7,.06),new THREE.MeshBasicMaterial({color:COL_CHUNK,transparent:true,opacity:0}));tx.position.z=.01;c.g.add(tx);
+    scene.add(c.g);
+    CH.push({...c,w,h,bx:px,by:py,bz:pz,ph:Math.random()*Math.PI*2,top:false,rank:-1,isChosen:false});
+  }
+
+  const TRAIL_LEN=24,trails=[];
+  for(let i=0;i<8;i++){
+    const pts=new Float32Array(TRAIL_LEN*3);
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pts,3));
+    const mat=new THREE.LineBasicMaterial({color:COL_TRAIL,transparent:true,opacity:0});
+    scene.add(new THREE.Line(geo,mat));
+    trails.push({geo,mat,history:[]});
+  }
+
+  const flash=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(Array.from({length:49},(_,i)=>{const a=(i/48)*Math.PI*2;return new THREE.Vector3(Math.cos(a),Math.sin(a),0);})),new THREE.LineBasicMaterial({color:COL_TRAIL,transparent:true,opacity:0}));
+  flash.position.copy(q.g.position);scene.add(flash);
+  const probe=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(Array.from({length:65},(_,i)=>{const a=(i/64)*Math.PI*2;return new THREE.Vector3(Math.cos(a),Math.sin(a),0);})),new THREE.LineBasicMaterial({color:COL_Q,transparent:true,opacity:0}));
+  probe.position.copy(q.g.position);scene.add(probe);
+
+  // "Summoning" ring that ripples from the chosen ambient tile toward center
+  const summon=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(Array.from({length:49},(_,i)=>{const a=(i/48)*Math.PI*2;return new THREE.Vector3(Math.cos(a),Math.sin(a),0);})),new THREE.LineBasicMaterial({color:COL_TRAIL,transparent:true,opacity:0}));
+  scene.add(summon);
+
+  // ═══════════ PHASE ORCHESTRATION ═══════════
+  const CYCLE=18;
+  const K=8;
+  let t=0,cy=-1,chosenCellIdx=-1;
+  let hmx=0,hmy=0;
   document.addEventListener('mousemove',e=>{hmx=(e.clientX/window.innerWidth-.5)*2;hmy=-(e.clientY/window.innerHeight-.5)*2;});
+
+  function smoothstep(e0,e1,x){const t=Math.max(0,Math.min(1,(x-e0)/(e1-e0)));return t*t*(3-2*t);}
+  function lerpVec(a,b,u){return new THREE.Vector3(a.x+(b.x-a.x)*u,a.y+(b.y-a.y)*u,a.z+(b.z-a.z)*u);}
+
+  const CAM_WIDE=new THREE.Vector3(0,4,38);     // deployed default
+  // Stay viewport-centered so the hero text area (centered) doesn't get
+  // covered. Query at RAG_X still appears in the right third thanks to FOV.
+  const CAM_NEAR=new THREE.Vector3(0,0,16);
+
   (function animate(){
     requestAnimationFrame(animate);t+=.013;
-    cells.forEach(c=>{const tgt=c.userData.tgt*(.5+.5*Math.sin(t*c.userData.sp+c.userData.ph));c.material.opacity+=(tgt-c.material.opacity)*.05;});
-    scans.forEach(s=>{s.position.x=-(TCOLS/2)*TCW+((t*.22+s.userData.ph/(Math.PI*2))*(TCOLS*TCW))%(TCOLS*TCW);});
+    const cp=(t%CYCLE)/CYCLE,nc=Math.floor(t/CYCLE);
+    if(nc!==cy){
+      cy=nc;
+      // Pick a tile close to where the RAG scene will emerge (near RAG_X, y≈0).
+      // The camera zooms toward that region, so the chosen cell visually
+      // "opens up" into the query as the zoom completes.
+      let best=-1,bestScore=Infinity;
+      for(let tries=0;tries<40;tries++){
+        const j=Math.floor(Math.random()*cells.length);
+        const p=cells[j].position;
+        const dx=p.x-RAG_X, dy=p.y;
+        const score=dx*dx+dy*dy*1.8;
+        if(score<bestScore){bestScore=score;best=j;}
+      }
+      chosenCellIdx=best;
+      // Pick K top-K from the RAG chunk ring
+      CH.forEach(c=>{c.top=false;c.rank=-1;});
+      const pool=[...Array(CH.length).keys()].sort(()=>Math.random()-.5).slice(0,K);
+      pool.forEach((id,r)=>{CH[id].top=true;CH[id].rank=r;});
+      trails.forEach((tr,i)=>{tr.history=[];tr.chunkIdx=pool[i];});
+    }
+
+    // ═══ Phase envelopes (cp 0..1 across 18s) ═══
+    //  0.00-0.28  AMBIENT (full deployed look)
+    //  0.28-0.38  TRANSITION-IN (ambient fades, RAG fades in, chosen tile ripples)
+    //  0.36-0.46  PROBE + chunk wake
+    //  0.46-0.58  ATTRACT
+    //  0.56-0.62  CONVERGE flash
+    //  0.58-0.72  MORPH + zoom in
+    //  0.68-0.84  CASCADE (attention stack active)
+    //  0.84-0.90  EJECT answer
+    //  0.88-1.00  FADE OUT RAG, RESTORE ambient
+    const pAmbient   = 1 - smoothstep(.26,.38,cp) + smoothstep(.88,.98,cp);  // bright during ambient + after reset
+    const ambOp      = Math.max(0,Math.min(1,pAmbient));
+    const pTransIn   = smoothstep(.28,.38,cp);                               // 0→1
+    const pChosen    = smoothstep(.26,.34,cp)*(1-smoothstep(.38,.46,cp));    // flash the chosen tile
+    const pSummon    = smoothstep(.28,.36,cp)*(1-smoothstep(.36,.44,cp));
+    const pReveal    = smoothstep(.33,.44,cp);                               // query fade in
+    const pProbe     = smoothstep(.40,.50,cp)*(1-smoothstep(.50,.58,cp));
+    const pAwake     = smoothstep(.42,.52,cp)*(1-smoothstep(.86,.95,cp));
+    const pAttract   = smoothstep(.48,.58,cp)*(1-smoothstep(.62,.68,cp));
+    const pConverge  = smoothstep(.56,.60,cp)*(1-smoothstep(.60,.66,cp));
+    const pMorph     = smoothstep(.60,.70,cp)*(1-smoothstep(.86,.92,cp));
+    const pAttn      = smoothstep(.64,.74,cp)*(1-smoothstep(.84,.90,cp));
+    const pCascade   = smoothstep(.70,.84,cp);
+    const pEject     = smoothstep(.84,.88,cp)*(1-smoothstep(.92,.96,cp));
+    const settle     = smoothstep(.88,.94,cp)*(1-smoothstep(.96,1.0,cp));
+    const pFadeOut   = smoothstep(.88,.96,cp);
+    const ragActive  = Math.max(pTransIn,pReveal,pAwake,pAttract,pConverge,pMorph,pAttn,pEject,settle)*(1-pFadeOut);
+    const beat=.5+.5*Math.sin(t*Math.PI);
+
+    // ═══ CAMERA ═══
+    // Zoom begins at t=5s (start of RAG transition), holds zoomed during
+    // attention, smoothly pulls back to standby after answer ejects.
+    let camU=0;
+    if(cp<.28)camU=0;
+    else if(cp<.68)camU=smoothstep(.28,.68,cp);
+    else if(cp<.84)camU=1;
+    else camU=1-smoothstep(.84,.98,cp);
+    const camPos=lerpVec(CAM_WIDE,CAM_NEAR,camU);
+    const parallax=1-camU;
+    camera.position.x+=((camPos.x+hmx*7*parallax)-camera.position.x)*.04;
+    camera.position.y+=((camPos.y+(-hmy*4+4)*parallax)-camera.position.y)*.04;
+    camera.position.z+=(camPos.z-camera.position.z)*.04;
+    // Keep look-at centered on world origin so the hero text stays framed
+    // at viewport center. RAG content sits off-axis (right side of frame).
+    const lookY=q.g.position.y*(1-camU);
+    camera.lookAt(0,lookY,0);
+
+    // ═══ AMBIENT animation (runs always, opacity-multiplied by ambOp) ═══
+    // Cells wave/pulse (original)
+    cells.forEach((c,i)=>{
+      let tgt=c.userData.tgt*(.5+.5*Math.sin(t*c.userData.sp+c.userData.ph));
+      // Chosen cell flashes bright during the transition
+      if(i===chosenCellIdx)tgt=Math.max(tgt,pChosen*.85);
+      c.material.opacity+=(tgt*ambOp-c.material.opacity)*.07;
+    });
+    // Scan lines sweep
+    scans.forEach(s=>{
+      s.position.x=-(TCOLS/2)*TCW+((t*.22+s.userData.ph/(Math.PI*2))*(TCOLS*TCW))%(TCOLS*TCW);
+      s.material.opacity=.1*ambOp;
+    });
+    // Kernel scan through conv map
     const step=Math.floor(t*2.0),kc=step%(maxC+1),kr=Math.floor(step/(maxC+1))%(maxR+1);
-    kern.position.x=OfX+(kc+K/2)*CW0;kern.position.y=OfY+(kr+K/2)*CH0;
-    cc.forEach(c=>{if(c.userData.mi===0){const inK=c.userData.c>=kc&&c.userData.c<kc+K&&c.userData.r>=kr&&c.userData.r<kr+K;c.material.opacity+=((inK?.5:.05)-c.material.opacity)*.11;}else{c.material.opacity=.04+.07*Math.sin(t*.65+c.userData.ph);}});
-    const pp=pG.attributes.position.array;for(let i=0;i<PN;i++){pp[i*3]+=pV[i];if(pp[i*3]>(TCOLS/2)*TCW*1.1)pp[i*3]=-(TCOLS/2)*TCW*1.1;}
+    kern.position.x=OfX+(kc+K_AMB/2)*CW0;kern.position.y=OfY+(kr+K_AMB/2)*CH0;
+    kFill.material.opacity=.16*ambOp;
+    kernLines.forEach(m=>m.opacity=.85*ambOp);
+    cc.forEach(c=>{
+      if(c.userData.mi===0){
+        const inK=c.userData.c>=kc&&c.userData.c<kc+K_AMB&&c.userData.r>=kr&&c.userData.r<kr+K_AMB;
+        c.material.opacity+=((inK?.5:.05)*ambOp-c.material.opacity)*.11;
+      }else{
+        c.material.opacity=(.04+.07*Math.sin(t*.65+c.userData.ph))*ambOp;
+      }
+    });
+    mapLines.forEach(m=>m.opacity=.18*ambOp);
+    // Particles + rays
+    const pp=pG.attributes.position.array;
+    for(let i=0;i<PN;i++){pp[i*3]+=pV[i];if(pp[i*3]>(TCOLS/2)*TCW*1.1)pp[i*3]=-(TCOLS/2)*TCW*1.1;}
     pG.attributes.position.needsUpdate=true;
-    camera.position.x+=(hmx*7-camera.position.x)*.04;camera.position.y+=(-hmy*4+4-camera.position.y)*.04;camera.lookAt(0,0,0);
+    particlesMat.opacity=.55*ambOp;
+    rayMats.forEach(m=>m.opacity=.03*ambOp);
+
+    // ═══ SUMMONING ring from chosen tile toward center ═══
+    if(chosenCellIdx>=0&&pSummon>.01){
+      const src=cells[chosenCellIdx].position;
+      const u=smoothstep(.28,.36,cp);
+      summon.position.x=src.x+(RAG_X-src.x)*u;
+      summon.position.y=src.y*(1-u);
+      summon.position.z=src.z*(1-u);
+      summon.scale.setScalar(1.5+9*u);
+      summon.material.opacity=.8*pSummon*(1-u*.5);
+    }else{summon.material.opacity=0;}
+
+    // ═══ QUERY ═══
+    const qVisible=pReveal*(1-pFadeOut);
+    q.f.material.opacity=qVisible*(.38+.2*beat+.75*pConverge)*(1-pMorph*.55);
+    q.b.material.opacity=qVisible*(.7+.4*pProbe+.35*pConverge);
+    q.g.scale.setScalar(.6+.4*qVisible+.08*pProbe+.12*pConverge);
+    const textFade=qVisible*(1-pMorph);
+    qLines.forEach((ln,i)=>{
+      ln.material.opacity=textFade*.55*(.85+.15*Math.sin(t*1.5+i*.4));
+      ln.position.y=(1.3-i*.82)-pMorph*.28;
+    });
+
+    // ═══ PROBE + FLASH ═══
+    probe.scale.setScalar(2+32*smoothstep(.40,.52,cp));
+    probe.material.opacity=.8*pProbe*(1-pFadeOut);
+    flash.scale.setScalar(3+24*pConverge);
+    flash.material.opacity=pConverge*1.0;
+
+    // ═══ CHUNKS (RAG ring) ═══
+    CH.forEach(c=>{
+      const basePulse=.11+.05*Math.sin(t*.4+c.ph)+.04*beat;
+      let tFill=basePulse,tBord=.25;
+      if(c.top){
+        const rb=(K-c.rank)/K;
+        const lit=pAwake*rb;
+        tFill=basePulse+.75*lit;
+        tBord=.25+.85*lit;
+        const attr=smoothstep(.50,.60,cp);
+        // Interpolate from base position toward the offset query position (RAG_X, 0, 0)
+        const tx=c.bx+(RAG_X-c.bx)*attr,ty=c.by*(1-attr),tz=c.bz*(1-attr);
+        c.g.position.x+=(tx+Math.cos(t*.25+c.ph)*.15*(1-attr)-c.g.position.x)*.12;
+        c.g.position.y+=(ty+Math.sin(t*.3+c.ph)*.25*(1-attr)-c.g.position.y)*.12;
+        c.g.position.z+=(tz-c.g.position.z)*.12;
+        c.g.scale.setScalar(1-attr*.7);
+      }else{
+        c.g.position.x+=(c.bx+Math.cos(t*.25+c.ph)*.15-c.g.position.x)*.06;
+        c.g.position.y+=(c.by+Math.sin(t*.3+c.ph)*.25-c.g.position.y)*.06;
+        c.g.position.z+=(c.bz-c.g.position.z)*.06;
+        c.g.scale.setScalar(1);
+      }
+      const vis=ragActive*(1-pMorph*.9)*(1-pAttn*.8);
+      c.f.material.opacity+=(tFill*vis-c.f.material.opacity)*.12;
+      c.b.material.opacity+=(tBord*vis-c.b.material.opacity)*.12;
+      // chunk text line
+      if(c.g.children[2]&&c.g.children[2].material){c.g.children[2].material.opacity=.3*vis;}
+    });
+
+    // ═══ TRAILS ═══
+    trails.forEach(tr=>{
+      if(tr.chunkIdx===undefined||!CH[tr.chunkIdx]){tr.mat.opacity=0;return;}
+      const c=CH[tr.chunkIdx];
+      if(pAttract>.1&&pAttract<.98){
+        tr.history.push({x:c.g.position.x,y:c.g.position.y,z:c.g.position.z});
+        if(tr.history.length>TRAIL_LEN)tr.history.shift();
+      }else if(pFadeOut>.3){tr.history=[];}
+      const arr=tr.geo.attributes.position.array;
+      for(let s=0;s<TRAIL_LEN;s++){
+        const h=tr.history[s]||(tr.history[tr.history.length-1]||{x:0,y:0,z:0});
+        arr[s*3]=h.x;arr[s*3+1]=h.y;arr[s*3+2]=h.z;
+      }
+      tr.geo.attributes.position.needsUpdate=true;
+      tr.mat.opacity=.7*pAttract*(1-pFadeOut);
+    });
+
+    // ═══ ATTENTION STACK ═══
+    attnGroup.visible=pMorph>.01||pAttn>.01;
+    const outlines=attnGroup.children.filter(ch=>ch.type==='LineLoop');
+    if(attnGroup.visible){
+      attnGroup.scale.setScalar((.4+.6*pMorph)*.82);
+      outlines.forEach((o,ci)=>{o.material.opacity=.35*pMorph*(.7+.3*Math.sin(t*.6+ci*.3));});
+      const wave=pCascade*COLS;
+      attnCells.forEach(c=>{
+        const dcol=Math.abs(c.col-wave);
+        const near=Math.max(0,1-dcol/2.2);
+        const pulse=.5+.5*Math.sin(t*2.2+c.ph);
+        const tgt=pMorph*(.2+.08*beat)+pAttn*.45+near*1.05*pulse*pAttn;
+        c.m.material.opacity+=(tgt-c.m.material.opacity)*.22;
+      });
+      flowLines.forEach(fl=>{
+        const dist=Math.abs(fl.col+.5-wave);
+        const near=Math.max(0,1-dist/1.5);
+        fl.mat.opacity=.9*near*pAttn;
+      });
+    }else{
+      attnCells.forEach(c=>c.m.material.opacity+=(-c.m.material.opacity)*.3);
+      flowLines.forEach(fl=>fl.mat.opacity+=(-fl.mat.opacity)*.3);
+      outlines.forEach(o=>o.material.opacity+=(-o.material.opacity)*.3);
+    }
+
+    // ═══ ANSWER EJECTION ═══
+    if(pEject>.01||settle>.01){
+      // Answer starts at the query (RAG_X) and flies further right (+14) to its rest spot
+      a.g.position.x=RAG_X+14*settle;
+      a.g.position.z=pEject*6*(1-settle)+2;
+      a.g.scale.setScalar(.6+.5*pEject);
+    }else{
+      a.g.position.set(RAG_X+14,0,2);a.g.scale.setScalar(1);
+    }
+    const aVis=pEject*(.6+.4*beat)+settle*.8*(1-smoothstep(.97,1,cp));
+    a.f.material.opacity=.45*aVis;
+    a.b.material.opacity=.95*aVis;
+    aL.forEach(ln=>ln.material.opacity=.55*aVis);
+
     renderer.render(scene,camera);
   })();
+
   window.addEventListener('resize',()=>{camera.aspect=GW()/GH();camera.updateProjectionMatrix();renderer.setSize(GW(),GH());});
 }
 
