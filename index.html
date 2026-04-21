@@ -861,34 +861,34 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── DATA ─────────────────────────────────────────────────────────────────────
 const EXP=[
-  {title:'Computer Vision Video Analyst',cur:true,org:'CUTR — University of South Florida',period:'Mar 2026 – Present',color:'#C084FC',logo:'cutr',
+  {title:'Computer Vision Video Analyst',cur:true,org:'CUTR — University of South Florida',period:'Mar 2026 – Present',color:'#0EA5E9',bg:'CUTR',logo:'cutr',
    tags:['YOLOv8','ByteTrack','Computer Vision','Python','FDOT'],
    bullets:['Deployed production <strong>YOLOv8 + ByteTrack</strong> pipeline processing <span class="metric">100+ hours</span> of traffic video — tracked <span class="metric">1,200+ unique motorcycles</span> across Tampa Bay for FDOT injury prevention research.','Automated manual counting workflows; delivered <span class="metric">50+ annotated videos</span>, CSV datasets, and batch scripts supporting SS4A grant deliverables.']},
-  {title:'Research Assistant — Data Engineering & Entity Resolution',cur:true,org:'USF · Muma College of Business',period:'Jan 2026 – Present',color:'#818CF8',logo:'usf',
+  {title:'Research Assistant — Data Engineering & Entity Resolution',cur:true,org:'USF · Muma College of Business',period:'Jan 2026 – Present',color:'#006747',bg:'USF MUMA',logo:'usf',
    tags:['Fuzzy Logic','Entity Resolution','Python','pandas','EDA','SQL'],
    bullets:['Engineering a large-scale <strong>fuzzy logic entity resolution pipeline</strong> to deduplicate and canonically merge <span class="metric">150,000+ company names</span> across messy real-world datasets — handling abbreviations, misspellings, and structural variance at scale.','Driving <strong>exploratory data analysis</strong> across the unified corpus to surface business trends, market patterns, and research-grade insights.']},
-  {title:'Research Assistant — Healthcare AI & Billing Analytics',cur:false,org:'USF · Muma College of Business',period:'Sep 2025 – Dec 2025',color:'#A78BFA',logo:'usf',
+  {title:'Research Assistant — Healthcare AI & Billing Analytics',cur:false,org:'USF · Muma College of Business',period:'Sep 2025 – Dec 2025',color:'#DC2626',bg:'MUMA HEALTH',logo:'usf',
    tags:['scikit-learn','MLflow','Python','Healthcare ML','SQL'],
    bullets:['Developed ML models for <strong>healthcare billing code prediction</strong> and clinical documentation using Python, scikit-learn, and MLflow.','Reduced coding errors by <span class="metric">15%</span> and improved diagnostic decision support through statistical validation and hyperparameter tuning.']},
-  {title:'AI Research Intern',cur:false,org:'ISRO — Indian Space Research Organisation',period:'Jan 2025 – Jul 2025',color:'#E879F9',logo:'isro',
+  {title:'AI Research Intern',cur:false,org:'ISRO — Indian Space Research Organisation',period:'Jan 2025 – Jul 2025',color:'#FF671F',bg:'ISRO',logo:'isro',
    tags:['PyTorch','SRGAN','CNN','TensorFlow','Satellite Imaging'],
    bullets:['Designed a satellite image super-resolution pipeline using <strong>CNN + SRGAN</strong> in PyTorch — achieved <span class="metric">4× upscaling</span> from 10 m to 2.5 m ground sampling distance.','Preserved radiometric consistency enabling finer downstream analysis for <strong>national space research programs</strong>.']},
-  {title:'AI Developer Intern',cur:false,org:'Venkusa Technologies',period:'May 2024 – Nov 2024',color:'#7C3AED',logo:'venkusa',
+  {title:'AI Developer Intern',cur:false,org:'Venkusa Technologies',period:'May 2024 – Nov 2024',color:'#14B8A6',bg:'VENKUSA',logo:'venkusa',
    tags:['OpenAI API','Prompt Engineering','PHP','LLM Fine-tuning'],
    bullets:['Built an AI code-completion tool using <strong>OpenAI API + PHP</strong> — achieved <span class="metric">~8% efficiency gain</span> vs GitHub Copilot benchmarks through LLM tuning.','Shipped an AI travel chatbot improving lead capture and booking conversions after deployment.']},
 ];
 
 const PROJ=[
-  {name:'CiteIQ',sub:'Agentic RAG System',color:'#C084FC',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',cats:['rag','agents'],
+  {name:'CiteIQ',sub:'Agentic RAG System',color:'#A78BFA',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',cats:['rag','agents'],
    desc:'Production multi-agent citation intelligence system. <strong>LangGraph</strong> orchestrates Router, Retriever, Evaluator, and Generator agents over ChromaDB — deployed via FastAPI + Docker with <span class="m">LangSmith</span> tracing and RAGAS evaluation.',
    tags:['LangGraph','FastAPI','ChromaDB','Groq','RAGAS','Docker','LangSmith'],flow:['Query','Router','Retriever','Evaluator','Response']},
-  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#818CF8',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',diag:'hc_agent',cats:['agents','healthcare'],
+  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#F472B6',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',diag:'hc_agent',cats:['agents','healthcare'],
    desc:'Autonomous 4-agent system (Researcher / Analyzer / Validator / Reporter) built with <strong>CrewAI</strong>. Conducts end-to-end PubMed research and generates executive reports. Processed <span class="m">50+ healthcare queries</span> at <span class="m">95% accuracy</span> vs manual review.',
    tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
-  {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#A78BFA',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',cats:['healthcare','ml'],
+  {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#FB923C',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',cats:['healthcare','ml'],
    desc:'<strong>XGBoost</strong> on <span class="m">100,000 patient records</span>. Evaluated <span class="m">230+ hyperparameter configs</span> — <span class="m">5–6× improvement</span> over published benchmarks. Potential <span class="m">$1.7–2.6M</span> annual savings per 400-bed hospital.',
    tags:['XGBoost','SHAP','scikit-learn','Healthcare ML','Python'],flow:['Patient Data','Feature Eng','XGBoost','SHAP','Insight']},
-  {name:'Local PDF RAG Chatbot',sub:'Fully-Local RAG',color:'#E879F9',metric:'<2s · 90%+ faithful',wip:false,link:'https://github.com/Harshxth/pdf-rag-chatbot',diag:'pdf_rag',cats:['rag'],
+  {name:'Local PDF RAG Chatbot',sub:'Fully-Local RAG',color:'#38BDF8',metric:'<2s · 90%+ faithful',wip:false,link:'https://github.com/Harshxth/pdf-rag-chatbot',diag:'pdf_rag',cats:['rag'],
    desc:'Fully-local RAG with <strong>LangChain</strong>, Ollama Llama 3.1, ChromaDB. Natural-language Q&amp;A over any PDF — <span class="m">&lt;2s query time</span>, zero hallucinations, <span class="m">90%+ faithfulness</span> score.',
    tags:['LangChain','Ollama','ChromaDB','Streamlit','Python'],flow:['PDF','Chunk','Embed','Retrieve','Answer']},
 ];
