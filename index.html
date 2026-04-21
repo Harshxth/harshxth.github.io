@@ -142,8 +142,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;cur
 }
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
 .mono{font-family:'JetBrains Mono',monospace}.display{font-family:'Syne',sans-serif}
-#cur-o{position:fixed;pointer-events:none;z-index:9999;width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--accent-rgb),.45);transition:transform .06s linear;mix-blend-mode:var(--cursor-blend)}
-#cur-d{position:fixed;pointer-events:none;z-index:9999;width:7px;height:7px;border-radius:50%;background:var(--v1);box-shadow:0 0 10px var(--v1);mix-blend-mode:var(--cursor-blend)}
+#cur-o{position:fixed;pointer-events:none;z-index:9999;width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--accent-rgb),.45);mix-blend-mode:var(--cursor-blend);will-change:transform}
+#cur-d{position:fixed;pointer-events:none;z-index:9999;width:7px;height:7px;border-radius:50%;background:var(--v1);box-shadow:0 0 10px var(--v1);mix-blend-mode:var(--cursor-blend);will-change:transform}
 @media(hover:none),(pointer:coarse){#cur-o,#cur-d{display:none}body,.btn-primary,.btn-ghost,.nav-links a,.theme-toggle{cursor:auto}}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -1473,7 +1473,8 @@ function initCursor(){
   const o=document.getElementById('cur-o'),d=document.getElementById('cur-d');
   let rx=0,ry=0,mx=-100,my=-100;
   document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;o.style.transform=`translate(${rx-15}px,${ry-15}px)`;d.style.transform=`translate(${mx-3.5}px,${my-3.5}px)`;requestAnimationFrame(loop);})();
+  // lerp .20 — buttery but tight; paired with no CSS transition on #cur-o
+  (function loop(){rx+=(mx-rx)*.20;ry+=(my-ry)*.20;o.style.transform=`translate(${rx-15}px,${ry-15}px)`;d.style.transform=`translate(${mx-3.5}px,${my-3.5}px)`;requestAnimationFrame(loop);})();
 }
 function initNav(){const n=document.getElementById('nav');window.addEventListener('scroll',()=>n.classList.toggle('scrolled',window.scrollY>60));}
 
