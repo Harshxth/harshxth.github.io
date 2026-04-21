@@ -1007,10 +1007,13 @@ function initCountUp(){
 }
 
 // ── RESUME COUNTER ───────────────────────────────────────────────────────────
+// Backed by a tiny Cloudflare Worker over a KV namespace. Source:
+//   export default { async fetch(req, env) { /* read / increment COUNTER */ } }
+// GET /     -> { count }
+// GET /up   -> increments, returns { count }
 async function initResumeCounter(){
   const valEl=document.getElementById('rc-val');
-  const KEY='harshxth-portfolio';const NS='resume';
-  const base=`https://api.counterapi.dev/v1/${KEY}/${NS}`;
+  const base='https://autumn-base-a324.hanstheyt.workers.dev';
   try{
     const r=await fetch(base+'/');
     if(r.ok){const d=await r.json();if(valEl&&typeof d.count==='number')valEl.textContent=d.count.toLocaleString();}
