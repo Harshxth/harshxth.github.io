@@ -80,13 +80,22 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:clip}
 :root{
+  /* Default: cool grey. Purple is opt-in via ?palette=purple. */
+  --bg:#0B0B0D;--bg-rgb:11,11,13;--surf:#141418;--bord:#2A2A30;
+  --v1:#E5E7EB;--v2:#9CA3AF;--v3:#F3F4F6;--v4:#6B7280;
+  --text:#F9FAFB;--muted:#9CA3AF;--dim:#3F3F46;
+  --body:#B4B4BC;--hl:#F3F4F6;--on-accent:#0B0B0D;
+  --grid:rgba(229,231,235,.04);--glow:rgba(229,231,235,.07);
+  --hm0:#2A2A30;--hm1:#4B5563;--hm2:#6B7280;--hm3:#D1D5DB;--hm4:#F9FAFB;
+  --cursor-blend:screen;
+}
+:root[data-palette="purple"]{
   --bg:#080010;--bg-rgb:8,0,16;--surf:#0D0018;--bord:#1A0835;
   --v1:#C084FC;--v2:#818CF8;--v3:#E879F9;--v4:#A78BFA;
   --text:#F0EAFF;--muted:#8A6FB8;--dim:#3D1F5C;
   --body:#9080B0;--hl:#D4BEEA;--on-accent:#080010;
   --grid:rgba(192,132,252,.04);--glow:rgba(192,132,252,.07);
   --hm0:#1A0835;--hm1:#3D1B6B;--hm2:#6D28D9;--hm3:#A78BFA;--hm4:#E879F9;
-  --cursor-blend:screen;
 }
 :root[data-theme="light"]{
   --bg:#FAFAFB;--bg-rgb:250,250,251;--surf:#FFFFFF;--bord:#E5DEF5;
@@ -879,6 +888,14 @@ const DIAGRAMS={
   hc_agent:'assets/hc_agent.jpg',
   pdf_rag:'assets/pdf_rag.jpg',
 };
+
+// ── PALETTE (grey default; ?palette=purple to preview the old look) ─────────
+(function initPalette(){
+  try{
+    const p=new URLSearchParams(location.search).get('palette');
+    if(p==='purple')document.documentElement.setAttribute('data-palette','purple');
+  }catch{}
+})();
 
 // ── KBD SYMBOL (OS-adaptive ⌘ / Ctrl) ────────────────────────────────────────
 (function initKbdSymbol(){
