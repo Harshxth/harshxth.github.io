@@ -274,8 +274,11 @@ section>*{position:relative;z-index:1}
 .exp-item{padding-left:65px;margin-bottom:2.5rem;position:relative;opacity:0;transform:translateX(-32px);transition:opacity .6s ease,transform .6s ease}
 .exp-item.in{opacity:1;transform:none}
 .exp-dot{position:absolute;left:14px;top:8px;width:17px;height:17px;border-radius:50%;transition:box-shadow .4s ease}
-.exp-card{padding:1.6rem;border:1px solid var(--bord);border-radius:12px;background:var(--surf);border-left:2px solid transparent;transition:all .3s}
+.exp-card{padding:1.6rem;border:1px solid var(--bord);border-radius:12px;background:var(--surf);border-left:2px solid transparent;transition:all .3s;position:relative;overflow:hidden}
 .exp-card:hover{border-left-color:currentColor;transform:translateX(3px)}
+.exp-card:hover .exp-bg-name{opacity:.055}
+.exp-bg-name{position:absolute;bottom:-.6rem;right:1rem;font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3.5rem,10vw,7.5rem);line-height:.82;letter-spacing:-.05em;color:currentColor;opacity:.025;pointer-events:none;user-select:none;transition:opacity .5s ease;white-space:nowrap;z-index:0}
+.exp-card > *:not(.exp-bg-name){position:relative;z-index:1}
 .exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem}
 .exp-period{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);padding:.25rem .7rem;border:1px solid var(--bord);border-radius:100px;white-space:nowrap}
 .cur-badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.28);border-radius:100px;padding:.18rem .6rem;font-size:.6rem;font-family:'JetBrains Mono',monospace;color:var(--v1);letter-spacing:.08em;margin-left:.5rem;vertical-align:middle}
@@ -1920,6 +1923,7 @@ function initExp(){
     div.innerHTML=`
       <div class="exp-dot" style="background:${ex.color};box-shadow:0 0 14px ${ex.color}88"></div>
       <div class="exp-card" style="color:${ex.color}">
+        ${ex.bg?`<div class="exp-bg-name">${ex.bg}</div>`:''}
         <div class="exp-header">
           <div style="display:flex;align-items:center;gap:.75rem">
             ${logoHTML}
