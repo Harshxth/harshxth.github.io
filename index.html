@@ -294,9 +294,12 @@ section>*{position:relative;z-index:1}
 .cur-badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.28);border-radius:100px;padding:.18rem .6rem;font-size:.6rem;font-family:'JetBrains Mono',monospace;color:var(--v1);letter-spacing:.08em;margin-left:.5rem;vertical-align:middle}
 .cur-dot-sm{width:4px;height:4px;border-radius:50%;background:var(--v1);display:inline-block;animation:pulse 1.8s ease-in-out infinite}
 .exp-bullets{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-top:1rem}
-.exp-bullets li{display:flex;gap:.7rem;color:var(--body);font-size:.875rem;line-height:1.68}
-.exp-bullets li .metric{color:var(--v1);font-weight:500;font-family:'JetBrains Mono',monospace;font-size:.82rem}
-.exp-bullets li strong{color:var(--hl);font-weight:400}
+.exp-bullets li{display:block;padding-left:1.1rem;position:relative;color:var(--body);font-size:.875rem;line-height:1.72}
+.exp-bullets li::before{content:'—';position:absolute;left:0;color:currentColor;opacity:.6;font-weight:400}
+.exp-bullets li .metric{color:currentColor;font-weight:500;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+.exp-bullets li strong{color:var(--hl);font-weight:500}
+/* Numbered hierarchy label shown above the role on each exp card */
+.exp-num{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.28em;margin-bottom:.5rem;display:block}
 /* PROJECTS */
 .proj-filters{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:2.5rem auto 0;max-width:620px}
 .proj-filter{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.38rem .9rem;border-radius:100px;border:1px solid var(--bord);background:var(--surf);color:var(--muted);cursor:none;transition:all .2s}
@@ -2025,6 +2028,7 @@ function initExp(){
       <div class="exp-card" style="color:${ex.color}">
         <span class="card-shine"></span>
         ${ex.bg?`<div class="exp-bg-name">${ex.bg}</div>`:''}
+        <div class="exp-num">${String(i+1).padStart(2,'0')}</div>
         <div class="exp-header">
           <div style="display:flex;align-items:center;gap:.75rem">
             ${logoHTML}
@@ -2036,7 +2040,7 @@ function initExp(){
           <div class="exp-period">${ex.period}</div>
         </div>
         <div style="display:flex;gap:.38rem;flex-wrap:wrap;margin-bottom:.2rem;margin-top:.6rem">${ex.tags.map(t=>`<span class="tag" style="background:${ex.color}10;border:1px solid ${ex.color}30;color:${ex.color}">${t}</span>`).join('')}</div>
-        <ul class="exp-bullets">${ex.bullets.map(b=>`<li><span style="color:${ex.color};flex-shrink:0;margin-top:.1rem">›</span><span>${b}</span></li>`).join('')}</ul>
+        <ul class="exp-bullets">${ex.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
       </div>`;
     el.appendChild(div);
   });
