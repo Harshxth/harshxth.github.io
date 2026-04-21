@@ -314,6 +314,10 @@ section>*{position:relative;z-index:1}
 @media(max-width:900px){.proj-card.feature{grid-column:1/-1;grid-template-columns:1fr}.proj-card.wide,.proj-card.regular{grid-column:1/-1}}
 .proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,currentColor,transparent);opacity:0;transition:opacity .3s;z-index:4}
 .proj-card:hover{border-color:rgba(var(--accent-rgb),.35);box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px rgba(var(--accent-rgb),.05)}
+.proj-card,.exp-card{transform-style:preserve-3d;will-change:transform;transition:transform .25s cubic-bezier(.22,.61,.36,1),border-color .4s ease,background .4s ease,box-shadow .4s ease}
+.proj-card .card-shine,.exp-card .card-shine{position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle 220px at var(--mx,50%) var(--my,50%),rgba(var(--accent-rgb),.10) 0%,transparent 60%);z-index:3}
+.proj-card:hover .card-shine,.exp-card:hover .card-shine{opacity:1}
+.experience-wrap{perspective:1400px}
 .proj-card:hover::before{opacity:1}
 .proj-card:hover .proj-bg-metric{opacity:.18}
 .proj-card:hover .proj-viz{opacity:1}
@@ -1010,7 +1014,40 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   },110);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initCountUp();initLastUpdated();}
+function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initCountUp();initLastUpdated();initCardTilt();}
+
+// ── CARD TILT + SHINE ────────────────────────────────────────────────────────
+// Gentle 3D mouse-tilt on project and experience cards. Max 2° per axis,
+// damped at .18 so the motion has weight. Cursor-tracked shine via CSS vars.
+// Respects prefers-reduced-motion.
+function initCardTilt(){
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced)return;
+  const MAX_TILT=2,DAMP=0.18;
+  const cards=document.querySelectorAll('.proj-card,.exp-card');
+  cards.forEach(card=>{
+    let tx=0,ty=0,cx=0,cy=0,rafId=0,active=false,mx=50,my=50,tmx=50,tmy=50;
+    function tick(){
+      cx+=(tx-cx)*DAMP;cy+=(ty-cy)*DAMP;
+      mx+=(tmx-mx)*DAMP;my+=(tmy-my)*DAMP;
+      card.style.transform=`perspective(1400px) rotateX(${cy}deg) rotateY(${cx}deg) translateZ(0)`;
+      card.style.setProperty('--mx',mx+'%');card.style.setProperty('--my',my+'%');
+      if(active||Math.abs(tx-cx)>.05||Math.abs(ty-cy)>.05){rafId=requestAnimationFrame(tick);}
+      else{cancelAnimationFrame(rafId);rafId=0;card.style.transform='';}
+    }
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height;
+      tx=(nx-.5)*MAX_TILT*2;ty=(.5-ny)*MAX_TILT*2;
+      tmx=nx*100;tmy=ny*100;active=true;
+      if(!rafId)rafId=requestAnimationFrame(tick);
+    });
+    card.addEventListener('mouseleave',()=>{
+      tx=0;ty=0;tmx=50;tmy=50;active=false;
+      if(!rafId)rafId=requestAnimationFrame(tick);
+    });
+  });
+}
 
 // ── LAST UPDATED ─────────────────────────────────────────────────────────────
 async function initLastUpdated(){
@@ -1986,6 +2023,7 @@ function initExp(){
     div.innerHTML=`
       <div class="exp-dot" style="background:${ex.color};box-shadow:0 0 14px ${ex.color}88"></div>
       <div class="exp-card" style="color:${ex.color}">
+        <span class="card-shine"></span>
         ${ex.bg?`<div class="exp-bg-name">${ex.bg}</div>`:''}
         <div class="exp-header">
           <div style="display:flex;align-items:center;gap:.75rem">
@@ -2019,6 +2057,7 @@ function initProj(){
     card.style.cssText=`transition-delay:${i*.08}s;color:${p.color}`;
     card.dataset.cats=(p.cats||[]).join(' ');
     card.innerHTML=`
+      <span class="card-shine"></span>
       <div class="proj-viz">
         <div class="proj-viz-bg"></div>
         <div class="proj-deco ${primaryCat}"></div>
