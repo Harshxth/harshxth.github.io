@@ -73,8 +73,15 @@
   }
 }
 </script>
+<!-- Resource hints: warm up the connections to every origin the page fetches. -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin/>
+<link rel="preconnect" href="https://autumn-base-a324.hanstheyt.workers.dev" crossorigin/>
+<link rel="preconnect" href="https://github-contributions-api.jogruber.de" crossorigin/>
+<link rel="preconnect" href="https://gh-pinned-repos.egoist.dev" crossorigin/>
+<link rel="dns-prefetch" href="https://api.github.com"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" fetchpriority="high"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -930,7 +937,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── DATA ─────────────────────────────────────────────────────────────────────
 const EXP=[
   {title:'Computer Vision Video Analyst',cur:true,org:'CUTR — University of South Florida',period:'Mar 2026 – Present',color:'#0EA5E9',bg:'CUTR',logo:'cutr',
