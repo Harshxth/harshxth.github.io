@@ -400,6 +400,10 @@ section>*{position:relative;z-index:1}
 .bey-icon{font-size:2rem;margin-bottom:.9rem;display:block}
 .bey-card h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.5rem}
 .bey-card p{font-size:.85rem;color:var(--body);line-height:1.75}
+/* CURRENTLY BUILDING — empty placeholder state */
+.bld-empty{display:flex;align-items:center;gap:1rem;margin-top:2.5rem;padding:1.6rem 1.8rem;border:1px dashed var(--bord);border-radius:14px;background:var(--surf)}
+.bld-empty p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.7;font-family:'DM Sans',sans-serif}
+.bld-pulse{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--v1);box-shadow:0 0 12px var(--v1);animation:pulse 2.4s ease-in-out infinite}
 /* CONTACT */
 #contact{text-align:center;position:relative;max-width:1100px;padding-bottom:5rem}
 .contact-glow{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(var(--accent-rgb),.06) 0%,transparent 70%);pointer-events:none}
@@ -692,9 +696,19 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
   <div class="projects-grid" id="projects-grid"></div>
 </section>
 
+<!-- CURRENTLY BUILDING -->
+<section id="building" style="max-width:900px">
+  <div class="sec-label">04 // CURRENTLY BUILDING</div>
+  <h2 class="sec-h2">What I'm <span style="color:var(--v1)">working on</span></h2>
+  <div class="bld-empty reveal">
+    <span class="bld-pulse"></span>
+    <p>Quiet moment. Between public ships — the next one is being built. Check back soon.</p>
+  </div>
+</section>
+
 <!-- SKILLS -->
 <section id="skills">
-  <div class="sec-label">04 // ARSENAL</div>
+  <div class="sec-label">05 // ARSENAL</div>
   <h2 class="sec-h2">Tech &amp; <span style="color:var(--v1)">Tools</span></h2>
   <div class="sk-grid reveal">
     <div class="sk-group"><div class="sk-gtitle">🧠 ML &amp; AI</div><div class="sk-pills"><span class="sk-pill key">PyTorch</span><span class="sk-pill key">XGBoost</span><span class="sk-pill key">scikit-learn</span><span class="sk-pill">TensorFlow</span><span class="sk-pill key">MLflow</span><span class="sk-pill">Hyperparameter Tuning</span></div></div>
@@ -710,7 +724,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 
 <!-- HOW I THINK -->
 <section id="principles">
-  <div class="sec-label">05 // HOW I THINK</div>
+  <div class="sec-label">06 // HOW I THINK</div>
   <h2 class="sec-h2">Principles I <span style="color:var(--v1)">build by.</span></h2>
   <p style="color:var(--muted);text-align:center;max-width:560px;margin:0 auto;line-height:1.8">Short opinions, held with conviction. Subject to change when the data says so.</p>
   <div class="pr-grid reveal">
@@ -755,7 +769,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 
 <!-- ACTIVITY -->
 <section id="activity">
-  <div class="sec-label">06 // ACTIVITY</div>
+  <div class="sec-label">07 // ACTIVITY</div>
   <h2 class="sec-h2">Building <span style="color:var(--v1)">every day.</span></h2>
   <p style="color:var(--muted);text-align:center;max-width:520px;margin:0 auto;line-height:1.8">A year of commits across my open-source work, research pipelines, and side projects.</p>
   <div class="hm-wrap reveal">
@@ -800,7 +814,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 
 <!-- BEYOND -->
 <section id="beyond" style="max-width:860px">
-  <div class="sec-label">07 // WHEN I'M NOT BUILDING</div>
+  <div class="sec-label">08 // WHEN I'M NOT BUILDING</div>
   <h2 class="sec-h2">Outside <span style="color:var(--v3)">the terminal.</span></h2>
   <div class="bey-grid reveal">
     <div class="bey-card"><span class="bey-icon">🏋️</span><h3>Iron &amp; Discipline</h3><p>Training keeps me sharp. The gym teaches progressive overload — a principle I apply just as hard to engineering. Consistency over intensity, every single day.</p></div>
@@ -811,7 +825,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bord);padding:1.5r
 <!-- CONTACT -->
 <section id="contact" style="text-align:center;position:relative;max-width:1100px;padding-bottom:5rem">
   <div class="contact-glow"></div>
-  <div class="sec-label">08 // CONTACT</div>
+  <div class="sec-label">09 // CONTACT</div>
   <h2 class="sec-h2" style="max-width:700px;margin:0 auto 1rem">Open to what's <span style="color:var(--v1)">next.</span></h2>
   <p style="color:var(--muted);max-width:500px;margin:0 auto;line-height:1.85">I build AI, understand how it works, and apply it where it moves the business. If that sounds useful — let's talk.</p>
   <div class="open-chips">
@@ -1251,7 +1265,7 @@ async function initResumeCounter(){
         line('healthcare-research-agent/','');
         return;
       }
-      line('about/  experience/  projects/  skills/  principles/  activity/  beyond/  contact/');
+      line('about/  experience/  projects/  building/  skills/  principles/  activity/  beyond/  contact/');
       line('try: <span style="color:var(--v1)">ls projects</span>','dim');
     }},
     cat:{d:'read a section — cat [name]',run(arg){
@@ -1495,11 +1509,12 @@ async function initResumeCounter(){
     {g:'Jump to',t:'About',d:'intro + education',k:'about',ic:'01',act:()=>go('#about')},
     {g:'Jump to',t:'Experience',d:'work timeline',k:'experience',ic:'02',act:()=>go('#experience')},
     {g:'Jump to',t:'Projects',d:'production systems',k:'projects',ic:'03',act:()=>go('#projects')},
-    {g:'Jump to',t:'Skills',d:'tech & tools',k:'skills arsenal',ic:'04',act:()=>go('#skills')},
-    {g:'Jump to',t:'How I Think',d:'principles + philosophy',k:'principles philosophy how think',ic:'05',act:()=>go('#principles')},
-    {g:'Jump to',t:'Activity',d:'github heatmap',k:'activity heatmap github',ic:'06',act:()=>go('#activity')},
-    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'07',act:()=>go('#beyond')},
-    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'08',act:()=>go('#contact')},
+    {g:'Jump to',t:'Currently Building',d:'next thing in flight',k:'building current next',ic:'04',act:()=>go('#building')},
+    {g:'Jump to',t:'Skills',d:'tech & tools',k:'skills arsenal',ic:'05',act:()=>go('#skills')},
+    {g:'Jump to',t:'How I Think',d:'principles + philosophy',k:'principles philosophy how think',ic:'06',act:()=>go('#principles')},
+    {g:'Jump to',t:'Activity',d:'github heatmap',k:'activity heatmap github',ic:'07',act:()=>go('#activity')},
+    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'08',act:()=>go('#beyond')},
+    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'09',act:()=>go('#contact')},
     {g:'Projects',t:'Sensory',d:'1st place · HackaBull VII',k:'sensory hackabull hackathon nextjs gemini accessibility',ic:'◈',act:()=>open('https://github.com/Harshxth/Sensory')},
     {g:'Projects',t:'CareCall',d:'agentic voice AI for healthcare',k:'carecall hackusf adk gemini',ic:'◈',act:()=>open('https://github.com/Harshxth/CareCall')},
     {g:'Projects',t:'Sentinel AI',d:'confidence-gated multi-agent NLP',k:'sentinel kaggle roberta mcp claude',ic:'◈',act:()=>open('https://github.com/Harshxth/Sentinel-AI')},
