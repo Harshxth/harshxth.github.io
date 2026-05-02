@@ -19,10 +19,10 @@
 <meta name="twitter:description" content="Building production AI systems — agentic RAG, real-time vision, healthcare ML."/>
 <meta name="twitter:image" content="https://harshxth.github.io/og.png"/>
 <meta name="twitter:image:alt" content="Harshith Gujjeti — AI/ML Engineer. Open to Summer Internship 2026."/>
-<meta name="theme-color" content="#080010" media="(prefers-color-scheme: dark)"/>
+<meta name="theme-color" content="#0B0B0D" media="(prefers-color-scheme: dark)"/>
 <meta name="theme-color" content="#FAFAFB" media="(prefers-color-scheme: light)"/>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23080010'/><text x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Syne,system-ui,sans-serif' font-weight='800' font-size='30' fill='%23C084FC'>HG</text></svg>"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='38' fill='%23080010'/><text x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Syne,system-ui,sans-serif' font-weight='800' font-size='84' fill='%23C084FC'>HG</text></svg>"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230B0B0D'/><text x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Syne,system-ui,sans-serif' font-weight='800' font-size='30' fill='%23E5E7EB'>HG</text></svg>"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='38' fill='%230B0B0D'/><text x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Syne,system-ui,sans-serif' font-weight='800' font-size='84' fill='%23E5E7EB'>HG</text></svg>"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -406,7 +406,7 @@ section>*{position:relative;z-index:1}
 .sk-gtitle{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.85rem}
 .sk-pills{display:flex;flex-wrap:wrap;gap:.4rem}
 .sk-pill{font-size:.72rem;padding:.25rem .7rem;border-radius:5px;background:rgba(255,255,255,.03);color:var(--muted);border:1px solid var(--bord);transition:color .2s,border-color .2s;font-family:'JetBrains Mono',monospace}
-.sk-group:hover .sk-pill{color:rgba(240,234,255,.55);border-color:rgba(255,255,255,.08)}
+.sk-group:hover .sk-pill{color:rgba(249,250,251,.55);border-color:rgba(255,255,255,.08)}
 .sk-pill.key{background:rgba(var(--accent-rgb),.07);border-color:rgba(var(--accent-rgb),.2);color:var(--v1)}
 /* BEYOND */
 #beyond{max-width:860px}
@@ -1028,8 +1028,8 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   const tick=setInterval(()=>{
     if(i>=BOOT.length){clearInterval(tick);setTimeout(()=>{loader.classList.add('hide');setTimeout(initAll,380);},180);return;}
     const d=document.createElement('div');d.className='boot-line';
-    d.style.color=BOOT[i].includes('READY')?'#E879F9':BOOT[i].includes('OK')?'#C084FC':'#5B3A7A';
-    d.innerHTML=`<span style="color:#2A1245;margin-right:1rem">[${String(i).padStart(2,'0')}]</span>${BOOT[i]}`;
+    d.style.color=BOOT[i].includes('READY')?'#F3F4F6':BOOT[i].includes('OK')?'#E5E7EB':'#6B7280';
+    d.innerHTML=`<span style="color:#3F3F46;margin-right:1rem">[${String(i).padStart(2,'0')}]</span>${BOOT[i]}`;
     bl.appendChild(d);i++;const pct=Math.round((i/BOOT.length)*100);pp.style.width=pct+'%';pt.textContent=pct+'%';
   },110);
 })();
@@ -1452,12 +1452,12 @@ async function initResumeCounter(){
     });
     // cursor "query" token
     ctx.save();
-    ctx.shadowColor='#E879F9';ctx.shadowBlur=24;
+    ctx.shadowColor='#F3F4F6';ctx.shadowBlur=24;
     ctx.fillStyle='rgba(var(--accent2-rgb),0.95)';
     ctx.beginPath();ctx.arc(mx,my,9,0,Math.PI*2);ctx.fill();
     ctx.restore();
     // label "Q"
-    ctx.fillStyle='rgba(240,234,255,.9)';
+    ctx.fillStyle='rgba(249,250,251,.9)';
     ctx.font='600 11px "JetBrains Mono", monospace';
     ctx.fillText('Q',mx+14,my-10);
 
@@ -1521,7 +1521,7 @@ async function initResumeCounter(){
   });
   window.addEventListener('resize',()=>{if(active){resize();buildTokens();}});
   // Console easter egg hint
-  try{console.log('%c◆ Harshith','color:#C084FC;font-weight:700;font-size:14px','· try the Konami code: ↑↑↓↓←→←→ B A');}catch{}
+  try{console.log('%c◆ Harshith','color:#E5E7EB;font-weight:700;font-size:14px','· try the Konami code: ↑↑↓↓←→←→ B A');}catch{}
 })();
 
 // ── COMMAND PALETTE ──────────────────────────────────────────────────────────
