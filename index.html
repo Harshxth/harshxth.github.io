@@ -970,6 +970,9 @@ const PROJ=[
   {name:'Local PDF RAG Chatbot',sub:'Fully-Local RAG',color:'#38BDF8',metric:'<2s · 90%+ faithful',wip:false,link:'https://github.com/Harshxth/pdf-rag-chatbot',diag:'pdf_rag',cats:['rag'],
    desc:'Fully-local RAG with <strong>LangChain</strong>, Ollama Llama 3.1, ChromaDB. Natural-language Q&amp;A over any PDF — <span class="m">&lt;2s query time</span>, zero hallucinations, <span class="m">90%+ faithfulness</span> score.',
    tags:['LangChain','Ollama','ChromaDB','Streamlit','Python'],flow:['PDF','Chunk','Embed','Retrieve','Answer']},
+  {name:'Sentinel AI',sub:'Confidence-Gated Multi-Agent NLP',color:'#FBBF24',metric:'14× Cheaper · Same Acc',wip:false,link:'https://github.com/Harshxth/Sentinel-AI',cats:['agents','ml'],
+   desc:'Confidence-gated multi-agent pipeline for stress detection in social text. <strong>Fine-tuned RoBERTa</strong> handles ~86% of posts locally; only the 14% low-confidence cases escalate to <strong>Claude Sonnet 4.6</strong> for adversarial masked-distress reasoning. <span class="m">14× cheaper</span> than naive ensembling at the same accuracy — proven via 7-config ablation with McNemar significance testing. Includes <strong>MCP server</strong> exposing the classifier as a tool for Claude Desktop interop.',
+   tags:['PyTorch','RoBERTa','LangGraph','Claude','MCP','Streamlit'],flow:['Post','Screener','Confidence Gate','Adversarial','Judge']},
 ];
 const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Classical ML'};
 
@@ -1525,6 +1528,7 @@ async function initResumeCounter(){
     {g:'Jump to',t:'Activity',d:'github heatmap',k:'activity heatmap github',ic:'07',act:()=>go('#activity')},
     {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'08',act:()=>go('#beyond')},
     {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'09',act:()=>go('#contact')},
+    {g:'Projects',t:'Sentinel AI',d:'confidence-gated multi-agent NLP',k:'sentinel kaggle roberta mcp claude',ic:'◈',act:()=>open('https://github.com/Harshxth/Sentinel-AI')},
     {g:'Projects',t:'CiteIQ',d:'agentic RAG system',k:'citeiq rag langgraph',ic:'◈',act:()=>open('https://github.com/Harshxth/citeiq')},
     {g:'Projects',t:'Speech-to-Note',d:'clinical SOAP notes',k:'whisper speech soap',ic:'◈',act:()=>open('https://github.com/Harshxth/Speech-to-Note-Assistant')},
     {g:'Actions',t:'Email Harshith',d:'harshithgujjeti@gmail.com',k:'mail email contact',ic:'✉',act:()=>open('mailto:harshithgujjeti@gmail.com')},
