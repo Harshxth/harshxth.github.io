@@ -958,21 +958,30 @@ const EXP=[
 ];
 
 const PROJ=[
-  {name:'CiteIQ',sub:'Agentic RAG System',color:'#A78BFA',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',cats:['rag','agents'],
-   desc:'Production multi-agent citation intelligence system. <strong>LangGraph</strong> orchestrates Router, Retriever, Evaluator, and Generator agents over ChromaDB — deployed via FastAPI + Docker with <span class="m">LangSmith</span> tracing and RAGAS evaluation.',
-   tags:['LangGraph','FastAPI','ChromaDB','Groq','RAGAS','Docker','LangSmith'],flow:['Query','Router','Retriever','Evaluator','Response']},
-  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#F472B6',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',diag:'hc_agent',cats:['agents','healthcare'],
-   desc:'Autonomous 4-agent system (Researcher / Analyzer / Validator / Reporter) built with <strong>CrewAI</strong>. Conducts end-to-end PubMed research and generates executive reports. Processed <span class="m">50+ healthcare queries</span> at <span class="m">95% accuracy</span> vs manual review.',
-   tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
-  {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#FB923C',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',cats:['healthcare','ml'],
-   desc:'<strong>XGBoost</strong> on <span class="m">100,000 patient records</span>. Evaluated <span class="m">230+ hyperparameter configs</span> — <span class="m">5–6× improvement</span> over published benchmarks. Potential <span class="m">$1.7–2.6M</span> annual savings per 400-bed hospital.',
-   tags:['XGBoost','SHAP','scikit-learn','Healthcare ML','Python'],flow:['Patient Data','Feature Eng','XGBoost','SHAP','Insight']},
-  {name:'Local PDF RAG Chatbot',sub:'Fully-Local RAG',color:'#38BDF8',metric:'<2s · 90%+ faithful',wip:false,link:'https://github.com/Harshxth/pdf-rag-chatbot',diag:'pdf_rag',cats:['rag'],
-   desc:'Fully-local RAG with <strong>LangChain</strong>, Ollama Llama 3.1, ChromaDB. Natural-language Q&amp;A over any PDF — <span class="m">&lt;2s query time</span>, zero hallucinations, <span class="m">90%+ faithfulness</span> score.',
-   tags:['LangChain','Ollama','ChromaDB','Streamlit','Python'],flow:['PDF','Chunk','Embed','Retrieve','Answer']},
+  // ── Row 1: hackathon-award cards ──
+  {name:'Sensory',sub:'Maps how a place feels',color:'#22D3EE',metric:'Best UI/UX · 148 Venues',award:'Best UI/UX · HackaBull VII',wip:false,link:'https://github.com/Harshxth/Sensory',cats:['agents','ml'],
+   desc:'<strong>Next.js 16</strong> PWA layering live noise, lighting, crowd, smell, and exit data over Google Maps with profile-aware route scoring for autistic, sensory-sensitive, wheelchair, deaf, blind, dyslexic, and ESL users across <span class="m">148 seeded Tampa venues</span>. <strong>Gemini 2.5 Flash Vision</strong> reads signs through your camera; <strong>ElevenLabs</strong> Conversational AI grounded on a venue knowledge base + 30-second Instant Voice Clone delivers cues in a voice the user trusts. Vibrates before a hard place.',
+   tags:['Next.js','TypeScript','Gemini Vision','ElevenLabs','MongoDB Atlas','Google Maps','PWA'],flow:['Profile','Sensory Map','Route Score','Voice Cue','Arrive']},
+  {name:'CareCall',sub:'Agentic Voice AI · Healthcare',color:'#F472B6',metric:'Top 5 · 70+ Languages',award:'Top 5 · HackUSF 2026',wip:false,link:'https://github.com/Harshxth/CareCall',cats:['agents','healthcare'],
+   desc:'Multi-agent post-discharge patient follow-up using <strong>Google ADK + Gemini</strong>. 9-step care-protocol state machine with auto-escalation to nurses on urgent flags. <strong>ElevenLabs</strong> voice synthesis across <span class="m">70+ languages</span>; structured post-call reports to physicians via email. <strong>HIPAA-compliant Supabase</strong> backend with encrypted PHI.',
+   tags:['Google ADK','Gemini','ElevenLabs','Supabase','React','HIPAA'],flow:['Discharge','Voice Call','Comprehension','Triage','Report']},
+  // ── Row 2: technical heavyweights ──
   {name:'Sentinel AI',sub:'Confidence-Gated Multi-Agent NLP',color:'#FBBF24',metric:'14× Cheaper · Same Acc',wip:false,link:'https://github.com/Harshxth/Sentinel-AI',cats:['agents','ml'],
    desc:'Confidence-gated multi-agent pipeline for stress detection in social text. <strong>Fine-tuned RoBERTa</strong> handles ~86% of posts locally; only the 14% low-confidence cases escalate to <strong>Claude Sonnet 4.6</strong> for adversarial masked-distress reasoning. <span class="m">14× cheaper</span> than naive ensembling at the same accuracy — proven via 7-config ablation with McNemar significance testing. Includes <strong>MCP server</strong> exposing the classifier as a tool for Claude Desktop interop.',
    tags:['PyTorch','RoBERTa','LangGraph','Claude','MCP','Streamlit'],flow:['Post','Screener','Confidence Gate','Adversarial','Judge']},
+  {name:'UrbanMind',sub:'Multi-Agent City Design',color:'#A78BFA',metric:'4 Agents · <30s',wip:false,link:'https://github.com/Harshxth/UrbanMind',cats:['agents','ml'],
+   desc:'Four specialised agents — <strong>CityRAG, GeoSense, Visionary, GridShield</strong> — orchestrate natural-language city-design queries on Tampa 2050. Real-time WebSocket streaming of agent status; analyses solar potential, flood risk, EV infrastructure, traffic, and cybersecurity. Top-down masterplans rendered via <strong>Imagen</strong>. Full analysis under <span class="m">30 seconds</span>.',
+   tags:['React','FastAPI','Gemini 2.5','Imagen','ChromaDB','WebSocket'],flow:['NL Query','Agent Routing','Geo Analysis','Plan Render','Stream']},
+  // ── Row 3: production rigor ──
+  {name:'CiteIQ',sub:'Agentic RAG System',color:'#A78BFA',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',cats:['rag','agents'],
+   desc:'Production multi-agent citation intelligence on HuggingFace Spaces. <strong>LangGraph</strong> orchestrates Router, Retriever, Evaluator, and Generator over ChromaDB; FastAPI + Docker. <span class="m">90%+ faithfulness</span> on RAGAS across <span class="m">200+ test queries</span> (0.71 → 0.91 via self-evaluation retry loop); LangSmith tracing on 100% of calls; <span class="m">sub-2s latency</span>.',
+   tags:['LangGraph','FastAPI','ChromaDB','Groq','RAGAS','Docker','LangSmith'],flow:['Query','Router','Retriever','Evaluator','Response']},
+  {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#FB923C',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',cats:['healthcare','ml'],
+   desc:'<strong>XGBoost</strong> on <span class="m">100,000 patient records</span>. Evaluated <span class="m">230+ hyperparameter configs</span> — <span class="m">5–6× improvement</span> over published benchmarks. Potential <span class="m">$1.7–2.6M</span> annual savings per 400-bed hospital.',
+   tags:['XGBoost','SHAP','scikit-learn','Healthcare ML','Python'],flow:['Patient Data','Feature Eng','XGBoost','SHAP','Insight']},
+  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#34D399',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',diag:'hc_agent',cats:['agents','healthcare'],
+   desc:'Autonomous 4-agent system (Researcher / Analyzer / Validator / Reporter) built with <strong>CrewAI</strong>. Conducts end-to-end PubMed research and generates executive reports. Processed <span class="m">50+ healthcare queries</span> at <span class="m">95% accuracy</span> vs manual review.',
+   tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
 ];
 const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Classical ML'};
 
@@ -1270,12 +1279,13 @@ async function initResumeCounter(){
     }},
     ls:{d:'list sections & projects',run(arg){
       if(arg==='projects'||arg==='proj'){
+        line('sensory/','');
+        line('carecall/','');
+        line('sentinel-ai/','');
+        line('urbanmind/','');
         line('citeiq/','');
-        line('healthcare-research-agent/','');
         line('hospital-los-prediction/','');
-        line('pdf-rag-chatbot/','');
-        line('speech-to-note-assistant/','');
-        line('pharmacy-doc-intelligence/','');
+        line('healthcare-research-agent/','');
         return;
       }
       line('about/  experience/  projects/  building/  skills/  principles/  activity/  beyond/  contact/');
@@ -1528,7 +1538,10 @@ async function initResumeCounter(){
     {g:'Jump to',t:'Activity',d:'github heatmap',k:'activity heatmap github',ic:'07',act:()=>go('#activity')},
     {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'08',act:()=>go('#beyond')},
     {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'09',act:()=>go('#contact')},
+    {g:'Projects',t:'Sensory',d:'1st place · HackaBull VII',k:'sensory hackabull hackathon nextjs gemini accessibility',ic:'◈',act:()=>open('https://github.com/Harshxth/Sensory')},
+    {g:'Projects',t:'CareCall',d:'agentic voice AI for healthcare',k:'carecall hackusf adk gemini',ic:'◈',act:()=>open('https://github.com/Harshxth/CareCall')},
     {g:'Projects',t:'Sentinel AI',d:'confidence-gated multi-agent NLP',k:'sentinel kaggle roberta mcp claude',ic:'◈',act:()=>open('https://github.com/Harshxth/Sentinel-AI')},
+    {g:'Projects',t:'UrbanMind',d:'multi-agent city design',k:'urbanmind agents tampa imagen',ic:'◈',act:()=>open('https://github.com/Harshxth/UrbanMind')},
     {g:'Projects',t:'CiteIQ',d:'agentic RAG system',k:'citeiq rag langgraph',ic:'◈',act:()=>open('https://github.com/Harshxth/citeiq')},
     {g:'Projects',t:'Speech-to-Note',d:'clinical SOAP notes',k:'whisper speech soap',ic:'◈',act:()=>open('https://github.com/Harshxth/Speech-to-Note-Assistant')},
     {g:'Actions',t:'Email Harshith',d:'harshithgujjeti@gmail.com',k:'mail email contact',ic:'✉',act:()=>open('mailto:harshithgujjeti@gmail.com')},
@@ -2060,8 +2073,8 @@ function initExp(){
 // ── PROJECTS ─────────────────────────────────────────────────────────────────
 function initProj(){
   const grid=document.getElementById('projects-grid');
-  // Bento sizing pattern — first card is the feature, then alternating wide/regular
-  const SIZES=['feature','regular','wide','regular','wide','regular','regular','wide'];
+  // Bento sizing pattern — Row 1: feature(8) + regular(4) · Row 2: wide(6) + wide(6) · Row 3: regular×3(4 each)
+  const SIZES=['feature','regular','wide','wide','regular','regular','regular'];
   const CAT_LABEL={rag:'RAG',cv:'CV',agents:'Agents',healthcare:'Healthcare',ml:'Classical ML'};
   PROJ.forEach((p,i)=>{
     const size=SIZES[i%SIZES.length]||'regular';
