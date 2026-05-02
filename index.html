@@ -318,7 +318,7 @@ section>*{position:relative;z-index:1}
 .projects-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.2rem;margin-top:2rem;perspective:1400px}
 @media(max-width:900px){.projects-grid{grid-template-columns:1fr;gap:1rem}}
 .proj-card{padding:0;border:1px solid var(--bord);border-radius:22px;background:var(--surf);transition:border-color .4s ease,background .4s ease,box-shadow .4s ease;cursor:none;display:flex;flex-direction:column;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.3)}
-.proj-card.feature{grid-column:span 8;display:grid;grid-template-columns:1.05fr 1fr;gap:0;min-height:320px}
+.proj-card.feature{grid-column:span 8;display:grid;grid-template-columns:1.25fr 1fr;gap:0;min-height:340px}
 .proj-card.wide{grid-column:span 6}
 .proj-card.regular{grid-column:span 4}
 @media(max-width:900px){.proj-card.feature{grid-column:1/-1;grid-template-columns:1fr}.proj-card.wide,.proj-card.regular{grid-column:1/-1}}
@@ -332,8 +332,9 @@ section>*{position:relative;z-index:1}
 .proj-card:hover .proj-bg-metric{opacity:.18}
 .proj-card:hover .proj-viz{opacity:1}
 /* Visual header — AI-themed decoration + faded bg metric */
-.proj-viz{position:relative;min-height:180px;overflow:hidden;border-radius:22px 22px 0 0;display:flex;align-items:center;justify-content:center;transition:opacity .4s ease;opacity:.92}
-.proj-card.feature .proj-viz{border-radius:22px 0 0 22px;min-height:320px}
+.proj-viz{position:relative;min-height:200px;overflow:hidden;border-radius:22px 22px 0 0;display:flex;align-items:center;justify-content:center;transition:opacity .4s ease;opacity:.92}
+.proj-card.has-media:not(.feature) .proj-viz{min-height:240px}
+.proj-card.feature .proj-viz{border-radius:22px 0 0 22px;min-height:340px}
 @media(max-width:900px){.proj-card.feature .proj-viz{border-radius:22px 22px 0 0;min-height:180px}}
 .proj-viz-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(var(--accent-rgb),.04) 0%,rgba(var(--accent-rgb),.02) 50%,var(--surf) 100%)}
 .proj-bg-metric{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Syne',sans-serif;font-weight:800;font-size:4.2rem;letter-spacing:-.04em;color:currentColor;opacity:.13;pointer-events:none;user-select:none;transition:opacity .4s ease;white-space:nowrap;text-align:center;line-height:.9}
@@ -347,6 +348,22 @@ section>*{position:relative;z-index:1}
 .proj-deco.agents{background-image:radial-gradient(circle at 20% 30%,currentColor 2px,transparent 3px),radial-gradient(circle at 70% 50%,currentColor 2px,transparent 3px),radial-gradient(circle at 40% 70%,currentColor 2px,transparent 3px),radial-gradient(circle at 85% 20%,currentColor 2px,transparent 3px),radial-gradient(circle at 55% 25%,currentColor 2px,transparent 3px),radial-gradient(circle at 30% 85%,currentColor 2px,transparent 3px)}
 .proj-deco.healthcare{background-image:radial-gradient(circle at center,currentColor 1px,transparent 2px);background-size:32px 32px;opacity:.28}
 .proj-deco.ml{background-image:radial-gradient(circle at 10% 80%,currentColor 1.5px,transparent 2px),radial-gradient(circle at 30% 40%,currentColor 1.5px,transparent 2px),radial-gradient(circle at 55% 65%,currentColor 1.5px,transparent 2px),radial-gradient(circle at 75% 30%,currentColor 1.5px,transparent 2px),radial-gradient(circle at 88% 75%,currentColor 1.5px,transparent 2px),radial-gradient(circle at 45% 15%,currentColor 1.5px,transparent 2px),radial-gradient(circle at 65% 85%,currentColor 1.5px,transparent 2px)}
+/* Cinematic media swap (poster -> live UI) for select project cards */
+.proj-card.has-media .proj-deco{display:none}
+.proj-card.has-media .proj-viz-bg{opacity:.3}
+.proj-card.has-media .proj-bg-metric{opacity:0;transition:opacity .8s ease}
+.proj-card.has-media.media-revealed .proj-bg-metric{opacity:0}
+.proj-media-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:inherit;will-change:opacity,filter;pointer-events:none;z-index:1}
+.proj-media-layer.poster{opacity:1;filter:blur(0px) saturate(1.02);object-position:center;transition:opacity 1.6s cubic-bezier(.4,0,.2,1),filter 1.6s cubic-bezier(.4,0,.2,1)}
+.proj-media-layer.live{opacity:0;filter:blur(28px) saturate(1.1);transition:opacity 1.6s cubic-bezier(.4,0,.2,1),filter 1.6s cubic-bezier(.4,0,.2,1)}
+.proj-card.has-media.media-revealed .proj-media-layer.poster{opacity:0;filter:blur(28px) saturate(1.02)}
+.proj-card.has-media.media-revealed .proj-media-layer.live{opacity:1;filter:blur(0px) saturate(1.05)}
+.proj-card.has-media .proj-viz-label{z-index:3;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+@media (prefers-reduced-motion:reduce){
+  .proj-media-layer{transition:none}
+  .proj-card.has-media .proj-media-layer.poster{opacity:0}
+  .proj-card.has-media .proj-media-layer.live{opacity:1;filter:none}
+}
 /* Body */
 .proj-body{padding:1.8rem 1.9rem;display:flex;flex-direction:column;flex:1}
 .proj-card.feature .proj-body{padding:2.2rem 2.4rem}
@@ -937,9 +954,11 @@ const EXP=[
 const PROJ=[
   // ── Row 1: hackathon-award cards ──
   {name:'Sensory',sub:'Maps how a place feels',color:'#22D3EE',metric:'Best UI/UX · 148 Venues',award:'Best UI/UX · HackaBull VII',wip:false,link:'https://github.com/Harshxth/Sensory',cats:['agents','ml'],
+   media:{poster:'assets/sensory-hero.jpg',live:'assets/sensory-map.jpg'},
    desc:'<strong>Next.js 16</strong> PWA layering live noise, lighting, crowd, smell, and exit data over Google Maps with profile-aware route scoring for autistic, sensory-sensitive, wheelchair, deaf, blind, dyslexic, and ESL users across <span class="m">148 seeded Tampa venues</span>. <strong>Gemini 2.5 Flash Vision</strong> reads signs through your camera; <strong>ElevenLabs</strong> Conversational AI grounded on a venue knowledge base + 30-second Instant Voice Clone delivers cues in a voice the user trusts. Vibrates before a hard place.',
    tags:['Next.js','TypeScript','Gemini Vision','ElevenLabs','MongoDB Atlas','Google Maps','PWA'],flow:['Profile','Sensory Map','Route Score','Voice Cue','Arrive']},
   {name:'CareCall',sub:'Agentic Voice AI · Healthcare',color:'#F472B6',metric:'Top 5 · 70+ Languages',award:'Top 5 · HackUSF 2026',wip:false,link:'https://github.com/Harshxth/CareCall',cats:['agents','healthcare'],
+   media:{poster:'assets/carecall-hero.jpg',live:'assets/carecall-app.jpg'},
    desc:'Multi-agent post-discharge patient follow-up using <strong>Google ADK + Gemini</strong>. 9-step care-protocol state machine with auto-escalation to nurses on urgent flags. <strong>ElevenLabs</strong> voice synthesis across <span class="m">70+ languages</span>; structured post-call reports to physicians via email. <strong>HIPAA-compliant Supabase</strong> backend with encrypted PHI.',
    tags:['Google ADK','Gemini','ElevenLabs','Supabase','React','HIPAA'],flow:['Discharge','Voice Call','Comprehension','Triage','Report']},
   // ── Row 2: technical heavyweights ──
@@ -947,10 +966,12 @@ const PROJ=[
    desc:'Confidence-gated multi-agent pipeline for stress detection in social text. <strong>Fine-tuned RoBERTa</strong> handles ~86% of posts locally; only the 14% low-confidence cases escalate to <strong>Claude Sonnet 4.6</strong> for adversarial masked-distress reasoning. <span class="m">14× cheaper</span> than naive ensembling at the same accuracy — proven via 7-config ablation with McNemar significance testing. Includes <strong>MCP server</strong> exposing the classifier as a tool for Claude Desktop interop.',
    tags:['PyTorch','RoBERTa','LangGraph','Claude','MCP','Streamlit'],flow:['Post','Screener','Confidence Gate','Adversarial','Judge']},
   {name:'UrbanMind',sub:'Multi-Agent City Design',color:'#A78BFA',metric:'4 Agents · <30s',wip:false,link:'https://github.com/Harshxth/UrbanMind',cats:['agents','ml'],
+   media:{live:'assets/urbanmind-app.jpg'},
    desc:'Four specialised agents — <strong>CityRAG, GeoSense, Visionary, GridShield</strong> — orchestrate natural-language city-design queries on Tampa 2050. Real-time WebSocket streaming of agent status; analyses solar potential, flood risk, EV infrastructure, traffic, and cybersecurity. Top-down masterplans rendered via <strong>Imagen</strong>. Full analysis under <span class="m">30 seconds</span>.',
    tags:['React','FastAPI','Gemini 2.5','Imagen','ChromaDB','WebSocket'],flow:['NL Query','Agent Routing','Geo Analysis','Plan Render','Stream']},
   // ── Row 3: production rigor ──
   {name:'CiteIQ',sub:'Agentic RAG System',color:'#A78BFA',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',cats:['rag','agents'],
+   media:{live:'assets/citeiq-app.jpg'},
    desc:'Production multi-agent citation intelligence on HuggingFace Spaces. <strong>LangGraph</strong> orchestrates Router, Retriever, Evaluator, and Generator over ChromaDB; FastAPI + Docker. <span class="m">90%+ faithfulness</span> on RAGAS across <span class="m">200+ test queries</span> (0.71 → 0.91 via self-evaluation retry loop); LangSmith tracing on 100% of calls; <span class="m">sub-2s latency</span>.',
    tags:['LangGraph','FastAPI','ChromaDB','Groq','RAGAS','Docker','LangSmith'],flow:['Query','Router','Retriever','Evaluator','Response']},
   {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#FB923C',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',cats:['healthcare','ml'],
@@ -2058,17 +2079,22 @@ function initProj(){
     const primaryCat=(p.cats||['ml'])[0];
     const catLabel=(p.cats||[]).map(c=>CAT_LABEL[c]||c).slice(0,2).join(' · ');
     const card=document.createElement('article');
-    card.className=`proj-card reveal ${size}`;
+    const hasMedia=!!(p.media&&p.media.live);
+    const hasPoster=hasMedia&&!!p.media.poster;
+    card.className=`proj-card reveal ${size}${hasMedia?' has-media':''}${hasPoster?' has-poster':''}`;
     card.style.cssText=`transition-delay:${i*.08}s;color:${p.color}`;
     card.dataset.cats=(p.cats||[]).join(' ');
+    const vizInner=hasMedia
+      ? `${hasPoster?`<img class="proj-media-layer poster" src="${p.media.poster}" alt="" loading="lazy" decoding="async">`:''}<img class="proj-media-layer live" src="${p.media.live}" alt="" loading="lazy" decoding="async">`
+      : `<div class="proj-deco ${primaryCat}"></div>`;
     card.innerHTML=`
       <span class="card-shine"></span>
       <div class="proj-viz">
         <div class="proj-viz-bg"></div>
-        <div class="proj-deco ${primaryCat}"></div>
+        ${vizInner}
         <div class="proj-viz-shine"></div>
         <span class="proj-viz-label">${p.sub.toUpperCase()}</span>
-        <div class="proj-bg-metric">${p.metric}</div>
+        ${hasMedia?'':`<div class="proj-bg-metric">${p.metric}</div>`}
       </div>
       <div class="proj-body">
         ${p.award?`<span class="proj-award">${p.award}</span>`:''}
@@ -2087,6 +2113,30 @@ function initProj(){
     grid.appendChild(card);
   });
   initProjFilters();
+  initProjMedia();
+}
+
+// Cinematic hero -> live UI blur swap. Fires once when card crosses the
+// viewport, after a brief beat so the user reads the poster image first.
+// Respects prefers-reduced-motion (jumps straight to live image).
+function initProjMedia(){
+  const cards=document.querySelectorAll('.proj-card.has-media');
+  if(!cards.length)return;
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced){cards.forEach(c=>c.classList.add('media-revealed'));return;}
+  if(typeof IntersectionObserver==='undefined'){
+    cards.forEach(c=>setTimeout(()=>c.classList.add('media-revealed'),1800));
+    return;
+  }
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('media-revealed'),1400);
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.4});
+  cards.forEach(c=>io.observe(c));
 }
 
 function initProjFilters(){
