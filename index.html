@@ -941,6 +941,9 @@ footer > .ft-konami{grid-column:1/-1;grid-row:2;justify-self:center}
 <script>
 // ── DATA ─────────────────────────────────────────────────────────────────────
 const EXP=[
+  {title:'Agentic AI Intern',cur:true,org:'Reach Cooling Group',period:'May 2026 – Aug 2026',color:'#1D6FBF',bg:'REACH',logo:'reach',logoFill:true,
+   tags:['LLM Agents','Supply Chain AI','Time-Series Forecasting','Python','pandas','Prompt Engineering'],
+   bullets:['Designing and prototyping <strong>LLM-powered AI agents</strong> with agent orchestration frameworks to automate supply chain workflows — demand planning support, procurement recommendations, and real-time inventory monitoring.','Building <strong>predictive ML models</strong> (time-series forecasting, regression, classification) for demand forecasting and inventory optimization; integrating outputs into live business workflows via APIs.']},
   {title:'Computer Vision Video Analyst',cur:true,org:'CUTR — University of South Florida',period:'Feb 2026 – Present',color:'#0EA5E9',bg:'CUTR',logo:'cutr',
    tags:['YOLOv8','ByteTrack','Computer Vision','Python','FDOT'],
    bullets:['Deployed production <strong>YOLOv8 + ByteTrack</strong> pipeline processing <span class="metric">100+ hours</span> of traffic video — tracked <span class="metric">1,200+ unique objects</span> across <span class="metric">15+ intersections</span> at <span class="metric">90%+ detection accuracy</span> for a federal SS4A safety grant.','Automated manual counting workflows; delivered <span class="metric">50+ annotated videos</span>, CSV datasets, and batch scripts supporting SS4A grant deliverables.']},
@@ -996,6 +999,7 @@ const LOGOS={
   venkusa:'assets/venkusa.jpg',
   isro:'assets/isro.jpg',
   cutr:'assets/cutr.jpg',
+  reach:'assets/reach.jpg',
 };
 
 const DIAGRAMS={
@@ -2049,7 +2053,9 @@ function initExp(){
   EXP.forEach((ex,i)=>{
     const div=document.createElement('div');div.className='exp-item';div.style.transitionDelay=i*.15+'s';
     const logoHTML=LOGOS[ex.logo]
-      ?`<div style="width:40px;height:40px;border-radius:8px;background:#ffffff;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:3px;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:contain;display:block" alt="${ex.org} logo"/></div>`
+      ?ex.logoFill
+        ?`<div style="width:40px;height:40px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:cover;display:block" alt="${ex.org} logo"/></div>`
+        :`<div style="width:40px;height:40px;border-radius:8px;background:#ffffff;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:3px;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:contain;display:block" alt="${ex.org} logo"/></div>`
       :`<div style="width:40px;height:40px;border-radius:8px;background:${ex.color}18;border:1px solid ${ex.color}30;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:${ex.color};font-weight:700">${ex.org.split(' ')[0].substring(0,4).toUpperCase()}</div>`;
     div.innerHTML=`
       <div class="exp-dot" style="background:${ex.color};box-shadow:0 0 14px ${ex.color}88"></div>
