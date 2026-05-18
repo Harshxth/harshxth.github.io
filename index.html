@@ -503,6 +503,8 @@ section>*{position:relative;z-index:1}
 .resume-counter{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.15em;margin:-1.5rem auto 2.5rem;padding:.4rem .9rem;border:1px solid var(--bord);border-radius:100px;background:var(--surf);text-transform:uppercase}
 .resume-counter .rc-dot{width:5px;height:5px;border-radius:50%;background:var(--v1);box-shadow:0 0 6px var(--v1);animation:pulse 2s ease-in-out infinite}
 .resume-counter .rc-val{color:var(--v1);font-weight:600;font-variant-numeric:tabular-nums}
+.rc-resume-date{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.14em;text-align:center;margin:-2rem auto 2.5rem;opacity:0;transition:opacity .5s}
+.rc-resume-date.on{opacity:1}
 /* KONAMI · ATTENTION MODE */
 #att-overlay{position:fixed;inset:0;z-index:2500;pointer-events:none;opacity:0;transition:opacity .4s ease}
 #att-overlay.on{opacity:1}
@@ -870,6 +872,7 @@ footer > .ft-konami{grid-column:1/-1;grid-row:2;justify-self:center}
     <span class="rc-val" id="rc-val">—</span>
     <span class="rc-label">times</span>
   </div>
+  <div class="rc-resume-date" id="rc-resume-date"></div>
   <div class="contact-footer">HARSHITH GUJJETI // AI/ML ENGINEER // TAMPA, FL // 2026</div>
 </section>
 
@@ -1045,7 +1048,7 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   },110);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initCountUp();initLastUpdated();initCardTilt();}
+function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
 
 // ── CARD TILT + SHINE ────────────────────────────────────────────────────────
 // Gentle 3D mouse-tilt on project and experience cards. Max 2° per axis,
@@ -1078,6 +1081,20 @@ function initCardTilt(){
       if(!rafId)rafId=requestAnimationFrame(tick);
     });
   });
+}
+
+// ── RÉSUMÉ LAST UPDATED ──────────────────────────────────────────────────────
+async function initResumeDate(){
+  const el=document.getElementById('rc-resume-date');if(!el)return;
+  try{
+    const r=await fetch('https://api.github.com/repos/Harshxth/harshxth.github.io/commits?path=Harshith_Gujjeti_Resume.pdf&per_page=1');
+    if(!r.ok)throw 0;
+    const arr=await r.json();if(!arr||!arr.length)throw 0;
+    const d=new Date(arr[0].commit.committer.date);
+    const fmt=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    el.textContent='résumé last updated · '+fmt;
+    el.classList.add('on');
+  }catch{/* silent */}
 }
 
 // ── LAST UPDATED ─────────────────────────────────────────────────────────────
