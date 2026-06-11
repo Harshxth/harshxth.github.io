@@ -1122,7 +1122,7 @@ function initTyping(){
 function initExp(){
   const el=document.getElementById('exp-list');
   EXP.forEach((ex,i)=>{
-    const div=document.createElement('div');div.className='exp-item';div.style.transitionDelay=i*.15+'s';
+    const div=document.createElement('div');div.className='exp-item';div.style.transitionDelay=i*.15+'s';div.style.color=ex.color;
     const sc=(ex.summary&&ex.bullets.length>ex.summary)?ex.summary:ex.bullets.length;
     const visB=ex.bullets.slice(0,sc).map(b=>`<li>${b}</li>`).join('');
     const moreB=ex.bullets.slice(sc).map(b=>`<li>${b}</li>`).join('');
@@ -1163,6 +1163,26 @@ function initExp(){
       btn.querySelector('.rm-txt').textContent=open?'Show less':('+'+btn.dataset.n+' more');
     });
   });
+  // Scroll-drawn timeline: the line fills as you move through the section and
+  // each dot ignites to its company color when the fill reaches it.
+  const wrap=el.parentElement,line=wrap?wrap.querySelector('.timeline-line'):null;
+  if(line){
+    const fill=document.createElement('div');fill.className='tl-fill';line.appendChild(fill);
+    const items=[...el.querySelectorAll('.exp-item')];
+    let ticking=false;
+    const update=()=>{
+      ticking=false;
+      const r=wrap.getBoundingClientRect();
+      const p=Math.min(1,Math.max(0,(innerHeight*.62-r.top)/r.height));
+      fill.style.height=(p*100)+'%';
+      const fillY=r.top+r.height*p;
+      items.forEach(it=>{if(it.getBoundingClientRect().top+24<=fillY)it.classList.add('lit');});
+    };
+    const onScroll=()=>{if(!ticking){ticking=true;requestAnimationFrame(update);}};
+    addEventListener('scroll',onScroll,{passive:true});
+    addEventListener('resize',onScroll,{passive:true});
+    update();
+  }
 }
 
 // ── PROJECTS ─────────────────────────────────────────────────────────────────
