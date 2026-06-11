@@ -5,7 +5,8 @@ const EXP=[
    bullets:['Built a <strong>GenAI supply-chain chatbot</strong> on Microsoft Teams that answers the team&rsquo;s everyday operational questions in plain English, powered by a local LLM running on-prem through Ollama, so none of the company&rsquo;s data ever leaves the network.','Built the data foundation behind it by pulling <span class="metric">5 years</span> of invoice, PO, forecast, and inventory data, scattered across separate systems, into one <strong>SQLite database</strong> of <span class="metric">4.25M+ rows</span>, matched on internal customer IDs so the same customer is never double-counted, with pre-built views that drop a typical lookup from <span class="metric">~44s</span> on NetSuite to <span class="metric">~5ms</span>.','Now building <strong>autonomous agents</strong> that act on supply-chain workflows directly, with demand forecasting and a GAP inventory model coming next on the roadmap.','Kept that data current with a real-time <strong>NetSuite RESTlet</strong> feed, running it through a custom read-only account with no write or admin access at all. The connection can only ever read, never change anything.','Structured the whole system in <strong>five swappable layers</strong> (data, extraction, storage, AI, and interface) so any one part can be replaced or upgraded later without rewriting the rest.','Ran the AI <strong>entirely local on a single GPU</strong>, with prompt caching for speed. Because the accuracy comes from the database and the queries rather than the model itself, a small 7B model holds up against the cloud version in side-by-side tests.','Made it production-ready by filtering every answer correctly by date, customer, SKU, and warehouse, then checking it against a <span class="metric">52-test</span> suite that re-runs on every change. It now reliably answers all <span class="metric">10</span> of the priority questions it was built to solve.']},
   {title:'Computer Vision Video Analyst',cur:true,org:'CUTR · University of South Florida',period:'Feb 2026 – Present',color:'#0EA5E9',bg:'CUTR',logo:'cutr',
    tags:['YOLOv8','ByteTrack','Label Studio','Computer Vision','Python','FDOT'],
-   bullets:['Built a production <strong>YOLOv8 + ByteTrack</strong> pipeline to detect and count micromobility (bicycles, e-bikes, and e-scooters) across <span class="metric">50+</span> fixed-camera sites and <span class="metric">100+ hours</span> of footage for an FDOT-funded safety study.','Hand-labeled <span class="metric">5,000+</span> frames in Label Studio to build a custom training set, merging field footage with public datasets and negative classes so the model stops mistaking cars and motorcycles for bikes.','Iterated the detector to <span class="metric">9</span> classes, reaching <span class="metric">~0.90 mAP</span> on the hardest-to-distinguish classes (e-bikes and seated scooters) and eliminating false motorcycle detections.','Delivered per-site counts and a safety analysis to the research leads, surfacing <span class="metric">30%</span> helmet compliance and <span class="metric">51%</span> of riders traveling against traffic.']},
+   bullets:['Production computer vision for transportation-safety research: building the detectors, the datasets behind them, and the analyses they feed.'],
+   projects:[{name:'Micromobility Detection',desc:'9-class detector counting bikes, e-bikes, and e-scooters across <span class="metric">50+</span> camera sites for FDOT.',cs:'cs-overlay'}]},
   {title:'Research Assistant · Data Engineering & Entity Resolution',cur:true,org:'USF · Muma College of Business',period:'Jan 2026 – Present',color:'#006747',bg:'USF MUMA',logo:'usf',
    tags:['Entity Resolution','Fuzzy Matching','Python','pandas','Record Linkage','EDA'],
    bullets:['Building large-scale <strong>entity-resolution pipelines</strong> that link companies across messy, real-world research datasets of up to <span class="metric">325K+</span> records: the clean, connected data foundation that downstream business and economic research relies on.','Matching records with <strong>fuzzy name matching</strong> across multiple algorithms, reconciled in a consensus layer and verified with geographic, industry, and domain signals into tiered confidence levels.','Auditing data quality end to end so every match is scored and explainable, turning fragmented, inconsistently-named sources into reliable linked datasets ready for analysis.']},
@@ -104,7 +105,7 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   },110);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
+function initAll(){initCursor();initNav();initBG();initTyping();initCaseStudy();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
 
 // ── CARD TILT + SHINE ────────────────────────────────────────────────────────
 // Gentle 3D mouse-tilt on project and experience cards. Max 2° per axis,
@@ -1128,6 +1129,7 @@ function initExp(){
     const moreB=ex.bullets.slice(sc).map(b=>`<li>${b}</li>`).join('');
     const moreN=ex.bullets.length-sc;
     const bulletsHTML=`<ul class="exp-bullets">${visB}</ul>`+(moreN>0?`<div class="exp-more" id="xm-${i}"><div><ul class="exp-bullets">${moreB}</ul></div></div><button type="button" class="exp-readmore" data-t="xm-${i}" data-n="${moreN}" aria-expanded="false"><span class="rm-txt">+${moreN} more</span><span class="rm-ico">⌄</span></button>`:'');
+    const subsHTML=(ex.projects&&ex.projects.length)?`<div class="subs"><div class="subs-label">Projects</div>${ex.projects.map(p=>`<button type="button" class="sub-row click" data-cs="${p.cs}"><span class="sub-main"><span class="sub-name"><span class="sub-dot done"></span>${p.name}</span><span class="sub-desc">${p.desc}</span></span><span class="sub-cta">Case study <i>→</i></span></button>`).join('')}</div>`:'';
     const logoHTML=LOGOS[ex.logo]
       ?ex.logoFill
         ?`<div style="width:40px;height:40px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:cover;display:block" alt="${ex.org} logo"/></div>`
@@ -1150,7 +1152,7 @@ function initExp(){
           <div class="exp-period">${ex.period}</div>
         </div>
         <div style="display:flex;gap:.38rem;flex-wrap:wrap;margin-bottom:.2rem;margin-top:.6rem">${ex.tags.map(t=>`<span class="tag" style="background:${ex.color}10;border:1px solid ${ex.color}30;color:${ex.color}">${t}</span>`).join('')}</div>
-        ${bulletsHTML}
+        ${bulletsHTML}${subsHTML}
       </div>`;
     el.appendChild(div);
   });
@@ -1162,6 +1164,9 @@ function initExp(){
       btn.setAttribute('aria-expanded',open?'true':'false');
       btn.querySelector('.rm-txt').textContent=open?'Show less':('+'+btn.dataset.n+' more');
     });
+  });
+  el.querySelectorAll('.sub-row[data-cs]').forEach(btn=>{
+    btn.addEventListener('click',()=>{if(window.openCaseStudy)window.openCaseStudy(btn.dataset.cs);});
   });
   // Scroll-drawn timeline: the line fills as you move through the section and
   // each dot ignites to its company color when the fill reaches it.
@@ -1412,4 +1417,322 @@ function initReveal(){
     });
   },{threshold:.2});
   document.querySelectorAll('.proj-card').forEach(el=>projOb.observe(el));
+}
+
+// ── CASE STUDY (CUTR · micromobility) ────────────────────────────────────────
+// Full-screen overlay opened from a .sub-row on the experience card. The banner
+// runs a canvas detection scene (sketched riders + tracking boxes + scanline
+// that locks onto the title). Animation starts on open, stops on close, and is
+// theme-aware so the ink flips with light/dark.
+function initCaseStudy(){
+  const cs=document.getElementById('cs-overlay');if(!cs)return;
+  const shell=document.getElementById('cs-shell'),closeBtn=document.getElementById('cs-close');
+  let det=null;
+  function openCS(){
+    cs.classList.add('on');cs.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    shell.scrollTop=0;
+    setTimeout(()=>{if(!det)det=makeDetector();det.start();},120);
+    closeBtn.focus();
+  }
+  function closeCS(){
+    cs.classList.remove('on');cs.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    if(det)det.stop();
+  }
+  window.openCaseStudy=openCS;
+  closeBtn.addEventListener('click',closeCS);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cs.classList.contains('on'))closeCS();});
+
+  function makeDetector(){
+    const TAU=Math.PI*2;
+    const banner=document.getElementById('cs-banner');
+    const canvas=document.getElementById('cs-scene');
+    const ctx=canvas.getContext('2d');
+    const titleEl=document.getElementById('cs-title');
+    const fpsEl=document.getElementById('cs-hud-fps');
+    const latEl=document.getElementById('cs-hud-lat');
+    const statusEl=document.getElementById('cs-hud-status');
+
+    let INK='17,24,39';
+    function syncTheme(){INK=document.documentElement.getAttribute('data-theme')==='light'?'17,24,39':'229,231,235';}
+    syncTheme();
+    const ink=a=>'rgba('+INK+','+a+')';
+    const acc=a=>'rgba(45,91,255,'+a+')';
+    const rnd=(a,b)=>a+Math.random()*(b-a);
+    const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+    const mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reduced=mq.matches;
+    let W=0,H=0,placed=false;
+    const headRect={x:0,y:0,w:0,h:0,cx:0};
+    const road={top:0,bot:0,mid:0,laneFar:0,laneNear:0};
+    const DIMS={bicycle:{w:80,h:88},ebike:{w:82,h:90},escooter:{w:58,h:78},car:{w:98,h:52}};
+    const objects=[
+      {id:'04',type:'car',label:'car',conf:.97,lane:'far',dir:-1,speed:150,scale:.66,fx:.22,x:0,wheelA:.4,box:null,dispConf:.97},
+      {id:'07',type:'escooter',label:'e-scooter',conf:.89,lane:'far',dir:-1,speed:84,scale:.66,fx:.68,x:0,wheelA:1.1,box:null,dispConf:.89},
+      {id:'02',type:'ebike',label:'e-bike',conf:.91,lane:'near',dir:1,speed:104,scale:.92,fx:.40,x:0,wheelA:2.2,box:null,dispConf:.91},
+      {id:'01',type:'bicycle',label:'bicycle',conf:.94,lane:'near',dir:1,speed:64,scale:.92,fx:.80,x:0,wheelA:3.6,box:null,dispConf:.94}
+    ];
+    const laneY=o=>o.lane==='far'?road.laneFar:road.laneNear;
+
+    function measureHead(){
+      const hb=banner.getBoundingClientRect(),r=titleEl.getBoundingClientRect();
+      headRect.x=r.left-hb.left;headRect.y=r.top-hb.top;
+      headRect.w=r.width;headRect.h=r.height;
+      headRect.cx=headRect.x+headRect.w/2;
+    }
+    function resize(){
+      W=banner.clientWidth;H=banner.clientHeight;
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+      canvas.style.width=W+'px';canvas.style.height=H+'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      road.top=H*.60;road.bot=Math.min(H*.94,H-16);
+      const bh=road.bot-road.top;
+      road.mid=road.top+bh*.5;road.laneFar=road.top+bh*.34;road.laneNear=road.top+bh*.82;
+      measureHead();
+      if(!placed){objects.forEach(o=>o.x=o.fx*W);placed=true;}
+      if(reduced)renderStatic();
+    }
+
+    const lockJ={x:0,y:0};
+    function detTick(jitter){
+      const j=jitter?1:0;
+      objects.forEach(o=>{
+        const d=DIMS[o.type],s=o.scale,bw=d.w*s+8,bh=d.h*s+6;
+        o.box={x:o.x-bw/2+j*rnd(-2.5,2.5),y:laneY(o)-bh-2+j*rnd(-2,2),w:bw+j*rnd(-3,3),h:bh+2+j*rnd(-2,2)};
+        o.dispConf=jitter?Math.min(.99,Math.max(.5,o.conf+rnd(-.012,.012))):o.conf;
+      });
+      lockJ.x=j*rnd(-1.6,1.6);lockJ.y=j*rnd(-1.6,1.6);
+    }
+
+    function line(x1,y1,x2,y2){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+    function polyline(pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.stroke();}
+    function corners(x,y,w,h,L){
+      ctx.beginPath();
+      ctx.moveTo(x,y+L);ctx.lineTo(x,y);ctx.lineTo(x+L,y);
+      ctx.moveTo(x+w-L,y);ctx.lineTo(x+w,y);ctx.lineTo(x+w,y+L);
+      ctx.moveTo(x+w,y+h-L);ctx.lineTo(x+w,y+h);ctx.lineTo(x+w-L,y+h);
+      ctx.moveTo(x+L,y+h);ctx.lineTo(x,y+h);ctx.lineTo(x,y+h-L);
+      ctx.stroke();
+    }
+    function drawWheel(x,y,r,a){
+      ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.stroke();
+      for(let i=0;i<3;i++){
+        const t=a+i*TAU/3;
+        ctx.beginPath();
+        ctx.moveTo(x+Math.cos(t)*r*.15,y+Math.sin(t)*r*.15);
+        ctx.lineTo(x+Math.cos(t)*r*.85,y+Math.sin(t)*r*.85);
+        ctx.stroke();
+      }
+    }
+    function drawBicycleBody(o,electric){
+      const a=o.wheelA;
+      ctx.lineWidth=2;
+      drawWheel(-23,-15,15,a);drawWheel(23,-15,15,a);
+      line(-23,-15,-9,-45);line(-23,-15,-1,-21);line(-1,-21,-9,-45);
+      line(-9,-45,15,-44);line(15,-44,-1,-21);line(15,-44,23,-15);
+      line(-14,-47,-4,-47);line(15,-44,12,-52);line(9,-52,16,-52);
+      if(electric){ctx.save();ctx.strokeStyle=acc(.9);ctx.lineWidth=6;line(11,-40,2,-25);ctx.restore();}
+      ctx.beginPath();ctx.arc(-1,-21,3.2,0,TAU);ctx.stroke();
+      const p=a*.55,px=Math.cos(p)*7,py=Math.sin(p)*7;
+      line(-1+px,-21+py,-1-px,-21-py);
+      ctx.beginPath();ctx.arc(6.5,-76,5.6,0,TAU);ctx.fill();
+      line(-8,-46,3,-67);line(3,-67,12,-52);
+      polyline([[-8,-46],[1,-33],[-1+px*.6,-21+py*.6]]);
+      ctx.save();ctx.globalAlpha=.5;
+      polyline([[-8,-46],[-4,-32],[-1-px*.6,-21-py*.6]]);
+      ctx.restore();
+    }
+    function drawScooterBody(o){
+      const a=o.wheelA*1.6;
+      ctx.lineWidth=2;
+      drawWheel(-15,-6.5,6.5,a);drawWheel(17,-6.5,6.5,a);
+      ctx.save();ctx.lineWidth=4;line(-13,-13,9,-13);ctx.restore();
+      line(15,-11,24,-55);line(19,-56,29,-56);
+      ctx.beginPath();ctx.arc(8,-67,5.4,0,TAU);ctx.fill();
+      line(-2,-39,6,-59);line(6,-59,22,-54);
+      polyline([[-2,-39],[-7,-27],[-7,-16]]);
+      polyline([[-2,-39],[1,-27],[0,-16]]);
+    }
+    function drawCarBody(o){
+      ctx.lineWidth=2;
+      drawWheel(-29,-9.5,9.5,o.wheelA*.8);drawWheel(29,-9.5,9.5,o.wheelA*.8);
+      ctx.beginPath();
+      if(ctx.roundRect)ctx.roundRect(-46,-30,92,20,7);else ctx.rect(-46,-30,92,20);
+      ctx.stroke();
+      polyline([[-24,-30],[-16,-45],[15,-45],[25,-30]]);
+      line(0,-44,0,-31);
+    }
+    function drawSprite(o){
+      const s=o.scale,far=o.lane==='far';
+      ctx.save();
+      ctx.translate(o.x,laneY(o));
+      ctx.fillStyle=ink(.06);
+      ctx.beginPath();ctx.ellipse(0,0,DIMS[o.type].w*.42*s,4*s,0,0,TAU);ctx.fill();
+      ctx.scale(o.dir*s,s);
+      ctx.strokeStyle=ink(far?.6:.85);ctx.fillStyle=ink(far?.6:.85);
+      ctx.lineCap='round';ctx.lineJoin='round';
+      if(o.type==='bicycle')drawBicycleBody(o,false);
+      else if(o.type==='ebike')drawBicycleBody(o,true);
+      else if(o.type==='escooter')drawScooterBody(o);
+      else drawCarBody(o);
+      ctx.restore();
+    }
+    function drawDetBox(o,emph){
+      const b=o.box;if(!b)return;
+      let k=(o.lane==='far'?.72:.95)*(emph?1.25:1);if(k>1)k=1;
+      ctx.lineWidth=1;ctx.strokeStyle=acc(.3*k);ctx.strokeRect(b.x,b.y,b.w,b.h);
+      ctx.lineWidth=1.8;ctx.strokeStyle=acc(.95*k);
+      corners(b.x,b.y,b.w,b.h,Math.min(10,b.w*.25));
+      ctx.font='500 10px "JetBrains Mono", ui-monospace, monospace';
+      const text=o.label+' '+o.dispConf.toFixed(2);
+      const tw=ctx.measureText(text).width,chipH=15;
+      let chipY=b.y-chipH-3;
+      if(chipY<road.top+2)chipY=b.y+3;
+      ctx.fillStyle=acc(Math.min(1,.96*k+.04));
+      ctx.fillRect(b.x-.5,chipY,tw+10,chipH);
+      ctx.fillStyle='rgba(255,255,255,'+Math.min(1,k+.15)+')';
+      ctx.textBaseline='middle';
+      ctx.fillText(text,b.x+4.5,chipY+chipH/2+.5);
+      ctx.font='500 9px "JetBrains Mono", ui-monospace, monospace';
+      ctx.fillStyle=ink(.4*k);
+      ctx.textAlign='right';
+      ctx.fillText('id '+o.id,b.x+b.w,b.y+b.h+11);
+      ctx.textAlign='left';ctx.textBaseline='alphabetic';
+    }
+    function drawLock(alpha,jx,jy,snapK){
+      if(alpha<=0||headRect.w===0)return;
+      const padX=18,padY=14,ex=(1-snapK)*14;
+      const x=headRect.x-padX-ex+jx,y=headRect.y-padY-ex+jy;
+      const w=headRect.w+(padX+ex)*2,h=headRect.h+(padY+ex)*2;
+      ctx.fillStyle=acc(.035*alpha);ctx.fillRect(x,y,w,h);
+      ctx.lineWidth=1;ctx.strokeStyle=acc(.4*alpha);ctx.strokeRect(x,y,w,h);
+      ctx.lineWidth=2.2;ctx.strokeStyle=acc(alpha);corners(x,y,w,h,18);
+      ctx.lineWidth=1.5;ctx.strokeStyle=acc(.6*alpha);
+      line(x+w/2-4,y,x+w/2+4,y);line(x+w/2-4,y+h,x+w/2+4,y+h);
+      line(x,y+h/2-4,x,y+h/2+4);line(x+w,y+h/2-4,x+w,y+h/2+4);
+      ctx.font='500 11px "JetBrains Mono", ui-monospace, monospace';
+      const text='[ micromobility-study 1.00 ]';
+      const tw=ctx.measureText(text).width,chipH=20;
+      let chipY=y-chipH-8;
+      if(chipY<6)chipY=y+6;
+      ctx.fillStyle=acc(alpha);ctx.fillRect(x-1,chipY,tw+14,chipH);
+      ctx.fillStyle='rgba(255,255,255,'+alpha+')';
+      ctx.textBaseline='middle';
+      ctx.fillText(text,x+6,chipY+chipH/2+.5);
+      ctx.textBaseline='alphabetic';
+    }
+    function drawRoad(){
+      const bh=road.bot-road.top;
+      ctx.fillStyle=ink(.03);ctx.fillRect(0,road.top,W,bh);
+      ctx.strokeStyle=ink(.28);ctx.lineWidth=1;
+      line(0,road.top+.5,W,road.top+.5);line(0,road.bot+.5,W,road.bot+.5);
+      ctx.save();ctx.strokeStyle=ink(.22);ctx.setLineDash([14,18]);
+      line(0,road.mid+.5,W,road.mid+.5);ctx.restore();
+      ctx.strokeStyle=ink(.16);
+      for(let x=0;x<=W;x+=40){
+        const isLong=x%200===0;
+        line(x+.5,road.bot,x+.5,road.bot-(isLong?9:4));
+      }
+      ctx.fillStyle=ink(.32);
+      ctx.font='500 9px "JetBrains Mono", ui-monospace, monospace';
+      ctx.fillText('CAM 02 · N FRANKLIN ST',14,road.top+14);
+      ctx.textAlign='right';
+      ctx.fillText('GSD 0.04 m/px',W-14,road.top+14);
+      ctx.textAlign='left';
+    }
+    function drawScan(sx){
+      const g=ctx.createLinearGradient(sx-110,0,sx,0);
+      g.addColorStop(0,acc(0));g.addColorStop(1,acc(.07));
+      ctx.fillStyle=g;ctx.fillRect(sx-110,0,110,H);
+      ctx.fillStyle=acc(.55);ctx.fillRect(sx-.75,0,1.5,H);
+      ctx.fillStyle=acc(.8);
+      ctx.font='500 9px "JetBrains Mono", ui-monospace, monospace';
+      ctx.fillText('SCAN',Math.min(sx+6,W-42),22);
+    }
+
+    let t0=0,lockT0=-1,lastLockCycle=-1;
+    const CYCLE=9000,SWEEP=2100;
+    function render(now,animated){
+      ctx.clearRect(0,0,W,H);
+      drawRoad();
+      objects.forEach(drawSprite);
+      let sweepX=-1,lockAlpha=1,snapK=1,jx=0,jy=0;
+      if(animated){
+        const ct=(now-t0)%CYCLE,ci=Math.floor((now-t0)/CYCLE);
+        if(ct<SWEEP){
+          sweepX=easeIO(ct/SWEEP)*(W+240)-120;
+          if(ci!==lastLockCycle&&sweepX>=headRect.cx){lockT0=now;lastLockCycle=ci;}
+        }
+        lockAlpha=0;
+        if(lockT0>0){
+          const lt=now-lockT0;
+          if(lt<=180){lockAlpha=lt/180;snapK=easeIO(lt/180);}
+          else if(lt<=3400){lockAlpha=1;}
+          else if(lt<=3850){lockAlpha=1-(lt-3400)/450;}
+        }
+        jx=lockJ.x;jy=lockJ.y;
+      }
+      objects.forEach(o=>{
+        const emph=sweepX>=0&&o.box&&sweepX>o.box.x&&sweepX<o.box.x+o.box.w;
+        drawDetBox(o,emph);
+      });
+      if(sweepX>=0)drawScan(sweepX);
+      drawLock(lockAlpha,jx,jy,snapK);
+    }
+    function renderStatic(){
+      objects.forEach(o=>o.x=o.fx*W);
+      detTick(false);lockJ.x=0;lockJ.y=0;
+      render(0,false);
+      drawLock(1,0,0,1);
+    }
+
+    let raf=0,last=0,lastDet=0,lastHud=0,fpsEma=60,running=false;
+    function frame(now){
+      if(!running)return;
+      raf=requestAnimationFrame(frame);
+      let dt=(now-last)/1000;last=now;
+      if(dt>.05)dt=.05;
+      if(dt>0)fpsEma+=(1/dt-fpsEma)*.06;
+      const m=150;
+      objects.forEach(o=>{
+        o.x+=o.speed*o.dir*dt;
+        o.wheelA+=(o.speed*dt)/(14*o.scale);
+        if(o.dir>0&&o.x>W+m)o.x=-m;
+        if(o.dir<0&&o.x<-m)o.x=W+m;
+      });
+      if(now-lastDet>95){detTick(true);lastDet=now;}
+      render(now,true);
+      if(now-lastHud>300){
+        fpsEl.textContent=String(Math.max(1,Math.min(240,Math.round(fpsEma))));
+        latEl.textContent=(6.8+Math.sin(now*.0011)*1.2+Math.sin(now*.00037)*.8).toFixed(1)+' ms';
+        lastHud=now;
+      }
+    }
+    function start(){
+      syncTheme();
+      resize();
+      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measureHead);
+      if(reduced){
+        statusEl.textContent='STATIC';fpsEl.textContent='--';latEl.textContent='8.2 ms';
+        renderStatic();return;
+      }
+      if(running)return;
+      running=true;
+      statusEl.textContent='LIVE';
+      last=performance.now();t0=last;lockT0=-1;lastLockCycle=-1;
+      raf=requestAnimationFrame(frame);
+    }
+    function stop(){
+      running=false;
+      if(raf)cancelAnimationFrame(raf);
+      raf=0;
+    }
+    if(mq.addEventListener)mq.addEventListener('change',e=>{reduced=e.matches;stop();start();});
+    window.addEventListener('hg:theme',()=>{syncTheme();if(cs.classList.contains('on')&&reduced)renderStatic();});
+    window.addEventListener('resize',()=>{if(cs.classList.contains('on'))resize();});
+    return {start,stop};
+  }
 }

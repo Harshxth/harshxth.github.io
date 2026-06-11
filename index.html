@@ -364,6 +364,59 @@
   <div class="contact-footer">HARSHITH GUJJETI // AI/ML ENGINEER // TAMPA, FL // 2026</div>
 </section>
 
+<!-- CASE STUDY · CUTR MICROMOBILITY -->
+<div id="cs-overlay" role="dialog" aria-modal="true" aria-labelledby="cs-title" aria-hidden="true">
+  <button class="cs-close" id="cs-close" aria-label="Close case study">✕</button>
+  <div class="cs-shell" id="cs-shell">
+    <div class="cs-banner" id="cs-banner">
+      <canvas id="cs-scene" aria-hidden="true"></canvas>
+      <div class="bb">
+        <div class="cs-crumb">CUTR · USF <b>/</b> FDOT DISTRICT 7 <b>/</b> CASE STUDY</div>
+        <h1 id="cs-title">Micromobility<br/>Detection</h1>
+        <p class="cs-sub">Teaching a detector the difference between a bicycle, an e-bike, and a seated scooter, at 50+ intersections, on real Florida footage.</p>
+      </div>
+      <aside class="cs-hud" aria-label="Model telemetry">
+        <div class="hud-row"><span>model</span><b>yolov8-custom</b></div>
+        <div class="hud-row"><span>classes</span><b>9</b></div>
+        <div class="hud-row"><span>mAP</span><b>0.90</b></div>
+        <div class="hud-row"><span>latency</span><b id="cs-hud-lat">--</b></div>
+        <div class="hud-row"><span>fps</span><b id="cs-hud-fps">--</b></div>
+        <div class="hud-row status"><span class="dot" aria-hidden="true"></span><b id="cs-hud-status">LIVE</b></div>
+      </aside>
+    </div>
+    <div class="cs-body">
+      <div class="statline">
+        <div class="stat"><b>50+</b><span>camera sites</span></div>
+        <div class="stat"><b>100+</b><span>hours of footage</span></div>
+        <div class="stat"><b>5,000+</b><span>frames hand-labeled</span></div>
+        <div class="stat"><b>9</b><span>classes</span></div>
+        <div class="stat"><b>~0.90</b><span>mAP · hardest classes</span></div>
+      </div>
+      <div class="cs-k">The problem</div>
+      <h3>Counting what off-the-shelf models can't see.</h3>
+      <p>An FDOT-funded safety study needed reliable counts of <strong>bicycles, e-bikes, and e-scooters</strong> at fixed camera sites across the district. Manual counting doesn't scale past a handful of videos, and stock detection models kept folding the interesting classes into each other: cars read as bicycles, e-bikes read as motorcycles, seated scooters read as almost anything.</p>
+      <div class="cs-k">The pipeline</div>
+      <h3>Two passes: catch everything, then trust nothing.</h3>
+      <p>A motion pass (MOG2 background subtraction inside a hand-drawn region of interest per site) catches every moving object cheaply. A review pass filters that to real micromobility before anything reaches the dataset. Production counting runs <strong>YOLOv8 for detection and ByteTrack for tracking</strong>, so each rider is counted once, not once per frame.</p>
+      <div class="cs-flow"><span>Site footage</span><i>→</i><span>Motion ROI</span><i>→</i><span>Review</span><i>→</i><span>YOLOv8 + ByteTrack</span><i>→</i><span>Per-site counts</span></div>
+      <div class="cs-k">The dataset</div>
+      <h3>5,000+ frames, labeled by hand.</h3>
+      <p>The training set merges field footage with public datasets, plus <strong>negative classes</strong> (cars, motorcycles) so the model learns what a bike is <strong>not</strong>. Missed cases get mined back in: a frame-extraction pipeline reads burned-in video timestamps via OCR, pulls the exact frames where the detector failed, and routes them through Label Studio with pre-labels for fast annotation.</p>
+      <div class="cs-k">The model</div>
+      <h3>Nine classes, production grade.</h3>
+      <p>Iterating on the detector with negative classes and mined hard cases pushed the toughest distinction, <strong>e-bike vs seated scooter</strong>, to <span class="cs-m">~0.90 mAP</span>, eliminated false motorcycle detections, and was verified head-to-head on a held-out site before delivery.</p>
+      <div class="cs-k">What the data showed</div>
+      <h3>Counts are the product. Safety is the story.</h3>
+      <div class="findings">
+        <div class="find"><b>30%</b><span>helmet compliance across observed riders</span></div>
+        <div class="find"><b>51%</b><span>of riders traveling against traffic</span></div>
+      </div>
+      <p style="margin-top:1.1rem">Per-site counts, safety attributes (helmet use, travel direction, lane position), and a full methodology report were delivered to the research leads.</p>
+      <div class="esc">ESC or ✕ to close</div>
+    </div>
+  </div>
+</div>
+
 <!-- FLOATING TERMINAL -->
 <button id="term-launcher" class="term-launcher" aria-label="Open terminal" title="Open terminal (~)">
   <span class="dot"></span>
