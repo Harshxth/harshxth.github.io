@@ -15,7 +15,8 @@ const EXP=[
    bullets:['Developed ML models for <strong>healthcare billing code prediction</strong> and clinical documentation using Python, scikit-learn, and MLflow.','Reduced coding errors by <span class="metric">15%</span> and improved diagnostic decision support through statistical validation and hyperparameter tuning.']},
   {title:'AI Research Intern',cur:false,org:'ISRO · Indian Space Research Organisation',period:'Jan 2025 – Jul 2025',color:'#FF671F',bg:'ISRO',logo:'isro',
    tags:['SRGAN','TensorFlow','Keras','VGG19','Satellite Imaging','Python'],
-   bullets:['Built a satellite-image super-resolution model using <strong>SRGAN</strong> (a GAN paired with a VGG19 perceptual-loss network) in TensorFlow/Keras at ISRO&rsquo;s National Remote Sensing Centre, hitting <span class="metric">4× upscaling</span> (roughly 10 m to 2.5 m detail).','Trained it on <span class="metric">5,000+</span> aligned high- and low-resolution image pairs with a full preprocessing pipeline: RGB band stacking, normalization, and preserved geospatial metadata so the enhanced output stayed analysis-ready.','Reached <span class="metric">27.2 dB PSNR</span> and <span class="metric">0.86 SSIM</span>, producing sharp, structurally faithful imagery for downstream work like land-cover classification and urban mapping.']},
+   bullets:['Built a satellite-image super-resolution model using <strong>SRGAN</strong> (a GAN paired with a VGG19 perceptual-loss network) in TensorFlow/Keras at ISRO&rsquo;s National Remote Sensing Centre, hitting <span class="metric">4× upscaling</span> (roughly 10 m to 2.5 m detail).','Trained it on <span class="metric">5,000+</span> aligned high- and low-resolution image pairs with a full preprocessing pipeline: RGB band stacking, normalization, and preserved geospatial metadata so the enhanced output stayed analysis-ready.','Reached <span class="metric">27.2 dB PSNR</span> and <span class="metric">0.86 SSIM</span>, producing sharp, structurally faithful imagery for downstream work like land-cover classification and urban mapping.'],
+   projLabel:false,projects:[{name:'Satellite Super-Resolution',desc:'How SRGAN turned <span class="metric">10 m</span> pixels into <span class="metric">2.5 m</span> detail: the architecture, the data, and the trade-offs.',cs:'cs-isro'}]},
   {title:'AI Developer Intern',cur:false,org:'Venkusa Technologies',period:'May 2024 – Nov 2024',color:'#14B8A6',bg:'VENKUSA',logo:'venkusa',
    tags:['Python','PHP','Machine Learning','OpenAI API','Prompt Engineering'],
    bullets:['Built a generative <strong>AI code-completion tool</strong> inspired by GitHub Copilot, working across Python and PHP, improving code-completion accuracy by <span class="metric">15%</span> and cutting processing time by <span class="metric">25%</span> by streamlining the core components.','Shipped an AI travel chatbot that improved lead capture and booking conversions after deployment.']},
@@ -1129,7 +1130,7 @@ function initExp(){
     const moreB=ex.bullets.slice(sc).map(b=>`<li>${b}</li>`).join('');
     const moreN=ex.bullets.length-sc;
     const bulletsHTML=`<ul class="exp-bullets">${visB}</ul>`+(moreN>0?`<div class="exp-more" id="xm-${i}"><div><ul class="exp-bullets">${moreB}</ul></div></div><button type="button" class="exp-readmore" data-t="xm-${i}" data-n="${moreN}" aria-expanded="false"><span class="rm-txt">+${moreN} more</span><span class="rm-ico">⌄</span></button>`:'');
-    const subsHTML=(ex.projects&&ex.projects.length)?`<div class="subs"><div class="subs-label">Projects</div>${ex.projects.map(p=>`<button type="button" class="sub-row click" data-cs="${p.cs}"><span class="sub-main"><span class="sub-name"><span class="sub-dot done"></span>${p.name}</span><span class="sub-desc">${p.desc}</span></span><span class="sub-cta">Case study <i>→</i></span></button>`).join('')}</div>`:'';
+    const subsHTML=(ex.projects&&ex.projects.length)?`<div class="subs">${ex.projLabel===false?'':'<div class="subs-label">Projects</div>'}${ex.projects.map(p=>`<button type="button" class="sub-row click" data-cs="${p.cs}"><span class="sub-main"><span class="sub-name"><span class="sub-dot done"></span>${p.name}</span><span class="sub-desc">${p.desc}</span></span><span class="sub-cta">Case study <i>→</i></span></button>`).join('')}</div>`:'';
     const logoHTML=LOGOS[ex.logo]
       ?ex.logoFill
         ?`<div style="width:40px;height:40px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:cover;display:block" alt="${ex.org} logo"/></div>`
@@ -1425,26 +1426,35 @@ function initReveal(){
 // that locks onto the title). Animation starts on open, stops on close, and is
 // theme-aware so the ink flips with light/dark.
 function initCaseStudy(){
-  const cs=document.getElementById('cs-overlay');if(!cs)return;
-  const shell=document.getElementById('cs-shell'),closeBtn=document.getElementById('cs-close');
-  let det=null;
-  function openCS(){
-    cs.classList.add('on');cs.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-    shell.scrollTop=0;
-    setTimeout(()=>{if(!det)det=makeDetector();det.start();},120);
-    closeBtn.focus();
+  const reg={};
+  window.openCaseStudy=function(id){const r=reg[id];if(r)r.open();};
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    Object.keys(reg).forEach(k=>{if(reg[k].isOpen())reg[k].close();});
+  });
+  setupOverlay('cs-overlay','cs-shell','cs-close',makeDetector);
+  setupOverlay('cs-isro','cs2-shell','cs2-close',makeSatScene);
+  function setupOverlay(oid,sid,cid,factory){
+    const cs=document.getElementById(oid);if(!cs)return;
+    const shell=document.getElementById(sid),closeBtn=document.getElementById(cid);
+    let scene=null;
+    function open(){
+      cs.classList.add('on');cs.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+      shell.scrollTop=0;
+      setTimeout(()=>{if(!scene)scene=factory(cs);scene.start();},120);
+      closeBtn.focus();
+    }
+    function close(){
+      cs.classList.remove('on');cs.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+      if(scene)scene.stop();
+    }
+    closeBtn.addEventListener('click',close);
+    reg[oid]={open:open,close:close,isOpen:function(){return cs.classList.contains('on');}};
   }
-  function closeCS(){
-    cs.classList.remove('on');cs.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-    if(det)det.stop();
-  }
-  window.openCaseStudy=openCS;
-  closeBtn.addEventListener('click',closeCS);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cs.classList.contains('on'))closeCS();});
 
-  function makeDetector(){
+  function makeDetector(cs){
     const TAU=Math.PI*2;
     const banner=document.getElementById('cs-banner');
     const canvas=document.getElementById('cs-scene');
@@ -1732,6 +1742,294 @@ function initCaseStudy(){
     }
     if(mq.addEventListener)mq.addEventListener('change',e=>{reduced=e.matches;stop();start();});
     window.addEventListener('hg:theme',()=>{syncTheme();if(cs.classList.contains('on')&&reduced)renderStatic();});
+    window.addEventListener('resize',()=>{if(cs.classList.contains('on'))resize();});
+    return {start,stop};
+  }
+
+  // ISRO scene: a satellite sweeps the swath and the terrain behind its beam
+  // re-renders at 4x detail (the super-resolution pass, literally).
+  function makeSatScene(cs){
+    const TAU=Math.PI*2;
+    const banner=document.getElementById('cs2-banner');
+    const canvas=document.getElementById('cs2-scene');
+    const ctx=canvas.getContext('2d');
+    const titleEl=document.getElementById('cs2-title');
+    const fpsEl=document.getElementById('cs2-hud-fps');
+    const statusEl=document.getElementById('cs2-hud-status');
+
+    let INK='17,24,39';
+    function syncTheme(){INK=document.documentElement.getAttribute('data-theme')==='light'?'17,24,39':'229,231,235';}
+    syncTheme();
+    const ink=a=>'rgba('+INK+','+a+')';
+    const acc=a=>'rgba(255,103,31,'+a+')';
+    const rnd=(a,b)=>a+Math.random()*(b-a);
+    const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    const dn=(x,y)=>{const s=Math.sin(x*127.1+y*311.7)*43758.5453;return s-Math.floor(s);};
+
+    const mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reduced=mq.matches;
+    let W=0,H=0;
+    const headRect={x:0,y:0,w:0,h:0,cx:0};
+    const band={top:0,bot:0,h:0};
+    const GX=26,GY=6;
+    let hmap=[],cols=[],lrC=null,srC=null;
+
+    function genTerrain(){
+      hmap=[];
+      for(let y=0;y<=GY;y++){const row=[];for(let x=0;x<=GX;x++)row.push(Math.random());hmap.push(row);}
+      for(let p=0;p<2;p++)for(let y=0;y<=GY;y++)for(let x=0;x<=GX;x++){
+        let s=0,n=0;
+        for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+          const yy=y+dy,xx=x+dx;
+          if(yy>=0&&yy<=GY&&xx>=0&&xx<=GX){s+=hmap[yy][xx];n++;}
+        }
+        hmap[y][x]=s/n;
+      }
+    }
+    function paintTerrain(){
+      if(!W||!band.h)return;
+      lrC=document.createElement('canvas');lrC.width=W;lrC.height=band.h;
+      srC=document.createElement('canvas');srC.width=W;srC.height=band.h;
+      const cw=W/GX,ch=band.h/GY;
+      const lc=lrC.getContext('2d');
+      for(let y=0;y<GY;y++)for(let x=0;x<GX;x++){
+        const h=(hmap[y][x]+hmap[y][x+1]+hmap[y+1][x]+hmap[y+1][x+1])/4;
+        lc.fillStyle='rgba('+INK+','+(.05+h*.20)+')';
+        lc.fillRect(x*cw,y*ch,cw+1,ch+1);
+      }
+      lc.strokeStyle='rgba('+INK+',.07)';lc.lineWidth=1;
+      for(let x=0;x<=GX;x++){lc.beginPath();lc.moveTo(x*cw+.5,0);lc.lineTo(x*cw+.5,band.h);lc.stroke();}
+      for(let y=0;y<=GY;y++){lc.beginPath();lc.moveTo(0,y*ch+.5);lc.lineTo(W,y*ch+.5);lc.stroke();}
+      const sc=srC.getContext('2d'),S=4,sw=cw/S,sh=ch/S;
+      for(let y=0;y<GY;y++)for(let x=0;x<GX;x++){
+        const h00=hmap[y][x],h10=hmap[y][x+1],h01=hmap[y+1][x],h11=hmap[y+1][x+1];
+        for(let sy=0;sy<S;sy++)for(let sx=0;sx<S;sx++){
+          const u=(sx+.5)/S,v=(sy+.5)/S;
+          let h=h00*(1-u)*(1-v)+h10*u*(1-v)+h01*(1-u)*v+h11*u*v;
+          h+=(dn(x*S+sx,y*S+sy)-.5)*.18;
+          h=Math.max(0,Math.min(1,h));
+          sc.fillStyle='rgba('+INK+','+(.05+h*.20)+')';
+          sc.fillRect(x*cw+sx*sw,y*ch+sy*sh,sw+.6,sh+.6);
+        }
+      }
+      sc.strokeStyle='rgba('+INK+',.05)';sc.lineWidth=1;
+      for(let x=0;x<=GX;x++){sc.beginPath();sc.moveTo(x*cw+.5,0);sc.lineTo(x*cw+.5,band.h);sc.stroke();}
+    }
+    function measureHead(){
+      const hb=banner.getBoundingClientRect(),r=titleEl.getBoundingClientRect();
+      headRect.x=r.left-hb.left;headRect.y=r.top-hb.top;
+      headRect.w=r.width;headRect.h=r.height;
+      headRect.cx=headRect.x+headRect.w/2;
+    }
+    function resize(){
+      W=banner.clientWidth;H=banner.clientHeight;
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+      canvas.style.width=W+'px';canvas.style.height=H+'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      band.top=H*.52;band.bot=Math.min(H*.94,H-16);band.h=band.bot-band.top;
+      cols=[];
+      const step=Math.max(130,(W-160)/6);
+      for(let x=90;x<=W-60;x+=step)cols.push(x);
+      measureHead();
+      paintTerrain();
+      if(reduced)renderStatic();
+    }
+
+    function line(x1,y1,x2,y2){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+    function corners(x,y,w,h,L){
+      ctx.beginPath();
+      ctx.moveTo(x,y+L);ctx.lineTo(x,y);ctx.lineTo(x+L,y);
+      ctx.moveTo(x+w-L,y);ctx.lineTo(x+w,y);ctx.lineTo(x+w,y+L);
+      ctx.moveTo(x+w,y+h-L);ctx.lineTo(x+w,y+h);ctx.lineTo(x+w-L,y+h);
+      ctx.moveTo(x+L,y+h);ctx.lineTo(x,y+h);ctx.lineTo(x,y+h-L);
+      ctx.stroke();
+    }
+    function drawSat(x,y){
+      ctx.save();ctx.translate(x,y);
+      ctx.strokeStyle=ink(.85);ctx.fillStyle=ink(.85);
+      ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=2;
+      ctx.strokeRect(-13,-9,26,18);
+      ctx.strokeRect(-49,-7,30,14);
+      line(-39,-7,-39,7);line(-29,-7,-29,7);
+      ctx.strokeRect(19,-7,30,14);
+      line(29,-7,29,7);line(39,-7,39,7);
+      line(0,-9,0,-16);
+      ctx.beginPath();ctx.arc(0,-19,3,0,TAU);ctx.stroke();
+      line(0,9,0,14);
+      ctx.restore();
+    }
+    function drawBeam(x,satY){
+      const g=ctx.createLinearGradient(0,satY+14,0,band.top);
+      g.addColorStop(0,acc(.18));g.addColorStop(1,acc(.04));
+      ctx.fillStyle=g;
+      ctx.beginPath();
+      ctx.moveTo(x-7,satY+14);ctx.lineTo(x+7,satY+14);
+      ctx.lineTo(x+44,band.top);ctx.lineTo(x-44,band.top);
+      ctx.closePath();ctx.fill();
+      ctx.fillStyle=acc(.5);ctx.fillRect(x-.75,satY+14,1.5,band.top-satY-14);
+      ctx.strokeStyle=acc(.45);ctx.lineWidth=1;
+      ctx.beginPath();ctx.ellipse(x,band.top+1,44,4.5,0,0,TAU);ctx.stroke();
+      ctx.fillStyle=acc(.25);
+      ctx.fillRect(x-.5,0,1,H);
+    }
+    function drawBandChrome(){
+      ctx.strokeStyle=ink(.28);ctx.lineWidth=1;
+      line(0,band.top+.5,W,band.top+.5);line(0,band.bot+.5,W,band.bot+.5);
+      ctx.strokeStyle=ink(.16);
+      for(let x=0;x<=W;x+=40){
+        const isLong=x%200===0;
+        line(x+.5,band.bot,x+.5,band.bot-(isLong?9:4));
+      }
+      ctx.fillStyle=ink(.32);
+      ctx.font='500 9px "JetBrains Mono", ui-monospace, monospace';
+      ctx.fillText('SWATH 042 · LISS-IV SIM',14,band.top+14);
+      ctx.textAlign='right';
+      ctx.fillText('GSD 10 m → 2.5 m',W-14,band.top+14);
+      ctx.textAlign='left';
+    }
+    let chips=[],chipIdx=0;
+    function spawnChips(beamX,now){
+      while(chipIdx<cols.length&&cols[chipIdx]<=beamX-24){
+        const cx=cols[chipIdx];
+        chips.push({x:cx,y:band.top+14+rnd(4,band.h*.45),
+          t:chipIdx%2?('SSIM '+(0.83+rnd(0,.05)).toFixed(2)):('PSNR '+(26.6+rnd(0,1.2)).toFixed(1)+' dB'),
+          born:now});
+        chipIdx++;
+      }
+    }
+    function drawChips(now,staticAlpha){
+      ctx.font='500 9.5px "JetBrains Mono", ui-monospace, monospace';
+      chips=chips.filter(c=>{
+        let a;
+        if(staticAlpha!=null)a=staticAlpha;
+        else{
+          const age=now-c.born;
+          if(age>1750)return false;
+          a=age<180?age/180:age>1400?Math.max(0,1-(age-1400)/350):1;
+        }
+        const tw=ctx.measureText(c.t).width,chH=15;
+        ctx.fillStyle=acc(.95*a);
+        ctx.fillRect(c.x-.5,c.y,tw+10,chH);
+        ctx.fillStyle='rgba(255,255,255,'+Math.min(1,a+.1)+')';
+        ctx.textBaseline='middle';
+        ctx.fillText(c.t,c.x+4.5,c.y+chH/2+.5);
+        ctx.textBaseline='alphabetic';
+        ctx.strokeStyle=acc(.45*a);ctx.lineWidth=1;
+        line(c.x+.5,c.y+chH,c.x+.5,c.y+chH+7);
+        return true;
+      });
+    }
+    function drawLock(alpha,snapK){
+      if(alpha<=0||headRect.w===0)return;
+      const padX=18,padY=14,ex=(1-snapK)*14;
+      const x=headRect.x-padX-ex,y=headRect.y-padY-ex;
+      const w=headRect.w+(padX+ex)*2,h=headRect.h+(padY+ex)*2;
+      ctx.fillStyle=acc(.035*alpha);ctx.fillRect(x,y,w,h);
+      ctx.lineWidth=1;ctx.strokeStyle=acc(.4*alpha);ctx.strokeRect(x,y,w,h);
+      ctx.lineWidth=2.2;ctx.strokeStyle=acc(alpha);corners(x,y,w,h,18);
+      ctx.font='500 11px "JetBrains Mono", ui-monospace, monospace';
+      const text='[ srgan-x4 · 27.2 dB ]';
+      const tw=ctx.measureText(text).width,chipH=20;
+      let chipY=y-chipH-8;
+      if(chipY<6)chipY=y+6;
+      ctx.fillStyle=acc(alpha);ctx.fillRect(x-1,chipY,tw+14,chipH);
+      ctx.fillStyle='rgba(255,255,255,'+alpha+')';
+      ctx.textBaseline='middle';
+      ctx.fillText(text,x+6,chipY+chipH/2+.5);
+      ctx.textBaseline='alphabetic';
+    }
+    function compositeTerrain(beamX){
+      if(!lrC||!srC)return;
+      const bx=Math.max(0,Math.min(W,beamX));
+      if(bx>0){
+        ctx.save();ctx.beginPath();ctx.rect(0,band.top,bx,band.h);ctx.clip();
+        ctx.drawImage(srC,0,band.top);ctx.restore();
+      }
+      if(bx<W){
+        ctx.save();ctx.beginPath();ctx.rect(bx,band.top,W-bx,band.h);ctx.clip();
+        ctx.drawImage(lrC,0,band.top);ctx.restore();
+      }
+    }
+
+    const SWEEP=6500,HOLD=2600,CYC=SWEEP+HOLD;
+    let t0=0,curCi=0,lockT0=-1,lockCy=-1;
+    function render(now){
+      ctx.clearRect(0,0,W,H);
+      const ct=(now-t0)%CYC,ci=Math.floor((now-t0)/CYC);
+      if(ci!==curCi){curCi=ci;genTerrain();paintTerrain();chips=[];chipIdx=0;}
+      let beamX;
+      const sweeping=ct<SWEEP;
+      if(sweeping){
+        beamX=easeIO(ct/SWEEP)*(W+140)-70;
+        if(ci!==lockCy&&beamX>=headRect.cx){lockT0=now;lockCy=ci;}
+        spawnChips(beamX,now);
+      }else beamX=W+70;
+      compositeTerrain(beamX);
+      drawBandChrome();
+      drawChips(now,null);
+      if(sweeping){
+        const satY=band.top-64+Math.sin(now*.0021)*4;
+        if(beamX>-50&&beamX<W+50){drawBeam(beamX,satY);drawSat(beamX,satY);}
+      }
+      let lockAlpha=0,snapK=1;
+      if(lockT0>0){
+        const lt=now-lockT0;
+        if(lt<=180){lockAlpha=lt/180;snapK=easeIO(lt/180);}
+        else if(lt<=3400){lockAlpha=1;}
+        else if(lt<=3850){lockAlpha=1-(lt-3400)/450;}
+      }
+      drawLock(lockAlpha,snapK);
+    }
+    function renderStatic(){
+      ctx.clearRect(0,0,W,H);
+      compositeTerrain(W);
+      drawBandChrome();
+      chips=[
+        {x:W*.18,y:band.top+22,t:'PSNR 27.2 dB',born:0},
+        {x:W*.46,y:band.top+40,t:'SSIM 0.86',born:0},
+        {x:W*.72,y:band.top+26,t:'PSNR 27.4 dB',born:0}
+      ];
+      drawChips(0,.92);
+      const satY=band.top-64;
+      drawBeam(W*.58,satY);drawSat(W*.58,satY);
+      drawLock(1,1);
+    }
+
+    let raf=0,last=0,lastHud=0,fpsEma=60,running=false;
+    function frame(now){
+      if(!running)return;
+      raf=requestAnimationFrame(frame);
+      const dt=(now-last)/1000;last=now;
+      if(dt>0&&dt<.05)fpsEma+=(1/dt-fpsEma)*.06;
+      render(now);
+      if(now-lastHud>300){
+        fpsEl.textContent=String(Math.max(1,Math.min(240,Math.round(fpsEma))));
+        lastHud=now;
+      }
+    }
+    function start(){
+      syncTheme();
+      genTerrain();
+      resize();
+      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measureHead);
+      if(reduced){
+        statusEl.textContent='STATIC';fpsEl.textContent='--';
+        renderStatic();return;
+      }
+      if(running)return;
+      running=true;
+      statusEl.textContent='LIVE';
+      last=performance.now();t0=last;curCi=0;lockT0=-1;lockCy=-1;chips=[];chipIdx=0;
+      raf=requestAnimationFrame(frame);
+    }
+    function stop(){
+      running=false;
+      if(raf)cancelAnimationFrame(raf);
+      raf=0;
+    }
+    if(mq.addEventListener)mq.addEventListener('change',e=>{reduced=e.matches;stop();start();});
+    window.addEventListener('hg:theme',()=>{syncTheme();paintTerrain();if(cs.classList.contains('on')&&reduced)renderStatic();});
     window.addEventListener('resize',()=>{if(cs.classList.contains('on'))resize();});
     return {start,stop};
   }
