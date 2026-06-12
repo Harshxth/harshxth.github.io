@@ -610,16 +610,28 @@ async function initResumeCounter(){
 
 // ── COMMAND PALETTE ──────────────────────────────────────────────────────────
 (function initCmdk(){
+  // Jump-to entries are built from the DOM so section numbers can never
+  // drift from the on-page labels, and new sections appear automatically.
+  const SECTION_META={
+    about:{t:'About',d:'intro + education',k:'about'},
+    experience:{t:'Experience',d:'work timeline',k:'experience work'},
+    projects:{t:'Projects',d:'production systems',k:'projects'},
+    opensource:{t:'Open Source',d:'merged + reviewed PRs',k:'open source oss pr github ultralytics litellm'},
+    building:{t:'Currently Building',d:'next thing in flight',k:'building current next'},
+    skills:{t:'Skills',d:'tech & tools',k:'skills arsenal'},
+    principles:{t:'How I Think',d:'principles + philosophy',k:'principles philosophy how think'},
+    activity:{t:'Activity',d:'github heatmap',k:'activity heatmap github'},
+    beyond:{t:'Beyond',d:'outside the terminal',k:'beyond hobbies'},
+    contact:{t:'Contact',d:'say hi',k:'contact email'}
+  };
+  const JUMPS=[...document.querySelectorAll('section[id]')].map(s=>{
+    const meta=SECTION_META[s.id];if(!meta)return null;
+    const lbl=s.querySelector('.sec-label');
+    const num=lbl?(lbl.textContent.match(/^\s*(\d+)/)||[])[1]:null;
+    return {g:'Jump to',t:meta.t,d:meta.d,k:meta.k,ic:num||'·',act:()=>go('#'+s.id)};
+  }).filter(Boolean);
   const CMDS=[
-    {g:'Jump to',t:'About',d:'intro + education',k:'about',ic:'01',act:()=>go('#about')},
-    {g:'Jump to',t:'Experience',d:'work timeline',k:'experience',ic:'02',act:()=>go('#experience')},
-    {g:'Jump to',t:'Projects',d:'production systems',k:'projects',ic:'03',act:()=>go('#projects')},
-    {g:'Jump to',t:'Currently Building',d:'next thing in flight',k:'building current next',ic:'04',act:()=>go('#building')},
-    {g:'Jump to',t:'Skills',d:'tech & tools',k:'skills arsenal',ic:'05',act:()=>go('#skills')},
-    {g:'Jump to',t:'How I Think',d:'principles + philosophy',k:'principles philosophy how think',ic:'06',act:()=>go('#principles')},
-    {g:'Jump to',t:'Activity',d:'github heatmap',k:'activity heatmap github',ic:'07',act:()=>go('#activity')},
-    {g:'Jump to',t:'Beyond',d:'outside the terminal',k:'beyond hobbies',ic:'08',act:()=>go('#beyond')},
-    {g:'Jump to',t:'Contact',d:'say hi',k:'contact email',ic:'09',act:()=>go('#contact')},
+    ...JUMPS,
     {g:'Projects',t:'Sensory',d:'Best UI/UX · HackaBull VII',k:'sensory hackabull hackathon nextjs gemini elevenlabs accessibility autistic wheelchair deaf blind dyslexic',ic:'◈',act:()=>open('https://github.com/Harshxth/Sensory')},
     {g:'Projects',t:'CareCall',d:'agentic voice AI for healthcare',k:'carecall hackusf adk gemini',ic:'◈',act:()=>open('https://github.com/Harshxth/CareCall')},
     {g:'Projects',t:'Sentinel AI',d:'confidence-gated multi-agent NLP',k:'sentinel kaggle roberta mcp claude',ic:'◈',act:()=>open('https://github.com/Harshxth/Sentinel-AI')},
