@@ -1785,6 +1785,10 @@ function initCaseStudy(){
         }
         hmap[y][x]=s/n;
       }
+      let mn=1,mx=0;
+      for(let y=0;y<=GY;y++)for(let x=0;x<=GX;x++){const v=hmap[y][x];if(v<mn)mn=v;if(v>mx)mx=v;}
+      const rng=Math.max(.0001,mx-mn);
+      for(let y=0;y<=GY;y++)for(let x=0;x<=GX;x++)hmap[y][x]=(hmap[y][x]-mn)/rng;
     }
     function paintTerrain(){
       if(!W||!band.h)return;
@@ -1794,7 +1798,7 @@ function initCaseStudy(){
       const lc=lrC.getContext('2d');
       for(let y=0;y<GY;y++)for(let x=0;x<GX;x++){
         const h=(hmap[y][x]+hmap[y][x+1]+hmap[y+1][x]+hmap[y+1][x+1])/4;
-        lc.fillStyle='rgba('+INK+','+(.05+h*.20)+')';
+        lc.fillStyle='rgba('+INK+','+(.04+h*.27)+')';
         lc.fillRect(x*cw,y*ch,cw+1,ch+1);
       }
       lc.strokeStyle='rgba('+INK+',.07)';lc.lineWidth=1;
@@ -1806,9 +1810,9 @@ function initCaseStudy(){
         for(let sy=0;sy<S;sy++)for(let sx=0;sx<S;sx++){
           const u=(sx+.5)/S,v=(sy+.5)/S;
           let h=h00*(1-u)*(1-v)+h10*u*(1-v)+h01*(1-u)*v+h11*u*v;
-          h+=(dn(x*S+sx,y*S+sy)-.5)*.18;
+          h+=(dn(x*S+sx,y*S+sy)-.5)*.24;
           h=Math.max(0,Math.min(1,h));
-          sc.fillStyle='rgba('+INK+','+(.05+h*.20)+')';
+          sc.fillStyle='rgba('+INK+','+(.04+h*.27)+')';
           sc.fillRect(x*cw+sx*sw,y*ch+sy*sh,sw+.6,sh+.6);
         }
       }
@@ -1827,7 +1831,11 @@ function initCaseStudy(){
       canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
       canvas.style.width=W+'px';canvas.style.height=H+'px';
       ctx.setTransform(dpr,0,0,dpr,0,0);
-      band.top=H*.52;band.bot=Math.min(H*.94,H-16);band.h=band.bot-band.top;
+      const bb=banner.querySelector('.bb');
+      const bbBottom=bb?(bb.getBoundingClientRect().bottom-banner.getBoundingClientRect().top):H*.5;
+      band.bot=Math.min(H*.94,H-16);
+      band.top=Math.max(H*.52,Math.min(band.bot-84,bbBottom+18));
+      band.h=band.bot-band.top;
       cols=[];
       const step=Math.max(130,(W-160)/6);
       for(let x=90;x<=W-60;x+=step)cols.push(x);
@@ -1969,7 +1977,7 @@ function initCaseStudy(){
       drawBandChrome();
       drawChips(now,null);
       if(sweeping){
-        const satY=band.top-64+Math.sin(now*.0021)*4;
+        const satY=band.top-50+Math.sin(now*.0021)*3;
         if(beamX>-50&&beamX<W+50){drawBeam(beamX,satY);drawSat(beamX,satY);}
       }
       let lockAlpha=0,snapK=1;
@@ -1991,7 +1999,7 @@ function initCaseStudy(){
         {x:W*.72,y:band.top+26,t:'PSNR 27.4 dB',born:0}
       ];
       drawChips(0,.92);
-      const satY=band.top-64;
+      const satY=band.top-50;
       drawBeam(W*.58,satY);drawSat(W*.58,satY);
       drawLock(1,1);
     }
