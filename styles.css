@@ -352,10 +352,16 @@ section>*{position:relative;z-index:1}
 .bey-icon{font-size:2rem;margin-bottom:.9rem;display:block}
 .bey-card h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.5rem}
 .bey-card p{font-size:.85rem;color:var(--body);line-height:1.75}
-/* CURRENTLY BUILDING — empty placeholder state */
-.bld-empty{display:flex;align-items:center;gap:1rem;margin-top:2.5rem;padding:1.6rem 1.8rem;border:1px dashed var(--bord);border-radius:14px;background:var(--surf)}
-.bld-empty p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.7;font-family:'DM Sans',sans-serif}
-.bld-pulse{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--v1);box-shadow:0 0 12px var(--v1);animation:pulse 2.4s ease-in-out infinite}
+/* CURRENTLY BUILDING */
+.bld-card{margin-top:2.5rem;padding:1.7rem 1.9rem;border:1px solid var(--bord);border-radius:14px;background:var(--surf);border-left:3px solid #1D6FBF}
+.bld-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem}
+.bld-org{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+.bld-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);margin:0 0 .55rem}
+.bld-desc{margin:0;color:var(--body);font-size:.92rem;line-height:1.75;max-width:680px}
+.bld-desc strong{color:var(--hl);font-weight:500}
+.bld-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1rem}
+.bld-tags span{font-family:'JetBrains Mono',monospace;font-size:.56rem;color:#1D6FBF;background:rgba(29,111,191,.07);border:1px solid rgba(29,111,191,.25);border-radius:5px;padding:.2rem .5rem}
+.bld-pulse{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:#16A34A;box-shadow:0 0 12px #16A34A;animation:pulse 2.4s ease-in-out infinite}
 /* CONTACT */
 #contact{text-align:center;position:relative;max-width:1100px;padding-bottom:5rem}
 .contact-glow{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(var(--accent-rgb),.06) 0%,transparent 70%);pointer-events:none}
