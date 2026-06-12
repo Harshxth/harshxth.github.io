@@ -41,14 +41,14 @@ const PROJ=[
    desc:'Four specialised agents (<strong>CityRAG, GeoSense, Visionary, GridShield</strong>) orchestrate natural-language city-design queries on Tampa 2050. Real-time WebSocket streaming of agent status; analyses solar potential, flood risk, EV infrastructure, traffic, and cybersecurity. Top-down masterplans rendered via <strong>Imagen</strong>. Full analysis under <span class="m">30 seconds</span>.',
    tags:['React','FastAPI','Gemini 2.5','Imagen','ChromaDB','WebSocket'],flow:['NL Query','Agent Routing','Geo Analysis','Plan Render','Stream']},
   // ── Row 3: production rigor ──
-  {name:'CiteIQ',sub:'Agentic RAG System',color:'#A78BFA',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',diag:'citeiq',cats:['rag','agents'],
+  {name:'CiteIQ',sub:'Agentic RAG System',color:'#A78BFA',metric:'90%+ faithfulness',wip:false,link:'https://github.com/Harshxth/citeiq',cats:['rag','agents'],
    media:{live:'assets/citeiq-app.jpg'},
    desc:'Production multi-agent citation intelligence on HuggingFace Spaces. <strong>LangGraph</strong> orchestrates Router, Retriever, Evaluator, and Generator over ChromaDB; FastAPI + Docker. <span class="m">90%+ faithfulness</span> on RAGAS across <span class="m">200+ test queries</span> (0.71 → 0.91 via self-evaluation retry loop); LangSmith tracing on 100% of calls; <span class="m">sub-2s latency</span>.',
    tags:['LangGraph','FastAPI','ChromaDB','Groq','RAGAS','Docker','LangSmith'],flow:['Query','Router','Retriever','Evaluator','Response']},
   {name:'Hospital LOS Prediction',sub:'XGBoost + SHAP',color:'#FB923C',metric:'MAE 0.30d',wip:false,link:'https://github.com/Harshxth/Hospital-LOS-Prediction',cats:['healthcare','ml'],
    desc:'<strong>XGBoost</strong> on <span class="m">100,000 patient records</span>. Evaluated <span class="m">230+ hyperparameter configs</span> for a <span class="m">5–6× improvement</span> over published benchmarks. Potential <span class="m">$1.7–2.6M</span> annual savings per 400-bed hospital.',
    tags:['XGBoost','SHAP','scikit-learn','Healthcare ML','Python'],flow:['Patient Data','Feature Eng','XGBoost','SHAP','Insight']},
-  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#34D399',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',diag:'hc_agent',cats:['agents','healthcare'],
+  {name:'Healthcare Research Agent',sub:'Multi-Agent AI',color:'#34D399',metric:'95% accuracy',wip:false,link:'https://github.com/Harshxth/Healthcare-Research-Agent',cats:['agents','healthcare'],
    desc:'Autonomous 4-agent system (Researcher / Analyzer / Validator / Reporter) built with <strong>CrewAI</strong>. Conducts end-to-end PubMed research and generates executive reports. Processed <span class="m">50+ healthcare queries</span> at <span class="m">95% accuracy</span> vs manual review.',
    tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
 ];
@@ -61,12 +61,6 @@ const LOGOS={
   isro:'assets/isro.jpg',
   cutr:'assets/cutr.jpg',
   reach:'assets/reach.jpg',
-};
-
-const DIAGRAMS={
-  citeiq:'assets/citeiq.jpg',
-  hc_agent:'assets/hc_agent.jpg',
-  pdf_rag:'assets/pdf_rag.jpg',
 };
 
 // ── PALETTE (grey default; ?palette=purple to preview the old look) ─────────
