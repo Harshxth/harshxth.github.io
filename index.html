@@ -411,7 +411,19 @@
         <div class="find"><b>30%</b><span>helmet compliance across observed riders</span></div>
         <div class="find"><b>51%</b><span>of riders traveling against traffic</span></div>
       </div>
-      <p style="margin-top:1.1rem">Per-site counts, safety attributes (helmet use, travel direction, lane position), and a full methodology report were delivered to the research leads.</p>
+      <p style="margin-top:1.1rem">Every verified detection carries a hand-reviewed set of safety attributes before it counts:</p>
+      <div class="cs-flow"><span>Helmet use</span><span>Travel direction</span><span>Lane position</span><span>Rider demographics</span></div>
+      <div class="cs-k">Validation &amp; delivery</div>
+      <h3>Shipped like a product, not a notebook.</h3>
+      <p>No model version ships on faith: a manual review pass screens detections, and each new detector is run <strong>head-to-head against the previous one on a held-out site</strong> before it replaces anything. What the research team receives is reproducible, not a one-off run:</p>
+      <div class="findings">
+        <div class="find sm"><b>Annotated site videos</b><span>detections drawn frame by frame for spot-checking</span></div>
+        <div class="find sm"><b>Per-site CSV datasets</b><span>counts and safety attributes, analysis-ready</span></div>
+        <div class="find sm"><b>Batch processing scripts</b><span>rerun any site end to end, unattended</span></div>
+        <div class="find sm"><b>Methodology report</b><span>architecture, validation notes, and known limits</span></div>
+      </div>
+      <div class="cs-k">Stack</div>
+      <div class="cs-flow"><span>YOLOv8</span><span>ByteTrack</span><span>MOG2 · OpenCV</span><span>Label Studio</span><span>Python</span></div>
       <div class="esc">ESC or ✕ to close</div>
     </div>
   </div>
