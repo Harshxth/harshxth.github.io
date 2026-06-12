@@ -377,7 +377,7 @@ async function initResumeCounter(){
       const pages={
         resume:`<a href="Harshith_Gujjeti_Resume.pdf" download>↓ Harshith_Gujjeti_Resume.pdf</a>`,
         contact:'harshithgujjeti@gmail.com · <a href="https://github.com/Harshxth" target="_blank">github.com/Harshxth</a> · <a href="https://linkedin.com/in/harshithgujjeti" target="_blank">linkedin.com/in/harshithgujjeti</a>',
-        about:'AI/ML engineer at USF. Research at CUTR &amp; Muma College. Previously ISRO.',
+        about:'AI/ML engineer building agentic AI at Reach Cooling Group. MS @ USF. Research at CUTR &amp; Muma College. Previously ISRO.',
         skills:'PyTorch · LangGraph · CrewAI · YOLOv8 · ChromaDB · FastAPI · Docker · Snowflake',
         citeiq:'agentic RAG system: LangGraph orchestration, 90%+ faithfulness, FastAPI + Docker. <a href="https://github.com/Harshxth/citeiq" target="_blank">github.com/Harshxth/citeiq</a>',
       };
