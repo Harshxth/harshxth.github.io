@@ -1764,60 +1764,88 @@ function initCaseStudy(){
     const acc=a=>'rgba(255,103,31,'+a+')';
     const rnd=(a,b)=>a+Math.random()*(b-a);
     const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-    const dn=(x,y)=>{const s=Math.sin(x*127.1+y*311.7)*43758.5453;return s-Math.floor(s);};
 
     const mq=window.matchMedia('(prefers-reduced-motion: reduce)');
     let reduced=mq.matches;
     let W=0,H=0;
     const headRect={x:0,y:0,w:0,h:0,cx:0};
     const band={top:0,bot:0,h:0};
-    const GX=26,GY=6;
-    let hmap=[],cols=[],lrC=null,srC=null;
+    let scene=null,cols=[],lrC=null,srC=null;
 
     function genTerrain(){
-      hmap=[];
-      for(let y=0;y<=GY;y++){const row=[];for(let x=0;x<=GX;x++)row.push(Math.random());hmap.push(row);}
-      for(let p=0;p<2;p++)for(let y=0;y<=GY;y++)for(let x=0;x<=GX;x++){
-        let s=0,n=0;
-        for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
-          const yy=y+dy,xx=x+dx;
-          if(yy>=0&&yy<=GY&&xx>=0&&xx<=GX){s+=hmap[yy][xx];n++;}
+      // Normalized landscape spec (fractions of W / band.h) so resize and
+      // theme repaints redraw the same scene deterministically.
+      const parcels=[];
+      let u=0;
+      while(u<1){
+        const pw=rnd(.06,.16);
+        let v=0;
+        while(v<1){
+          const ph=Math.min(rnd(.20,.48),1-v);
+          parcels.push({u:u,v:v,w:pw,h:ph,a:rnd(.03,.11)});
+          v+=ph;
         }
-        hmap[y][x]=s/n;
+        u+=pw;
       }
-      let mn=1,mx=0;
-      for(let y=0;y<=GY;y++)for(let x=0;x<=GX;x++){const v=hmap[y][x];if(v<mn)mn=v;if(v>mx)mx=v;}
-      const rng=Math.max(.0001,mx-mn);
-      for(let y=0;y<=GY;y++)for(let x=0;x<=GX;x++)hmap[y][x]=(hmap[y][x]-mn)/rng;
+      scene={
+        parcels:parcels,
+        river:{v:rnd(.25,.7),a1:rnd(.10,.16),a2:rnd(.07,.12),f1:rnd(.009,.014),f2:rnd(.003,.005),p1:rnd(0,6)},
+        roadV:rnd(.15,.85),roadDrift:rnd(-.12,.12),
+        roadU:rnd(.2,.8),roadLean:rnd(-.05,.05),
+        bld:Array.from({length:14},()=>({u:rnd(.02,.96),o:rnd(-.16,.16),w:rnd(3,6),h:rnd(3,6)}))
+      };
     }
     function paintTerrain(){
-      if(!W||!band.h)return;
-      lrC=document.createElement('canvas');lrC.width=W;lrC.height=band.h;
-      srC=document.createElement('canvas');srC.width=W;srC.height=band.h;
-      const cw=W/GX,ch=band.h/GY;
+      if(!W||!band.h||!scene)return;
+      const bh=band.h;
+      const BGC=getComputedStyle(banner).backgroundColor||'#FAFAFB';
+      srC=document.createElement('canvas');srC.width=W;srC.height=bh;
+      lrC=document.createElement('canvas');lrC.width=W;lrC.height=bh;
+      const sc=srC.getContext('2d');
+      sc.fillStyle=BGC;sc.fillRect(0,0,W,bh);
+      sc.fillStyle=ink(.04);sc.fillRect(0,0,W,bh);
+      scene.parcels.forEach(p=>{
+        sc.fillStyle='rgba('+INK+','+p.a.toFixed(3)+')';
+        sc.fillRect(p.u*W,p.v*bh,p.w*W,p.h*bh);
+        sc.strokeStyle=ink(.13);sc.lineWidth=1;
+        sc.strokeRect(p.u*W+.5,p.v*bh+.5,p.w*W,p.h*bh);
+      });
+      const rv=scene.river,ry0=rv.v*bh;
+      const riverY=x=>ry0+Math.sin(x*rv.f1+rv.p1)*rv.a1*bh+Math.sin(x*rv.f2)*rv.a2*bh;
+      sc.lineCap='round';
+      sc.strokeStyle=ink(.20);sc.lineWidth=Math.max(9,bh*.07);
+      sc.beginPath();sc.moveTo(-10,riverY(-10));
+      for(let x=0;x<=W+20;x+=36)sc.lineTo(x,riverY(x));
+      sc.stroke();
+      sc.strokeStyle=ink(.34);sc.lineWidth=1.2;
+      [-1,1].forEach(s=>{
+        const off=s*Math.max(6,bh*.045);
+        sc.beginPath();sc.moveTo(-10,riverY(-10)+off);
+        for(let x=0;x<=W+20;x+=36)sc.lineTo(x,riverY(x)+off);
+        sc.stroke();
+      });
+      const roadY=u=>(scene.roadV+scene.roadDrift*u)*bh;
+      sc.strokeStyle=ink(.42);sc.lineWidth=2.2;
+      sc.beginPath();sc.moveTo(0,roadY(0));sc.lineTo(W,roadY(1));sc.stroke();
+      const rx=scene.roadU*W;
+      sc.beginPath();sc.moveTo(rx,0);sc.lineTo(rx+scene.roadLean*W,bh);sc.stroke();
+      sc.fillStyle=ink(.55);
+      scene.bld.forEach(b=>{
+        const by=roadY(b.u)+b.o*bh;
+        if(by>4&&by<bh-8)sc.fillRect(b.u*W,by,b.w,b.h);
+      });
+      // LR side: mosaic the scene back down to "10 m" blocks
+      const S=Math.max(16,Math.round(bh/7));
+      const tmp=document.createElement('canvas');
+      tmp.width=Math.max(2,Math.ceil(W/S));tmp.height=Math.max(2,Math.ceil(bh/S));
+      tmp.getContext('2d').drawImage(srC,0,0,tmp.width,tmp.height);
       const lc=lrC.getContext('2d');
-      for(let y=0;y<GY;y++)for(let x=0;x<GX;x++){
-        const h=(hmap[y][x]+hmap[y][x+1]+hmap[y+1][x]+hmap[y+1][x+1])/4;
-        lc.fillStyle='rgba('+INK+','+(.04+h*.27)+')';
-        lc.fillRect(x*cw,y*ch,cw+1,ch+1);
-      }
-      lc.strokeStyle='rgba('+INK+',.07)';lc.lineWidth=1;
-      for(let x=0;x<=GX;x++){lc.beginPath();lc.moveTo(x*cw+.5,0);lc.lineTo(x*cw+.5,band.h);lc.stroke();}
-      for(let y=0;y<=GY;y++){lc.beginPath();lc.moveTo(0,y*ch+.5);lc.lineTo(W,y*ch+.5);lc.stroke();}
-      const sc=srC.getContext('2d'),S=4,sw=cw/S,sh=ch/S;
-      for(let y=0;y<GY;y++)for(let x=0;x<GX;x++){
-        const h00=hmap[y][x],h10=hmap[y][x+1],h01=hmap[y+1][x],h11=hmap[y+1][x+1];
-        for(let sy=0;sy<S;sy++)for(let sx=0;sx<S;sx++){
-          const u=(sx+.5)/S,v=(sy+.5)/S;
-          let h=h00*(1-u)*(1-v)+h10*u*(1-v)+h01*(1-u)*v+h11*u*v;
-          h+=(dn(x*S+sx,y*S+sy)-.5)*.24;
-          h=Math.max(0,Math.min(1,h));
-          sc.fillStyle='rgba('+INK+','+(.04+h*.27)+')';
-          sc.fillRect(x*cw+sx*sw,y*ch+sy*sh,sw+.6,sh+.6);
-        }
-      }
-      sc.strokeStyle='rgba('+INK+',.05)';sc.lineWidth=1;
-      for(let x=0;x<=GX;x++){sc.beginPath();sc.moveTo(x*cw+.5,0);sc.lineTo(x*cw+.5,band.h);sc.stroke();}
+      lc.imageSmoothingEnabled=false;
+      lc.fillStyle=BGC;lc.fillRect(0,0,W,bh);
+      lc.drawImage(tmp,0,0,W,bh);
+      lc.strokeStyle=ink(.06);lc.lineWidth=1;
+      for(let x=0;x<=W;x+=S){lc.beginPath();lc.moveTo(x+.5,0);lc.lineTo(x+.5,bh);lc.stroke();}
+      for(let y=0;y<=bh;y+=S){lc.beginPath();lc.moveTo(0,y+.5);lc.lineTo(W,y+.5);lc.stroke();}
     }
     function measureHead(){
       const hb=banner.getBoundingClientRect(),r=titleEl.getBoundingClientRect();
