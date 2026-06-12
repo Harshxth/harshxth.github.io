@@ -120,7 +120,6 @@
       <a href="#about">about</a>
       <a href="#experience">experience</a>
       <a href="#projects">projects</a>
-      <a href="#principles">principles</a>
       <a href="#contact">contact</a>
     </div>
     <button id="cmdk-open" class="cmdk-open-btn" aria-label="Open command palette" title="Command palette (⌘K)">
@@ -245,54 +244,9 @@
   </div>
 </section>
 
-<!-- HOW I THINK -->
-<section id="principles">
-  <div class="sec-label">06 // HOW I THINK</div>
-  <h2 class="sec-h2">Principles I <span style="color:var(--v1)">build by.</span></h2>
-  <p style="color:var(--muted);text-align:center;max-width:560px;margin:0 auto;line-height:1.8">Short opinions, held with conviction. Subject to change when the data says so.</p>
-  <div class="pr-grid reveal">
-    <div class="pr-card">
-      <div class="pr-num">01</div>
-      <h3 class="pr-title">Evals before architecture.</h3>
-      <p class="pr-body">If I can't measure the system, I can't improve it. Every LLM pipeline starts with a <strong>golden set + RAGAS-style eval loop</strong> before I touch the graph. Faithfulness, context precision, answer relevance: numbers first, vibes second.</p>
-      <div class="pr-tags"><span>RAGAS</span><span>LangSmith</span><span>Golden sets</span></div>
-    </div>
-    <div class="pr-card">
-      <div class="pr-num">02</div>
-      <h3 class="pr-title">RAG before fine-tune.</h3>
-      <p class="pr-body">Fine-tuning is a last resort. <strong>90% of "we need a custom model"</strong> is really "we need better retrieval + prompting." I reach for RAG, tool use, and structured output first: cheaper, safer, and swap-in-a-better-model friendly.</p>
-      <div class="pr-tags"><span>Retrieval</span><span>Structured output</span></div>
-    </div>
-    <div class="pr-card">
-      <div class="pr-num">03</div>
-      <h3 class="pr-title">Ship narrow, ship real.</h3>
-      <p class="pr-body">A working demo on one small surface beats a roadmap slide forever. Every project I own has a <strong>Docker image, a FastAPI endpoint, and one metric I can defend</strong>, not just a notebook that runs on my laptop.</p>
-      <div class="pr-tags"><span>FastAPI</span><span>Docker</span><span>Observability</span></div>
-    </div>
-    <div class="pr-card">
-      <div class="pr-num">04</div>
-      <h3 class="pr-title">Agents are pipelines in disguise.</h3>
-      <p class="pr-body">"Multi-agent" is glamorous. But every agent loop eventually becomes a <strong>deterministic graph with guardrails</strong>. I design for that reality, with explicit edges, retry budgets, and failure modes, instead of hoping the LLM figures it out.</p>
-      <div class="pr-tags"><span>LangGraph</span><span>Guardrails</span></div>
-    </div>
-    <div class="pr-card">
-      <div class="pr-num">05</div>
-      <h3 class="pr-title">Data engineering is 60% of ML.</h3>
-      <p class="pr-body">The model is the easy part. Making sure the <strong>150K-row entity resolution actually matches the right companies</strong>, or that the 100hr of traffic video gets labeled without drift: that's where the work hides. Own the pipeline end-to-end.</p>
-      <div class="pr-tags"><span>Entity resolution</span><span>pandas</span><span>SQL</span></div>
-    </div>
-    <div class="pr-card">
-      <div class="pr-num">06</div>
-      <h3 class="pr-title">Boring infra, bold ideas.</h3>
-      <p class="pr-body">Kubernetes for a weekend project is a red flag. I pick the <strong>smallest stack that survives the next 6 months</strong>, then spend the saved energy on the part that's actually interesting: the research question, the eval, the user experience.</p>
-      <div class="pr-tags"><span>Docker</span><span>CI/CD</span><span>Pragmatism</span></div>
-    </div>
-  </div>
-</section>
-
 <!-- ACTIVITY -->
 <section id="activity">
-  <div class="sec-label">07 // ACTIVITY</div>
+  <div class="sec-label">06 // ACTIVITY</div>
   <h2 class="sec-h2">Building <span style="color:var(--v1)">every day.</span></h2>
   <p style="color:var(--muted);text-align:center;max-width:520px;margin:0 auto;line-height:1.8">A year of commits across my open-source work, research pipelines, and side projects.</p>
   <div class="hm-wrap reveal">
@@ -337,7 +291,7 @@
 
 <!-- BEYOND -->
 <section id="beyond" style="max-width:860px">
-  <div class="sec-label">08 // WHEN I'M NOT BUILDING</div>
+  <div class="sec-label">07 // WHEN I'M NOT BUILDING</div>
   <h2 class="sec-h2">Outside <span style="color:var(--v3)">the terminal.</span></h2>
   <div class="bey-grid reveal">
     <div class="bey-card"><span class="bey-icon">🏋️</span><h3>Iron &amp; Discipline</h3><p>Training keeps me sharp. The gym teaches progressive overload, a principle I apply just as hard to engineering. Consistency over intensity, every single day.</p></div>
@@ -348,7 +302,7 @@
 <!-- CONTACT -->
 <section id="contact" style="text-align:center;position:relative;max-width:1100px;padding-bottom:5rem">
   <div class="contact-glow"></div>
-  <div class="sec-label">09 // CONTACT</div>
+  <div class="sec-label">08 // CONTACT</div>
   <h2 class="sec-h2" style="max-width:700px;margin:0 auto 1rem">Open to what's <span style="color:var(--v1)">next.</span></h2>
   <p style="color:var(--muted);max-width:500px;margin:0 auto;line-height:1.85">I build AI, understand how it works, and apply it where it moves the business. If that sounds useful, let's talk.</p>
   <div class="open-chips">
