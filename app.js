@@ -15,7 +15,7 @@ const EXP=[
    bullets:['Developed ML models for <strong>healthcare billing code prediction</strong> and clinical documentation using Python, scikit-learn, and MLflow.','Reduced coding errors by <span class="metric">15%</span> and improved diagnostic decision support through statistical validation and hyperparameter tuning.']},
   {title:'AI Research Intern',cur:false,org:'ISRO · Indian Space Research Organisation',period:'Jan 2025 – Jul 2025',color:'#FF671F',bg:'ISRO',logo:'isro',
    tags:['SRGAN','TensorFlow','Keras','VGG19','Satellite Imaging','Python'],
-   bullets:['Built a satellite-image super-resolution model using <strong>SRGAN</strong> (a GAN paired with a VGG19 perceptual-loss network) in TensorFlow/Keras at ISRO&rsquo;s National Remote Sensing Centre, hitting <span class="metric">4× upscaling</span> (roughly 10 m to 2.5 m detail).','Trained it on <span class="metric">5,000+</span> aligned high- and low-resolution image pairs with a full preprocessing pipeline: RGB band stacking, normalization, and preserved geospatial metadata so the enhanced output stayed analysis-ready.','Reached <span class="metric">27.2 dB PSNR</span> and <span class="metric">0.86 SSIM</span>, producing sharp, structurally faithful imagery for downstream work like land-cover classification and urban mapping.'],
+   bullets:['Built a satellite-image super-resolution model using <strong>SRGAN</strong> (a GAN paired with a VGG19 perceptual-loss network) in TensorFlow/Keras at ISRO&rsquo;s National Remote Sensing Centre, hitting <span class="metric">4× upscaling</span> (roughly 10 m to 2.5 m detail).','Trained it on <span class="metric">5,000+</span> aligned high- and low-resolution image pairs with a full preprocessing pipeline: RGB band stacking, normalization, and preserved geospatial metadata so the enhanced output stayed analysis-ready.','Reached <span class="metric">31 dB PSNR</span> and <span class="metric">0.86 SSIM</span>, producing sharp, structurally faithful imagery for downstream work like land-cover classification and urban mapping.'],
    projLabel:false,projects:[{name:'Satellite Super-Resolution',desc:'How SRGAN turned <span class="metric">10 m</span> pixels into <span class="metric">2.5 m</span> detail: the architecture, the data, and the trade-offs.',cs:'cs-isro'}]},
   {title:'AI Developer Intern',cur:false,org:'Venkusa Technologies',period:'May 2024 – Nov 2024',color:'#14B8A6',bg:'VENKUSA',logo:'venkusa',
    tags:['Python','PHP','Machine Learning','OpenAI API','Prompt Engineering'],
@@ -1930,7 +1930,7 @@ function initCaseStudy(){
       while(chipIdx<cols.length&&cols[chipIdx]<=beamX-24){
         const cx=cols[chipIdx];
         chips.push({x:cx,y:band.top+14+rnd(4,band.h*.45),
-          t:chipIdx%2?('SSIM '+(0.83+rnd(0,.05)).toFixed(2)):('PSNR '+(26.6+rnd(0,1.2)).toFixed(1)+' dB'),
+          t:chipIdx%2?('SSIM '+(0.83+rnd(0,.05)).toFixed(2)):('PSNR '+(30.4+rnd(0,1.0)).toFixed(1)+' dB'),
           born:now});
         chipIdx++;
       }
@@ -1966,7 +1966,7 @@ function initCaseStudy(){
       ctx.lineWidth=1;ctx.strokeStyle=acc(.4*alpha);ctx.strokeRect(x,y,w,h);
       ctx.lineWidth=2.2;ctx.strokeStyle=acc(alpha);corners(x,y,w,h,18);
       ctx.font='500 11px "JetBrains Mono", ui-monospace, monospace';
-      const text='[ srgan-x4 · 27.2 dB ]';
+      const text='[ srgan-x4 · 31 dB ]';
       const tw=ctx.measureText(text).width,chipH=20;
       let chipY=y-chipH-8;
       if(chipY<6)chipY=y+6;
@@ -2023,9 +2023,9 @@ function initCaseStudy(){
       compositeTerrain(W);
       drawBandChrome();
       chips=[
-        {x:W*.18,y:band.top+22,t:'PSNR 27.2 dB',born:0},
+        {x:W*.18,y:band.top+22,t:'PSNR 31.0 dB',born:0},
         {x:W*.46,y:band.top+40,t:'SSIM 0.86',born:0},
-        {x:W*.72,y:band.top+26,t:'PSNR 27.4 dB',born:0}
+        {x:W*.72,y:band.top+26,t:'PSNR 30.8 dB',born:0}
       ];
       drawChips(0,.92);
       const satY=band.top-50;

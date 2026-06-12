@@ -443,7 +443,7 @@
       <aside class="cs-hud" aria-label="Model telemetry">
         <div class="hud-row"><span>model</span><b>srgan + vgg19</b></div>
         <div class="hud-row"><span>scale</span><b>4×</b></div>
-        <div class="hud-row"><span>psnr</span><b>27.2 dB</b></div>
+        <div class="hud-row"><span>psnr</span><b>31 dB</b></div>
         <div class="hud-row"><span>ssim</span><b>0.86</b></div>
         <div class="hud-row"><span>fps</span><b id="cs2-hud-fps">--</b></div>
         <div class="hud-row status"><span class="dot" aria-hidden="true"></span><b id="cs2-hud-status">LIVE</b></div>
@@ -454,7 +454,7 @@
         <div class="stat"><b>4×</b><span>upscaling</span></div>
         <div class="stat"><b>5,000+</b><span>aligned image pairs</span></div>
         <div class="stat"><b>128→512</b><span>px tiles</span></div>
-        <div class="stat"><b>27.2 dB</b><span>PSNR</span></div>
+        <div class="stat"><b>31 dB</b><span>PSNR</span></div>
         <div class="stat"><b>0.86</b><span>SSIM</span></div>
       </div>
       <div class="cs-k">The problem</div>
@@ -470,13 +470,13 @@
       <div class="cs-k">The results</div>
       <h3>Numbers that hold up.</h3>
       <div class="findings">
-        <div class="find"><b>27.2 dB</b><span>PSNR · signal fidelity of the enhanced output</span></div>
+        <div class="find"><b>31 dB</b><span>PSNR · signal fidelity of the enhanced output</span></div>
         <div class="find"><b>0.86</b><span>SSIM · structure, edges, and texture preserved</span></div>
       </div>
-      <p style="margin-top:1.1rem">Pixel-error heatmaps localize exactly where the generator struggles (dense urban edges, fine vegetation texture), turning failure analysis into a map instead of a guess. And the honest trade-off, stated plainly: <strong>GANs trade a little raw PSNR for perceptual realism</strong>. For imagery that humans interpret, that is the right trade.</p>
+      <p style="margin-top:1.1rem">The project report logged <span class="cs-m">27.2 dB</span>; continued training after the report pushed the final generator to <span class="cs-m">31 dB</span>. Pixel-error heatmaps localize exactly where the generator struggles (dense urban edges, fine vegetation texture), turning failure analysis into a map instead of a guess. And the honest trade-off, stated plainly: <strong>GANs trade a little raw PSNR for perceptual realism</strong>. For imagery that humans interpret, that is the right trade.</p>
       <div class="cs-k">Engineering reality</div>
-      <h3>12-hour epochs on a single GPU.</h3>
-      <p>Adversarial training is heavy: one epoch ran <strong>12+ hours on an RTX 3060</strong>, which forced disciplined batch sizing, checkpointed generators, and deliberate experiment planning rather than spray-and-pray runs. Current scope is RGB; extending to <strong>multispectral bands (NIR, SWIR)</strong> is the natural next step for vegetation and water analysis.</p>
+      <h3>Five 12-hour epochs on a single GPU.</h3>
+      <p>Adversarial training is heavy: <strong>five epochs at 12+ hours each</strong>, roughly 60 GPU-hours on an RTX 3060. That forced disciplined batch sizing, checkpointed generators, and deliberate experiment planning rather than spray-and-pray runs. Current scope is RGB; extending to <strong>multispectral bands (NIR, SWIR)</strong> is the natural next step for vegetation and water analysis.</p>
       <div class="cs-k">What it unlocks</div>
       <div class="cs-flow"><span>Urban mapping</span><span>Land-cover classification</span><span>Disaster response</span><span>Precision agriculture</span></div>
       <div class="esc">ESC or ✕ to close</div>
