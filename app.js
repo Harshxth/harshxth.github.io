@@ -1703,6 +1703,7 @@ function initCaseStudy(){
     function frame(now){
       if(!running)return;
       raf=requestAnimationFrame(frame);
+      if(W===0&&banner.clientWidth>0)resize();
       let dt=(now-last)/1000;last=now;
       if(dt>.05)dt=.05;
       if(dt>0)fpsEma+=(1/dt-fpsEma)*.06;
@@ -2036,6 +2037,7 @@ function initCaseStudy(){
     function frame(now){
       if(!running)return;
       raf=requestAnimationFrame(frame);
+      if(W===0&&banner.clientWidth>0){resize();t0=now;}
       const dt=(now-last)/1000;last=now;
       if(dt>0&&dt<.05)fpsEma+=(1/dt-fpsEma)*.06;
       render(now);
