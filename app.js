@@ -24,7 +24,7 @@ const EXP=[
 
 const PROJ=[
   // ── Row 1: hackathon-award cards ──
-  {name:'Sensory',sub:'Maps how a place feels',color:'#22D3EE',metric:'Best UI/UX · 148 Venues',award:'Best UI/UX · HackaBull VII',wip:false,link:'https://github.com/Harshxth/Sensory',cats:['agents','ml'],
+  {name:'Sensory',sub:'Maps how a place feels',color:'#22D3EE',metric:'Best UI/UX · 148 Venues',award:'Best UI/UX · HackaBull VII',wip:false,link:'https://github.com/Harshxth/Sensory',cats:['agents'],
    media:{poster:'assets/sensory-hero.jpg',live:'assets/sensory-map.jpg'},
    desc:'<strong>Next.js 16</strong> PWA layering live noise, lighting, crowd, smell, and exit data over Google Maps with profile-aware route scoring for autistic, sensory-sensitive, wheelchair, deaf, blind, dyslexic, and ESL users across <span class="m">148 seeded Tampa venues</span>. <strong>Gemini 2.5 Flash Vision</strong> reads signs through your camera; <strong>ElevenLabs</strong> Conversational AI grounded on a venue knowledge base + 30-second Instant Voice Clone delivers cues in a voice the user trusts. Vibrates before a hard place.',
    tags:['Next.js','TypeScript','Gemini Vision','ElevenLabs','MongoDB Atlas','Google Maps','PWA'],flow:['Profile','Sensory Map','Route Score','Voice Cue','Arrive']},
@@ -36,7 +36,7 @@ const PROJ=[
   {name:'Sentinel AI',sub:'Confidence-Gated Multi-Agent NLP',color:'#FBBF24',metric:'14× Cheaper · Same Acc',wip:false,link:'https://github.com/Harshxth/Sentinel-AI',cats:['agents','ml'],
    desc:'Confidence-gated multi-agent pipeline for stress detection in social text. <strong>Fine-tuned RoBERTa</strong> handles ~86% of posts locally; only the 14% low-confidence cases escalate to <strong>Claude Sonnet 4.6</strong> for adversarial masked-distress reasoning. <span class="m">14× cheaper</span> than naive ensembling at the same accuracy, proven via a 7-config ablation with McNemar significance testing. Includes <strong>MCP server</strong> exposing the classifier as a tool for Claude Desktop interop.',
    tags:['PyTorch','RoBERTa','LangGraph','Claude','MCP','Streamlit'],flow:['Post','Screener','Confidence Gate','Adversarial','Judge']},
-  {name:'UrbanMind',sub:'Multi-Agent City Design',color:'#A78BFA',metric:'4 Agents · <30s',wip:false,link:'https://github.com/Harshxth/UrbanMind',cats:['agents','ml'],
+  {name:'UrbanMind',sub:'Multi-Agent City Design',color:'#A78BFA',metric:'4 Agents · <30s',wip:false,link:'https://github.com/Harshxth/UrbanMind',cats:['agents','rag'],
    media:{live:'assets/urbanmind-app.jpg'},
    desc:'Four specialised agents (<strong>CityRAG, GeoSense, Visionary, GridShield</strong>) orchestrate natural-language city-design queries on Tampa 2050. Real-time WebSocket streaming of agent status; analyses solar potential, flood risk, EV infrastructure, traffic, and cybersecurity. Top-down masterplans rendered via <strong>Imagen</strong>. Full analysis under <span class="m">30 seconds</span>.',
    tags:['React','FastAPI','Gemini 2.5','Imagen','ChromaDB','WebSocket'],flow:['NL Query','Agent Routing','Geo Analysis','Plan Render','Stream']},
@@ -52,7 +52,7 @@ const PROJ=[
    desc:'Autonomous 4-agent system (Researcher / Analyzer / Validator / Reporter) built with <strong>CrewAI</strong>. Conducts end-to-end PubMed research and generates executive reports. Processed <span class="m">50+ healthcare queries</span> at <span class="m">95% accuracy</span> vs manual review.',
    tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
 ];
-const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Classical ML'};
+const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Model Training'};
 
 const LOGOS={
   jntu:'assets/jntu.jpg',
@@ -1196,11 +1196,10 @@ function initProj(){
   const grid=document.getElementById('projects-grid');
   // Bento sizing pattern — Row 1: feature(8) + regular(4) · Row 2: wide(6) + wide(6) · Row 3: regular×3(4 each)
   const SIZES=['feature','regular','wide','wide','regular','regular','regular'];
-  const CAT_LABEL={rag:'RAG',cv:'CV',agents:'Agents',healthcare:'Healthcare',ml:'Classical ML'};
   PROJ.forEach((p,i)=>{
     const size=SIZES[i%SIZES.length]||'regular';
     const primaryCat=(p.cats||['ml'])[0];
-    const catLabel=(p.cats||[]).map(c=>CAT_LABEL[c]||c).slice(0,2).join(' · ');
+    const catLabel=(p.cats||[]).map(c=>CAT_LABELS[c]||c).slice(0,2).join(' · ');
     const card=document.createElement('article');
     const hasMedia=!!(p.media&&p.media.live);
     const hasPoster=hasMedia&&!!p.media.poster;
