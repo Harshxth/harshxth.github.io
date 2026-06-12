@@ -1167,7 +1167,7 @@ function initExp(){
     });
   });
   el.querySelectorAll('.sub-row[data-cs]').forEach(btn=>{
-    btn.addEventListener('click',()=>{if(window.openCaseStudy)window.openCaseStudy(btn.dataset.cs);});
+    btn.addEventListener('click',()=>{if(window.openCaseStudy)window.openCaseStudy(btn.dataset.cs,btn);});
   });
   // Scroll-drawn timeline: the line fills as you move through the section and
   // each dot ignites to its company color when the fill reaches it.
@@ -1426,7 +1426,7 @@ function initReveal(){
 // theme-aware so the ink flips with light/dark.
 function initCaseStudy(){
   const reg={};
-  window.openCaseStudy=function(id){const r=reg[id];if(r)r.open();};
+  window.openCaseStudy=function(id,opener){const r=reg[id];if(r)r.open(opener);};
   document.addEventListener('keydown',e=>{
     if(e.key!=='Escape')return;
     Object.keys(reg).forEach(k=>{if(reg[k].isOpen())reg[k].close();});
@@ -1436,8 +1436,9 @@ function initCaseStudy(){
   function setupOverlay(oid,sid,cid,factory){
     const cs=document.getElementById(oid);if(!cs)return;
     const shell=document.getElementById(sid),closeBtn=document.getElementById(cid);
-    let scene=null;
-    function open(){
+    let scene=null,lastOpener=null;
+    function open(opener){
+      lastOpener=opener||null;
       cs.classList.add('on');cs.setAttribute('aria-hidden','false');
       document.body.style.overflow='hidden';
       shell.scrollTop=0;
@@ -1448,6 +1449,7 @@ function initCaseStudy(){
       cs.classList.remove('on');cs.setAttribute('aria-hidden','true');
       document.body.style.overflow='';
       if(scene)scene.stop();
+      if(lastOpener&&lastOpener.focus)lastOpener.focus();
     }
     closeBtn.addEventListener('click',close);
     reg[oid]={open:open,close:close,isOpen:function(){return cs.classList.contains('on');}};
