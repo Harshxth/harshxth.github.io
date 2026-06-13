@@ -544,6 +544,15 @@ footer > .ft-konami{grid-column:1/-1;grid-row:2;justify-self:center}
 .sub-row.click:hover .sub-cta i{transform:translateX(4px)}
 .sub-row.click:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:6px}
 @media(max-width:640px){.sub-row{flex-direction:column;align-items:flex-start;gap:.3rem}}
+/* BORDER-SHINE deep-dive cue (adapts to each card's accent via --shine / currentColor) */
+@property --beam{syntax:'<angle>';initial-value:0turn;inherits:false}
+.shine-border{position:relative;isolation:isolate}
+.shine-border::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:conic-gradient(from var(--beam),transparent 0deg,transparent 250deg,var(--shine,currentColor) 320deg,#fff 340deg,var(--shine,currentColor) 350deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:beam 3.4s linear infinite;pointer-events:none}
+@keyframes beam{to{--beam:1turn}}
+.proj-meta a.gh-shine{border:1px solid var(--bord);border-radius:6px;padding:.32rem .62rem;background:var(--bg)}
+.proj-meta a.gh-shine:hover{opacity:1;color:var(--shine)}
+.sub-cta.cta-chip{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--bord);border-radius:6px;padding:.42rem .7rem;background:var(--bg)}
+@media(prefers-reduced-motion:reduce){.shine-border::before{animation:none;background:none}}
 /* CASE STUDY OVERLAYS */
 .cs-overlay{position:fixed;inset:0;z-index:2400;background:var(--bg);opacity:0;pointer-events:none;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
 #cs-overlay{--det:#6B8CFF}

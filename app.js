@@ -1136,7 +1136,7 @@ function initExp(){
     const moreB=ex.bullets.slice(sc).map(b=>`<li>${b}</li>`).join('');
     const moreN=ex.bullets.length-sc;
     const bulletsHTML=`<ul class="exp-bullets">${visB}</ul>`+(moreN>0?`<div class="exp-more" id="xm-${i}"><div><ul class="exp-bullets">${moreB}</ul></div></div><button type="button" class="exp-readmore" data-t="xm-${i}" data-n="${moreN}" aria-expanded="false"><span class="rm-txt">+${moreN} more</span><span class="rm-ico">⌄</span></button>`:'');
-    const subsHTML=(ex.projects&&ex.projects.length)?`<div class="subs">${ex.projLabel===false?'':'<div class="subs-label">Projects</div>'}${ex.projects.map(p=>`<button type="button" class="sub-row click" data-cs="${p.cs}"><span class="sub-main"><span class="sub-name"><span class="sub-dot done"></span>${p.name}</span><span class="sub-desc">${p.desc}</span></span><span class="sub-cta">Case study <i>→</i></span></button>`).join('')}</div>`:'';
+    const subsHTML=(ex.projects&&ex.projects.length)?`<div class="subs">${ex.projLabel===false?'':'<div class="subs-label">Projects</div>'}${ex.projects.map(p=>`<button type="button" class="sub-row click" data-cs="${p.cs}"><span class="sub-main"><span class="sub-name"><span class="sub-dot done"></span>${p.name}</span><span class="sub-desc">${p.desc}</span></span><span class="sub-cta cta-chip shine-border">Case study <i>→</i></span></button>`).join('')}</div>`:'';
     const logoHTML=LOGOS[ex.logo]
       ?ex.logoFill
         ?`<div style="width:40px;height:40px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:cover;display:block" alt="${ex.org} logo"/></div>`
@@ -1234,7 +1234,7 @@ function initProj(){
           <span>${(p.flow||[]).slice(0,2).join(' · ').toUpperCase()||'—'}</span>
           <span style="display:inline-flex;gap:.8rem;align-items:center">
             ${p.wip?'<span class="wip-tag">IN PROGRESS</span>':''}
-            ${p.link?`<a href="${p.link}" target="_blank" rel="noopener">GitHub ↗</a>`:''}
+            ${p.link?`<a class="gh-shine shine-border" href="${p.link}" target="_blank" rel="noopener" style="--shine:${p.color}">GitHub <span>↗</span></a>`:''}
           </span>
         </div>
       </div>`;
