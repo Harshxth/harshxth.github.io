@@ -3,7 +3,7 @@ html{scroll-behavior:smooth;overflow-x:clip}
 :root{
   /* Default: cool grey. Purple is opt-in via ?palette=purple. */
   --bg:#0B0B0D;--bg-rgb:11,11,13;--surf:#141418;--bord:#2A2A30;
-  --v1:#E5E7EB;--v2:#9CA3AF;--v3:#F3F4F6;--v4:#6B7280;
+  --v1:#E5E7EB;--v2:#9CA3AF;--v3:#F3F4F6;--v4:#6B7280;--v1-rgb:229,231,235;
   --text:#F9FAFB;--muted:#9CA3AF;--dim:#3F3F46;
   --body:#B4B4BC;--hl:#F3F4F6;--on-accent:#0B0B0D;
   --grid:rgba(229,231,235,.04);--glow:rgba(229,231,235,.07);
@@ -16,7 +16,7 @@ html{scroll-behavior:smooth;overflow-x:clip}
 }
 :root[data-palette="purple"]{
   --bg:#080010;--bg-rgb:8,0,16;--surf:#0D0018;--bord:#1A0835;
-  --v1:#C084FC;--v2:#818CF8;--v3:#E879F9;--v4:#A78BFA;
+  --v1:#C084FC;--v2:#818CF8;--v3:#E879F9;--v4:#A78BFA;--v1-rgb:192,132,252;
   --text:#F0EAFF;--muted:#8A6FB8;--dim:#3D1F5C;
   --body:#9080B0;--hl:#D4BEEA;--on-accent:#080010;
   --grid:rgba(var(--accent-rgb),.04);--glow:rgba(var(--accent-rgb),.07);
@@ -28,7 +28,7 @@ html{scroll-behavior:smooth;overflow-x:clip}
   /* Light mode follows the grey default — dark-grey accents on an
      off-white surface. No purple leakage. */
   --bg:#FAFAFB;--bg-rgb:250,250,251;--surf:#FFFFFF;--bord:#E5E7EB;
-  --v1:#111827;--v2:#4B5563;--v3:#0B0B0D;--v4:#6B7280;
+  --v1:#111827;--v2:#4B5563;--v3:#0B0B0D;--v4:#6B7280;--v1-rgb:17,24,39;
   --text:#0B0B0D;--muted:#4B5563;--dim:#9CA3AF;
   --body:#374151;--hl:#0B0B0D;--on-accent:#FFFFFF;
   --grid:rgba(11,11,13,.05);--glow:rgba(11,11,13,.07);
@@ -38,7 +38,7 @@ html{scroll-behavior:smooth;overflow-x:clip}
 /* Purple opt-in gets its own light-mode variant — original plum on cream */
 :root[data-palette="purple"][data-theme="light"]{
   --bg:#FAFAFB;--bg-rgb:250,250,251;--surf:#FFFFFF;--bord:#E5DEF5;
-  --v1:#6D28D9;--v2:#4F46E5;--v3:#9333EA;--v4:#7C3AED;
+  --v1:#6D28D9;--v2:#4F46E5;--v3:#9333EA;--v4:#7C3AED;--v1-rgb:109,40,217;
   --text:#1A0B2E;--muted:#6B5B8A;--dim:#BFB4D4;
   --body:#4C3F6B;--hl:#2A1245;--on-accent:#FFFFFF;
   --grid:rgba(109,40,217,.05);--glow:rgba(109,40,217,.08);
@@ -133,8 +133,8 @@ h1.hero-name{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.8rem);fo
 @media(max-width:640px){.hero-logos{gap:.55rem}.hero-logos .label{display:none}.hero-logo-chip{padding:.35rem .65rem .35rem .4rem}.hero-logo-chip .logo-name em{display:none}}
 .btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;background:var(--v1);color:var(--on-accent);border:none;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-decoration:none;cursor:none;box-shadow:0 0 28px rgba(var(--accent-rgb),.4);transition:box-shadow .3s,transform .2s}
 .btn-primary:hover{box-shadow:0 0 52px rgba(var(--accent-rgb),.6);transform:translateY(-1px)}
-.btn-ghost{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;background:transparent;border:1px solid rgba(var(--accent-rgb),.25);border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;letter-spacing:.08em;color:var(--v1);text-decoration:none;cursor:none;transition:border-color .3s,background .3s}
-.btn-ghost:hover{border-color:rgba(var(--accent-rgb),.6);background:rgba(var(--accent-rgb),.07)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;background:transparent;border:1px solid rgba(var(--v1-rgb),.25);border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;letter-spacing:.08em;color:var(--v1);text-decoration:none;cursor:none;transition:border-color .3s,background .3s}
+.btn-ghost:hover{border-color:rgba(var(--v1-rgb),.6);background:rgba(var(--v1-rgb),.07)}
 /* FLOATING TERMINAL */
 .term-launcher{position:fixed;right:1.25rem;bottom:1.25rem;z-index:2400;display:inline-flex;align-items:center;gap:.5rem;background:var(--surf);border:1px solid var(--bord);color:var(--v1);border-radius:100px;padding:.55rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;cursor:none;box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 0 1px rgba(var(--accent-rgb),.06);transition:transform .22s,border-color .22s,box-shadow .22s;animation:termPulse 2.4s ease-in-out infinite}
 .term-launcher:hover{transform:translateY(-2px);border-color:var(--v1);box-shadow:0 10px 32px rgba(var(--accent-rgb),.28)}
