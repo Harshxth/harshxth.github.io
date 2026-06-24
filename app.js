@@ -100,7 +100,7 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   },110);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initCaseStudy();initExp();initProj();initReveal();initHeatmap();initPinned();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
+function initAll(){initCursor();initNav();initBG();initTyping();initCaseStudy();initExp();initProj();initReveal();initHeatmap();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
 
 // ── CARD TILT + SHINE ────────────────────────────────────────────────────────
 // Gentle 3D mouse-tilt on project and experience cards. Max 2° per axis,
@@ -174,36 +174,6 @@ async function initLastUpdated(){
   }catch{/* silent: just leave footer clean */}
 }
 
-// ── PINNED REPOS ─────────────────────────────────────────────────────────────
-async function initPinned(){
-  const grid=document.getElementById('pinned-grid');if(!grid)return;
-  try{
-    const r=await fetch('https://gh-pinned-repos.egoist.dev/?username=Harshxth');
-    if(!r.ok)throw new Error('fetch');
-    const repos=await r.json();
-    if(!Array.isArray(repos)||!repos.length)throw new Error('empty');
-    grid.classList.remove('pinned-skel');
-    grid.innerHTML=repos.map(r=>{
-      const desc=(r.description||'').replace(/</g,'&lt;');
-      const lang=r.language||'';const langColor=r.languageColor||'#888';
-      return `<a class="pinned-card" href="${r.link}" target="_blank" rel="noopener">
-        <div class="pn-top">
-          <svg class="pn-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8zM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2z"/></svg>
-          <div class="pn-name">${r.repo}</div>
-        </div>
-        <div class="pn-desc">${desc||'&nbsp;'}</div>
-        <div class="pn-meta">
-          ${lang?`<span class="pn-lang" style="--lang:${langColor}">${lang}</span>`:''}
-          ${r.stars?`<span>★ ${r.stars}</span>`:''}
-          ${r.forks?`<span>⑂ ${r.forks}</span>`:''}
-        </div>
-      </a>`;
-    }).join('');
-  }catch{
-    grid.classList.remove('pinned-skel');
-    grid.innerHTML=`<div class="pinned-err" style="grid-column:1/-1">Couldn't load pinned repos. <a href="https://github.com/Harshxth" target="_blank">Browse on GitHub →</a></div>`;
-  }
-}
 
 // ── COUNT UP ─────────────────────────────────────────────────────────────────
 function initCountUp(){
