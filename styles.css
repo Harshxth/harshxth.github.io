@@ -371,9 +371,6 @@ section>*{position:relative;z-index:1}
 .open-chip{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:100px;padding:.35rem .95rem;font-size:.72rem;color:var(--muted);letter-spacing:.04em;font-family:'JetBrains Mono',monospace}
 .open-chip.ac{background:rgba(var(--accent-rgb),.07);border-color:rgba(var(--accent-rgb),.22);color:var(--v1)}
 /* PINNED REPOS */
-.pinned-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.9rem}
-.pinned-card{display:block;background:var(--surf);border:1px solid var(--bord);border-radius:10px;padding:1rem 1.1rem;text-decoration:none;transition:border-color .2s,transform .2s;cursor:none}
-.pinned-card:hover{border-color:rgba(var(--accent-rgb),.32);transform:translateY(-2px)}
 .pinned-card .pn-top{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
 .pinned-card .pn-icon{width:14px;height:14px;color:var(--v1);flex-shrink:0}
 .pinned-card .pn-name{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--v1);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
