@@ -371,9 +371,6 @@ section>*{position:relative;z-index:1}
 .open-chip{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:100px;padding:.35rem .95rem;font-size:.72rem;color:var(--muted);letter-spacing:.04em;font-family:'JetBrains Mono',monospace}
 .open-chip.ac{background:rgba(var(--accent-rgb),.07);border-color:rgba(var(--accent-rgb),.22);color:var(--v1)}
 /* PINNED REPOS */
-.pinned-skel .pinned-card{height:110px;animation:hmPulse 1.4s ease-in-out infinite;opacity:.5}
-.pinned-err{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.7rem;text-align:center;padding:1.5rem}
-.pinned-err a{color:var(--v1);text-decoration:none}
 /* HOW I THINK */
 #principles{max-width:960px}
 /* ACTIVITY / HEATMAP */
