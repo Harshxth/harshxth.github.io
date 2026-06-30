@@ -463,7 +463,7 @@ body.att-mode{animation:attShake 12s linear 1}
   *{cursor:auto!important;animation:none!important;transition:none!important;text-shadow:none!important;box-shadow:none!important;background-attachment:scroll!important}
   html,body{background:#fff!important;color:#111!important;overflow:visible!important;background-image:none!important}
   body{font-size:10pt;line-height:1.45}
-  #loader,#cur-o,#cur-d,#cmdk-root,#cmdk-open,nav,.scanlines,#nn-canvas,.hero-vignette,.hero-grid-hint,.hero-bottom-fade,.scroll-hint,.availability-badge,#theme-toggle,.hero-ctas,.cmdk-open-btn,.hm-tip,.flow-wrap,.hm-scroll,.pinned-sub,.contact-glow,.contact-links,.resume-counter,.hm-legend,.proj-filters,.cur-badge{display:none!important}
+  #loader,#cur-o,#cur-d,#cmdk-root,#cmdk-open,nav,.scanlines,#nn-canvas,.hero-vignette,.hero-grid-hint,.hero-bottom-fade,.scroll-hint,.availability-badge,#theme-toggle,.hero-ctas,.cmdk-open-btn,.hm-tip,.flow-wrap,.hm-scroll,.contact-glow,.contact-links,.resume-counter,.hm-legend,.proj-filters,.cur-badge{display:none!important}
   #hero{height:auto!important;min-height:0!important;padding:0 0 .5in;margin:0!important;page-break-after:avoid}
   .hero-content{padding:0!important}
   h1.hero-name{font-size:28pt!important;text-align:left;color:#111!important;-webkit-text-fill-color:#111!important;background:none!important}
@@ -474,8 +474,8 @@ body.att-mode{animation:attShake 12s linear 1}
   .sec-label{color:#5B21B6!important;text-align:left!important;font-size:7pt!important;margin-bottom:.3rem!important}
   .sec-h2{font-size:15pt!important;text-align:left!important;color:#111!important;margin-bottom:.2in!important}
   .sec-h2 span{color:#5B21B6!important}
-  .about-grid,.sk-grid,.bey-grid,.projects-grid,.pinned-grid,.hm-cta{grid-template-columns:1fr 1fr!important;gap:.2in!important}
-  .edu-card,.exp-card,.proj-card,.bey-card,.sk-group,.hm-wrap,.pinned-card{background:#fff!important;border:1px solid #ddd!important;color:#222!important;page-break-inside:avoid}
+  .about-grid,.sk-grid,.bey-grid,.projects-grid,.hm-cta{grid-template-columns:1fr 1fr!important;gap:.2in!important}
+  .edu-card,.exp-card,.proj-card,.bey-card,.sk-group,.hm-wrap{background:#fff!important;border:1px solid #ddd!important;color:#222!important;page-break-inside:avoid}
   .proj-card{padding:.18in!important}
   .proj-card .proj-diag,.proj-card .flow-wrap{display:none!important}
   .exp-bullets li,.proj-desc,.about-body,.bey-card p{color:#333!important}
