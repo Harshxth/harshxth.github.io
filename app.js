@@ -53,6 +53,48 @@ const PROJ=[
    tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
 ];
 const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Model Training'};
+// Signature SVG visuals for cards without media — each diagram states something true about the project.
+const PROJ_VIZ={
+  'Sentinel AI': // confidence gate: most posts take the cheap local path, few escalate
+    '<svg viewBox="0 0 320 150" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">'
+    +'<line x1="150" y1="18" x2="150" y2="132" stroke-width="1.4" stroke-dasharray="4 5" opacity=".55"/>'
+    +'<text x="150" y="12" font-family="JetBrains Mono,monospace" font-size="8" fill="currentColor" stroke="none" text-anchor="middle" opacity=".8">CONFIDENCE GATE</text>'
+    +'<path d="M20 75 H145" stroke-width="1.6" opacity=".7"/>'
+    +'<path d="M155 75 H292" stroke-width="2.4" opacity=".95"/>'
+    +'<path d="M155 72 C190 60 210 40 240 32" stroke-width="1.1" opacity=".5"/>'
+    +'<circle cx="40" cy="75" r="3.4" fill="currentColor" stroke="none"/><circle cx="70" cy="75" r="3.4" fill="currentColor" stroke="none" opacity=".85"/><circle cx="100" cy="75" r="3.4" fill="currentColor" stroke="none" opacity=".7"/><circle cx="126" cy="75" r="3.4" fill="currentColor" stroke="none" opacity=".55"/>'
+    +'<circle cx="200" cy="75" r="4" fill="currentColor" stroke="none"/><circle cx="240" cy="75" r="4" fill="currentColor" stroke="none" opacity=".8"/><circle cx="278" cy="75" r="4.6" stroke-width="1.6"/>'
+    +'<circle cx="240" cy="32" r="3.2" stroke-width="1.3" opacity=".7"/>'
+    +'<text x="240" y="22" font-family="JetBrains Mono,monospace" font-size="7.5" fill="currentColor" stroke="none" text-anchor="middle" opacity=".65">ESCALATE 14%</text>'
+    +'<text x="222" y="95" font-family="JetBrains Mono,monospace" font-size="7.5" fill="currentColor" stroke="none" text-anchor="middle" opacity=".65">LOCAL 86%</text></svg>',
+  'Hospital LOS Prediction': // predicted vs actual length-of-stay
+    '<svg viewBox="0 0 320 150" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">'
+    +'<line x1="36" y1="20" x2="36" y2="128" stroke-width="1.2" opacity=".5"/>'
+    +'<line x1="36" y1="128" x2="296" y2="128" stroke-width="1.2" opacity=".5"/>'
+    +'<rect x="52" y="96" width="26" height="32" stroke-width="1.4" opacity=".8"/>'
+    +'<rect x="92" y="66" width="26" height="62" fill="currentColor" stroke="none" opacity=".28"/>'
+    +'<rect x="132" y="44" width="26" height="84" stroke-width="1.4" opacity=".8"/>'
+    +'<rect x="172" y="78" width="26" height="50" fill="currentColor" stroke="none" opacity=".28"/>'
+    +'<rect x="212" y="56" width="26" height="72" stroke-width="1.4" opacity=".8"/>'
+    +'<rect x="252" y="88" width="26" height="40" fill="currentColor" stroke="none" opacity=".28"/>'
+    +'<path d="M52 92 L92 60 L132 40 L172 74 L212 50 L252 84 L278 80" stroke-width="1.8"/>'
+    +'<circle cx="132" cy="40" r="3" fill="currentColor" stroke="none"/>'
+    +'<text x="166" y="16" font-family="JetBrains Mono,monospace" font-size="8" fill="currentColor" stroke="none" text-anchor="middle" opacity=".8">PREDICTED VS ACTUAL · MAE 0.30d</text></svg>',
+  'Healthcare Research Agent': // 4-agent pipeline
+    '<svg viewBox="0 0 320 150" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">'
+    +'<rect x="22" y="60" width="52" height="30" rx="5" stroke-width="1.5"/>'
+    +'<rect x="98" y="60" width="52" height="30" rx="5" stroke-width="1.5"/>'
+    +'<rect x="174" y="60" width="52" height="30" rx="5" stroke-width="1.5"/>'
+    +'<rect x="250" y="60" width="52" height="30" rx="5" stroke-width="1.5"/>'
+    +'<path d="M74 75 H96 M150 75 H172 M226 75 H248" stroke-width="1.6"/>'
+    +'<path d="M92 71 L98 75 L92 79 M168 71 L174 75 L168 79 M244 71 L250 75 L244 79" stroke-width="1.4"/>'
+    +'<text x="48" y="79" font-family="JetBrains Mono,monospace" font-size="7.2" fill="currentColor" stroke="none" text-anchor="middle">RESEARCH</text>'
+    +'<text x="124" y="79" font-family="JetBrains Mono,monospace" font-size="7.2" fill="currentColor" stroke="none" text-anchor="middle">ANALYZE</text>'
+    +'<text x="200" y="79" font-family="JetBrains Mono,monospace" font-size="7.2" fill="currentColor" stroke="none" text-anchor="middle">VALIDATE</text>'
+    +'<text x="276" y="79" font-family="JetBrains Mono,monospace" font-size="7.2" fill="currentColor" stroke="none" text-anchor="middle">REPORT</text>'
+    +'<path d="M48 60 C60 34 112 34 124 58" stroke-width="1" stroke-dasharray="3 4" opacity=".5"/>'
+    +'<text x="160" y="118" font-family="JetBrains Mono,monospace" font-size="8" fill="currentColor" stroke="none" text-anchor="middle" opacity=".8">PUBMED · 95% VS MANUAL REVIEW</text></svg>'
+};
 
 const LOGOS={
   jntu:'assets/jntu.jpg',
@@ -1179,7 +1221,8 @@ function initProj(){
     const card=document.createElement('article');
     const hasMedia=!!(p.media&&p.media.live);
     const hasPoster=hasMedia&&!!p.media.poster;
-    card.className=`proj-card reveal ${size}${hasMedia?' has-media':''}${hasPoster?' has-poster':''}`;
+    const hasViz=!hasMedia&&!!PROJ_VIZ[p.name];
+    card.className=`proj-card reveal ${size}${hasMedia?' has-media':''}${hasPoster?' has-poster':''}${hasViz?' has-viz':''}`;
     card.style.cssText=`transition-delay:${i*.08}s;color:${p.color}`;
     card.dataset.cats=(p.cats||[]).join(' ');
     const vizInner=hasMedia
@@ -1192,7 +1235,7 @@ function initProj(){
         ${vizInner}
         <div class="proj-viz-shine"></div>
         <span class="proj-viz-label">${p.sub.toUpperCase()}</span>
-        ${hasMedia?'':`<div class="proj-bg-metric">${p.metric}</div>`}
+        ${hasMedia?'':(hasViz?`<div class="proj-viz-svg">${PROJ_VIZ[p.name]}</div>`:`<div class="proj-bg-metric">${p.metric}</div>`)}
       </div>
       <div class="proj-body">
         ${p.award?`<span class="proj-award">${p.award}</span>`:''}

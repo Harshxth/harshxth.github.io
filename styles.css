@@ -273,6 +273,10 @@ section>*{position:relative;z-index:1}
 @media(max-width:900px){.proj-card.feature .proj-viz{border-radius:22px 22px 0 0;min-height:180px}}
 .proj-viz-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(var(--accent-rgb),.04) 0%,rgba(var(--accent-rgb),.02) 50%,var(--surf) 100%)}
 .proj-bg-metric{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Syne',sans-serif;font-weight:800;font-size:4.2rem;letter-spacing:-.04em;color:currentColor;opacity:.13;pointer-events:none;user-select:none;transition:opacity .4s ease;white-space:nowrap;text-align:center;line-height:.9}
+/* signature SVG visuals (cards without media) */
+.proj-viz-svg{position:absolute;inset:12px;pointer-events:none}
+.proj-viz-svg svg{position:absolute;inset:0;width:100%;height:100%;opacity:.75}
+.proj-card.has-viz .proj-deco{opacity:.25}
 .proj-card.feature .proj-bg-metric{font-size:6.2rem}
 .proj-viz-label{position:absolute;top:1rem;left:1rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.18em;z-index:2}
 .proj-viz-shine{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.35),transparent);opacity:.6;z-index:2}
