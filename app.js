@@ -134,12 +134,12 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   sessionStorage.setItem('hg-seen','1');
   const bl=document.getElementById('boot-lines'),pp=document.getElementById('boot-prog'),pt=document.getElementById('boot-pct');let i=0;
   const tick=setInterval(()=>{
-    if(i>=BOOT.length){clearInterval(tick);setTimeout(()=>{loader.classList.add('hide');setTimeout(initAll,380);},180);return;}
+    if(i>=BOOT.length){clearInterval(tick);setTimeout(()=>{loader.classList.add('hide');setTimeout(initAll,150);},80);return;}
     const d=document.createElement('div');d.className='boot-line';
     d.style.color=BOOT[i].includes('READY')?'#F3F4F6':BOOT[i].includes('OK')?'#E5E7EB':'#6B7280';
     d.innerHTML=`<span style="color:#3F3F46;margin-right:1rem">[${String(i).padStart(2,'0')}]</span>${BOOT[i]}`;
     bl.appendChild(d);i++;const pct=Math.round((i/BOOT.length)*100);pp.style.width=pct+'%';pt.textContent=pct+'%';
-  },110);
+  },55);
 })();
 
 function initAll(){initCursor();initNav();initBG();initTyping();initCaseStudy();initExp();initProj();initReveal();initHeatmap();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
