@@ -716,6 +716,12 @@ function initNav(){const n=document.getElementById('nav');window.addEventListene
 // gets "chosen" and we smoothly transition into the RAG retrieval → attention
 // zoom → answer ejection → fade back to ambient.
 function initBG(){
+  // three.js is deferred; on slow connections it may land after the boot sequence.
+  if(typeof THREE==='undefined'){
+    let waited=0;
+    const poll=setInterval(()=>{ if(typeof THREE!=='undefined'){clearInterval(poll);initBG();} else if((waited+=100)>10000){clearInterval(poll);} },100);
+    return;
+  }
   const canvas=document.getElementById('nn-canvas'),hero=document.getElementById('hero');
   const GW=()=>hero.offsetWidth,GH=()=>hero.offsetHeight;
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(80,GW()/GH(),.1,500);
