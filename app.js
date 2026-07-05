@@ -913,8 +913,12 @@ function initBG(){
   // covered. Query at RAG_X still appears in the right third thanks to FOV.
   const CAM_NEAR=new THREE.Vector3(0,0,16);
 
-  (function animate(){
-    requestAnimationFrame(animate);t+=.013;
+  // Pause the loop while the hero is offscreen; reduced-motion users get one static frame.
+  const reducedBG=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let bgRunning=false,bgRaf=0;
+  function animate(){
+    if(!bgRunning)return;
+    bgRaf=requestAnimationFrame(animate);t+=.013;
     const cp=(t%CYCLE)/CYCLE,nc=Math.floor(t/CYCLE);
     if(nc!==cy){
       cy=nc;
@@ -1132,7 +1136,17 @@ function initBG(){
     aL.forEach(ln=>ln.material.opacity=.55*aVis);
 
     renderer.render(scene,camera);
-  })();
+  }
+  function bgStart(){if(bgRunning)return;bgRunning=true;bgRaf=requestAnimationFrame(animate);}
+  function bgStop(){bgRunning=false;cancelAnimationFrame(bgRaf);}
+  if(reducedBG){
+    bgRunning=true;animate();bgStop(); // single static frame
+  }else{
+    const heroEl=document.getElementById('hero');
+    if('IntersectionObserver' in window&&heroEl){
+      new IntersectionObserver(es=>{es.forEach(e=>{e.isIntersecting?bgStart():bgStop();});},{threshold:0}).observe(heroEl);
+    }else{bgStart();}
+  }
 
   window.addEventListener('resize',()=>{camera.aspect=GW()/GH();camera.updateProjectionMatrix();renderer.setSize(GW(),GH());});
 }
