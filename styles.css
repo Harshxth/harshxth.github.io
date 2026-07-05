@@ -452,7 +452,7 @@ body.att-mode{animation:attShake 12s linear 1}
 .cmdk-open-btn{display:inline-flex;align-items:center;gap:.45rem;background:var(--surf);border:1px solid var(--bord);color:var(--muted);border-radius:7px;padding:.35rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;cursor:none;margin:0 .9rem 0 1.8rem;transition:border-color .2s,color .2s}
 .cmdk-open-btn:hover{border-color:var(--v1);color:var(--v1)}
 .cmdk-open-btn .cmdk-kbd{border-color:var(--bord)}
-@media(max-width:768px){.cmdk-open-btn{display:none}}
+@media(max-width:768px){.cmdk-open-btn .cmdk-kbd{display:none}}
 /* PRINT */
 @media print{
   @page{margin:0.6in}
