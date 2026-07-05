@@ -376,7 +376,7 @@ async function initResumeCounter(){
         line('healthcare-research-agent/','');
         return;
       }
-      line('about/  experience/  projects/  building/  skills/  principles/  activity/  beyond/  contact/');
+      line('about/  experience/  projects/  skills/  activity/  beyond/  contact/');
       line('try: <span style="color:var(--v1)">ls projects</span>','dim');
     }},
     cat:{d:'read a section: cat [name]',run(arg){
