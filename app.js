@@ -505,6 +505,8 @@ async function initResumeCounter(){
     const sum=exp.reduce((a,b)=>a+b,0);
     return exp.map(e=>e/sum);
   }
+  // Canvas2D can't resolve CSS var() strings — resolve theme colors on activate()
+  let KACC='229,231,235',KACC2='156,163,175',KBG='11,11,13',KINK='229,231,235';
   function frame(t){
     const W=window.innerWidth,H=window.innerHeight;
     ctx.clearRect(0,0,W,H);
@@ -513,7 +515,7 @@ async function initResumeCounter(){
     const w=softmax(scores);
     const wmax=Math.max(...w);
     // fade background tint (subtle)
-    ctx.fillStyle='rgba(8,0,16,0.18)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba('+KBG+',0.18)';ctx.fillRect(0,0,W,H);
     // draw tokens sized/lit by weight
     tokens.forEach((tk,i)=>{
       const wi=w[i]/wmax;
@@ -521,9 +523,9 @@ async function initResumeCounter(){
       const size=6+wi*18;
       const alpha=0.12+wi*0.75;
       ctx.save();
-      ctx.shadowColor='rgba(var(--accent-rgb),'+(wi*0.9)+')';
+      ctx.shadowColor='rgba('+KACC+','+(wi*0.9)+')';
       ctx.shadowBlur=wi*28;
-      ctx.fillStyle='rgba(var(--accent-rgb),'+alpha*pulse+')';
+      ctx.fillStyle='rgba('+KACC+','+alpha*pulse+')';
       ctx.beginPath();ctx.roundRect(tk.x-size/2,tk.y-size/2,size,size,3);ctx.fill();
       ctx.restore();
     });
@@ -531,7 +533,7 @@ async function initResumeCounter(){
     const ranked=tokens.map((tk,i)=>({tk,wi:w[i]})).sort((a,b)=>b.wi-a.wi).slice(0,5);
     ranked.forEach(({tk,wi})=>{
       const rel=wi/wmax;
-      ctx.strokeStyle='rgba(var(--accent2-rgb),'+(rel*0.7)+')';
+      ctx.strokeStyle='rgba('+KACC2+','+(rel*0.7)+')';
       ctx.lineWidth=1+rel*2;
       ctx.beginPath();
       ctx.moveTo(mx,my);
@@ -542,12 +544,12 @@ async function initResumeCounter(){
     });
     // cursor "query" token
     ctx.save();
-    ctx.shadowColor='#F3F4F6';ctx.shadowBlur=24;
-    ctx.fillStyle='rgba(var(--accent2-rgb),0.95)';
+    ctx.shadowColor='rgba('+KINK+',0.9)';ctx.shadowBlur=24;
+    ctx.fillStyle='rgba('+KACC2+',0.95)';
     ctx.beginPath();ctx.arc(mx,my,9,0,Math.PI*2);ctx.fill();
     ctx.restore();
     // label "Q"
-    ctx.fillStyle='rgba(249,250,251,.9)';
+    ctx.fillStyle='rgba('+KINK+',.9)';
     ctx.font='600 11px "JetBrains Mono", monospace';
     ctx.fillText('Q',mx+14,my-10);
 
@@ -558,6 +560,11 @@ async function initResumeCounter(){
   function activate(){
     if(active)return;
     active=true;exitAt=0;
+    const _cs=getComputedStyle(document.documentElement);
+    KACC=(_cs.getPropertyValue('--accent-rgb')||KACC).trim();
+    KACC2=(_cs.getPropertyValue('--accent2-rgb')||KACC2).trim();
+    KBG=(_cs.getPropertyValue('--bg-rgb')||KBG).trim();
+    KINK=(_cs.getPropertyValue('--v1-rgb')||KINK).trim();
     document.body.classList.add('att-mode');
     resize();buildTokens();
     overlay.classList.add('on');
