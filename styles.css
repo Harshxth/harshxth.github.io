@@ -73,7 +73,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;cur
   #cur-o,#cur-d{display:none}
   body,.btn-primary,.btn-ghost,.nav-links a,.theme-toggle,.proj-card{cursor:auto}
   #nn-canvas{opacity:.35}
-  .cursor-blink{animation:none}
   .live-dot,.cur-dot-sm{animation:none}
 }
 .scanlines{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(var(--accent-rgb),.01) 3px,rgba(var(--accent-rgb),.01) 4px)}
@@ -118,7 +117,6 @@ nav.scrolled{background:rgba(var(--bg-rgb),.92);backdrop-filter:blur(16px);borde
 h1.hero-name{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.8rem);font-weight:800;line-height:1.06;margin-bottom:.7rem;animation:fadeUp .6s .15s ease both}
 .hero-last{background:linear-gradient(130deg,var(--v1) 0%,var(--v2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-type{font-family:'JetBrains Mono',monospace;font-size:clamp(.85rem,2vw,1.05rem);color:var(--muted);height:1.8rem;margin-bottom:2.2rem;animation:fadeUp .6s .3s ease both}
-.cursor-blink{animation:blink 1s step-end infinite;color:var(--v1)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .hero-desc{color:var(--body);max-width:540px;margin:0 auto 3rem;line-height:1.85;font-size:.975rem;animation:fadeUp .6s .45s ease both}
 .hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s .6s ease both}

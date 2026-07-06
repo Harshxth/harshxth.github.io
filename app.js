@@ -139,7 +139,7 @@ const BOOT=['INITIALIZING NEURAL ENGINE ............... OK','Loading LangGraph a
   },55);
 })();
 
-function initAll(){initCursor();initNav();initBG();initTyping();initCaseStudy();initExp();initProj();initReveal();initHeatmap();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
+function initAll(){initCursor();initNav();initBG();initCaseStudy();initExp();initProj();initReveal();initHeatmap();initResumeCounter();initResumeDate();initCountUp();initLastUpdated();initCardTilt();}
 
 // ── CARD TILT + SHINE ────────────────────────────────────────────────────────
 // Gentle 3D mouse-tilt on project and experience cards. Max 2° per axis,
@@ -1152,14 +1152,6 @@ function initBG(){
   }
 
   window.addEventListener('resize',()=>{camera.aspect=GW()/GH();camera.updateProjectionMatrix();renderer.setSize(GW(),GH());});
-}
-
-// ── TYPING ────────────────────────────────────────────────────────────────────
-function initTyping(){
-  const el=document.getElementById('typed-text');
-  const roles=['AI / ML Engineer','Agentic AI Systems','LLM Pipelines & RAG','Computer Vision','Data Engineering'];
-  let ri=0,ci=0,del=false;
-  (function tick(){const role=roles[ri];if(!del){ci++;el.textContent=role.slice(0,ci);if(ci===role.length){del=true;setTimeout(tick,2100);return;}}else{ci--;el.textContent=role.slice(0,ci);if(ci===0){del=false;ri=(ri+1)%roles.length;}}setTimeout(tick,del?42:88);})();
 }
 
 // ── EXPERIENCE ────────────────────────────────────────────────────────────────
