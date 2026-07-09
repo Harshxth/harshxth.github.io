@@ -379,10 +379,10 @@ async function initResumeCounter(){
     cat:{d:'read a section: cat [name]',run(arg){
       const pages={
         resume:`<a href="Harshith_Gujjeti_Resume.pdf" download>↓ Harshith_Gujjeti_Resume.pdf</a>`,
-        contact:'harshithgujjeti@icloud.com · <a href="https://github.com/Harshxth" target="_blank">github.com/Harshxth</a> · <a href="https://linkedin.com/in/harshithgujjeti" target="_blank">linkedin.com/in/harshithgujjeti</a>',
+        contact:'harshithgujjeti@icloud.com · <a href="https://github.com/Harshxth" target="_blank" rel="noopener">github.com/Harshxth</a> · <a href="https://linkedin.com/in/harshithgujjeti" target="_blank" rel="noopener">linkedin.com/in/harshithgujjeti</a>',
         about:'AI/ML engineer building agentic AI at Reach Cooling Group. MS @ USF. Research at CUTR &amp; Muma College. Previously ISRO.',
         skills:'PyTorch · LangGraph · CrewAI · YOLOv8 · ChromaDB · FastAPI · Docker · Snowflake',
-        citeiq:'agentic RAG system: LangGraph orchestration, 90%+ faithfulness, FastAPI + Docker. <a href="https://github.com/Harshxth/citeiq" target="_blank">github.com/Harshxth/citeiq</a>',
+        citeiq:'agentic RAG system: LangGraph orchestration, 90%+ faithfulness, FastAPI + Docker. <a href="https://github.com/Harshxth/citeiq" target="_blank" rel="noopener">github.com/Harshxth/citeiq</a>',
       };
       if(!arg){line('usage: cat [resume|contact|about|skills|citeiq]','dim');return;}
       if(pages[arg])line(pages[arg]);
@@ -418,7 +418,7 @@ async function initResumeCounter(){
       ];
       for(const s of steps){line(s,'dim');await sleep(340);}
       line(`✓ deployed <b>${name}</b> to production`,'sys');
-      line(`  → <a href="https://github.com/Harshxth/${name}" target="_blank">github.com/Harshxth/${name}</a>`,'dim');
+      line(`  → <a href="https://github.com/Harshxth/${name}" target="_blank" rel="noopener">github.com/Harshxth/${name}</a>`,'dim');
     }},
     open:{d:'open a url: open github/linkedin/resume',run(arg){
       const map={github:'https://github.com/Harshxth',linkedin:'https://linkedin.com/in/harshithgujjeti',resume:'Harshith_Gujjeti_Resume.pdf',site:'https://harshxth.github.io/'};
@@ -1398,7 +1398,7 @@ async function initHeatmap(){
     statsEl.innerHTML=`
       <div class="hm-stat"><div class="v">${streak}</div><div class="k">LONGEST STREAK · DAYS</div></div>
       <div class="hm-stat"><div class="v">${maxDay}</div><div class="k">BEST DAY</div></div>
-      <div class="hm-stat"><div class="v"><a href="https://github.com/Harshxth" target="_blank" style="color:inherit;text-decoration:none">@Harshxth →</a></div><div class="k">GITHUB PROFILE</div></div>
+      <div class="hm-stat"><div class="v"><a href="https://github.com/Harshxth" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">@Harshxth →</a></div><div class="k">GITHUB PROFILE</div></div>
     `;
 
     grid.addEventListener('mouseover',e=>{
@@ -1415,7 +1415,7 @@ async function initHeatmap(){
     grid.addEventListener('mouseleave',()=>tip.classList.remove('on'));
   }catch(err){
     grid.classList.remove('hm-skeleton');
-    grid.parentElement.innerHTML=`<div class="hm-err">Couldn't load live contributions. <a href="https://github.com/Harshxth" target="_blank">View on GitHub →</a></div>`;
+    grid.parentElement.innerHTML=`<div class="hm-err">Couldn't load live contributions. <a href="https://github.com/Harshxth" target="_blank" rel="noopener">View on GitHub →</a></div>`;
     totalEl.textContent='GitHub activity';
   }
 }
