@@ -173,7 +173,7 @@ h1.hero-name{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.8rem);fo
 .scroll-hint span{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em}
 @keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
 /* SECTIONS */
-section{padding:5rem 2rem;max-width:1100px;margin:0 auto;position:relative}
+section{padding:5rem 2rem;max-width:1100px;margin:0 auto;position:relative;scroll-margin-top:5rem}
 section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(var(--accent-rgb),.07) 0%,transparent 70%);pointer-events:none;z-index:0}
 section>*{position:relative;z-index:1}
 .sec-label{font-family:'JetBrains Mono',monospace;color:rgb(var(--chrome));font-size:.65rem;letter-spacing:.35em;margin-bottom:.9rem;text-align:center}
