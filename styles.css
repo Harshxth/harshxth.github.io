@@ -76,6 +76,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;cur
   .live-dot,.cur-dot-sm{animation:none}
 }
 .scanlines{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(var(--accent-rgb),.01) 3px,rgba(var(--accent-rgb),.01) 4px)}
+.skip-link{position:fixed;top:-60px;left:1rem;z-index:3000;background:var(--v1);color:var(--bg);padding:.55rem 1rem;border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:.7rem;text-decoration:none;transition:top .18s ease}
+.skip-link:focus{top:1rem}
 /* LOADING */
 #loader{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;align-items:center;justify-content:center;padding:2rem;transition:opacity .3s ease}
 #loader.hide{opacity:0;pointer-events:none}
