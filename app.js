@@ -379,7 +379,7 @@ async function initResumeCounter(){
     cat:{d:'read a section: cat [name]',run(arg){
       const pages={
         resume:`<a href="Harshith_Gujjeti_Resume.pdf" download>↓ Harshith_Gujjeti_Resume.pdf</a>`,
-        contact:'harshithgujjeti@icloud.com · <a href="https://github.com/Harshxth" target="_blank">github.com/Harshxth</a> · <a href="https://linkedin.com/in/harshithgujjeti" target="_blank">linkedin.com/in/harshithgujjeti</a>',
+        contact:'harshith@harshithgujjeti.com · <a href="https://github.com/Harshxth" target="_blank">github.com/Harshxth</a> · <a href="https://linkedin.com/in/harshithgujjeti" target="_blank">linkedin.com/in/harshithgujjeti</a>',
         about:'AI/ML engineer building agentic AI at Reach Cooling Group. MS @ USF. Research at CUTR &amp; Muma College. Previously ISRO.',
         skills:'PyTorch · LangGraph · CrewAI · YOLOv8 · ChromaDB · FastAPI · Docker · Snowflake',
         citeiq:'agentic RAG system: LangGraph orchestration, 90%+ faithfulness, FastAPI + Docker. <a href="https://github.com/Harshxth/citeiq" target="_blank">github.com/Harshxth/citeiq</a>',
@@ -647,7 +647,7 @@ async function initResumeCounter(){
     {g:'Projects',t:'Sentinel AI',d:'confidence-gated multi-agent NLP',k:'sentinel kaggle roberta mcp claude',ic:'◈',act:()=>open('https://github.com/Harshxth/Sentinel-AI')},
     {g:'Projects',t:'UrbanMind',d:'multi-agent city design',k:'urbanmind agents tampa imagen',ic:'◈',act:()=>open('https://github.com/Harshxth/UrbanMind')},
     {g:'Projects',t:'CiteIQ',d:'agentic RAG system',k:'citeiq rag langgraph',ic:'◈',act:()=>open('https://github.com/Harshxth/citeiq')},
-    {g:'Actions',t:'Email Harshith',d:'harshithgujjeti@icloud.com',k:'mail email contact',ic:'✉',act:()=>open('mailto:harshithgujjeti@icloud.com')},
+    {g:'Actions',t:'Email Harshith',d:'harshith@harshithgujjeti.com',k:'mail email contact',ic:'✉',act:()=>open('mailto:harshith@harshithgujjeti.com')},
     {g:'Actions',t:'Download résumé',d:'PDF',k:'resume cv pdf',ic:'↓',act:()=>open('Harshith_Gujjeti_Resume.pdf')},
     {g:'Actions',t:'GitHub profile',d:'@Harshxth',k:'github profile',ic:'⎇',act:()=>open('https://github.com/Harshxth')},
     {g:'Actions',t:'LinkedIn',d:'in/harshithgujjeti',k:'linkedin',ic:'in',act:()=>open('https://linkedin.com/in/harshithgujjeti')},
