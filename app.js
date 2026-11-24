@@ -21,7 +21,7 @@ const EXP=[
 
 const PROJ=[
   // ── Row 0: newest ──
-  {name:'Fludd',sub:'Flood report card for any address',color:'#3B82F6',metric:'Live · 52% Milton hits',award:"Winner · HackJam '26",wip:false,link:'https://github.com/Harshxth/Fludd',live:'https://fludd.app',cats:['civic'],
+  {name:'Fludd',sub:'Flood report card for any address',color:'#3B82F6',metric:'Live · 52% Milton hits',award:"Best Overall · HackJam '26",wip:false,link:'https://github.com/Harshxth/Fludd',live:'https://fludd.app',cats:['civic'],
    media:{poster:'assets/fludd-grade.jpg',live:'assets/fludd-storm.jpg'},
    desc:'Type an address near USF and get a flood report card: a letter grade, the water hour by hour, when to move your car, and whether a fire truck can still reach you. Its depth model puts water at <span class="m">286 of 547</span> Hurricane Milton damage points, <span class="m">136</span> of them outside FEMA high-risk zones. Built with Hansika Samayamantri; I led the product and interface.',
    tags:['Next.js','TypeScript','MapLibre','Python','Supabase','Gemini'],flow:['Address','Depth Model','Grade','Storm Hours','Safe Route']},
@@ -648,7 +648,7 @@ async function initResumeCounter(){
   }).filter(Boolean);
   const CMDS=[
     ...JUMPS,
-    {g:'Projects',t:'Fludd',d:"Winner · HackJam '26 · fludd.app",k:'fludd flood hackjam hackathon map grade milton fema routing nextjs maplibre',ic:'◈',act:()=>open('https://fludd.app')},
+    {g:'Projects',t:'Fludd',d:"Best Overall · HackJam '26 · fludd.app",k:'fludd flood hackjam hackathon map grade milton fema routing nextjs maplibre',ic:'◈',act:()=>open('https://fludd.app')},
     {g:'Projects',t:'Sensory',d:'Best UI/UX · HackaBull VII',k:'sensory hackabull hackathon nextjs gemini elevenlabs accessibility autistic wheelchair deaf blind dyslexic',ic:'◈',act:()=>open('https://github.com/Harshxth/Sensory')},
     {g:'Projects',t:'CareCall',d:'agentic voice AI for healthcare',k:'carecall hackusf adk gemini',ic:'◈',act:()=>open('https://github.com/Harshxth/CareCall')},
     {g:'Projects',t:'Sentinel AI',d:'confidence-gated multi-agent NLP',k:'sentinel kaggle roberta mcp claude',ic:'◈',act:()=>open('https://github.com/Harshxth/Sentinel-AI')},
