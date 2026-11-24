@@ -1,36 +1,41 @@
 // ── DATA ─────────────────────────────────────────────────────────────────────
 const EXP=[
-  {title:'Generative AI Engineer (Co-op)',cur:true,org:'Reach Cooling Group',period:'May 2026 – Present',color:'#1D6FBF',bg:'REACH',logo:'reach',logoFill:true,summary:3,
+  {title:'Generative AI Engineer (Co-op)',cur:true,org:'Reach Cooling Group',period:'May 2026 – Present',color:'#1D6FBF',bg:'REACH',logo:'reach',logoFill:true,
+   line:'On-prem GenAI assistant in Microsoft Teams, agents that watch every SKU 24/7, and 30+ internal AI projects shipped.',
    tags:['Ollama','Local LLM','Agents','NetSuite','SQLite','Python','MS Teams'],
-   bullets:['Built a <strong>GenAI supply-chain chatbot</strong> on Microsoft Teams that answers the team&rsquo;s everyday operational questions in plain English, powered by a local LLM running on-prem through Ollama, so none of the company&rsquo;s data ever leaves the network.','Summer internship converted into a fall <strong>co-op</strong>: now running <strong>agents 24/7 that watch every SKU</strong>, and extending the system to other departments with agentic workflows that carry out the work instead of just reporting on it.','Built the data foundation behind it by pulling <span class="metric">5 years</span> of invoice, PO, forecast, and inventory data, scattered across separate systems, into one <strong>SQLite database</strong> of <span class="metric">4.25M+ rows</span>, matched on internal customer IDs so the same customer is never double-counted, with pre-built views that drop a typical lookup from <span class="metric">~44s</span> on NetSuite to <span class="metric">~5ms</span>.','Kept that data current with a real-time <strong>NetSuite RESTlet</strong> feed, running it through a custom read-only account with no write or admin access at all. The connection can only ever read, never change anything.','Structured the whole system in <strong>five swappable layers</strong> (data, extraction, storage, AI, and interface) so any one part can be replaced or upgraded later without rewriting the rest.','Ran the AI <strong>entirely local on a single GPU</strong>, with prompt caching for speed. Because the accuracy comes from the database and the queries rather than the model itself, a small 7B model holds up against the cloud version in side-by-side tests.','Made it production-ready by filtering every answer correctly by date, customer, SKU, and warehouse, then checking it against a <span class="metric">52-test</span> suite that re-runs on every change. It now reliably answers all <span class="metric">10</span> of the priority questions it was built to solve.']},
+   bullets:['Built a <strong>GenAI analytics assistant</strong> in Microsoft Teams that answers the supply-chain team&rsquo;s everyday questions in plain English, on a <strong>local LLM running on-prem</strong> so company data stays on the network.','In daily production use: <span class="metric">10,000+</span> queries so far, now <span class="metric">600+</span> a week.','The model <strong>never writes SQL</strong>: it routes each question to a fixed set of parameterized views, so query injection and hallucinated joins are ruled out by design. A <span class="metric">52-case</span> regression suite re-runs on every change.','Pre-built views take a typical lookup from <span class="metric">~44s</span> to <span class="metric">~5ms</span>, over a data connection that is <strong>read-only</strong> by construction.','Summer internship converted into a fall <strong>co-op</strong>: now running <strong>agents 24/7 that watch every SKU</strong>, and extending the system to other departments with agentic workflows that carry out the work instead of just reporting on it.','Shipped <span class="metric">30+</span> internal AI projects and automations so far.']},
   {title:'Computer Vision Engineer (Part-time)',cur:true,org:'CUTR · University of South Florida',period:'Feb 2026 – Present',color:'#0EA5E9',bg:'CUTR',logo:'cutr',
+   line:'YOLOv8 + ByteTrack micromobility detection across 50+ camera sites for an FDOT-funded safety study.',
    tags:['YOLOv8','ByteTrack','Label Studio','Computer Vision','Python','FDOT'],
    bullets:['Production computer vision for transportation-safety research: building the detectors, the datasets behind them, and the analyses they feed.'],
    projects:[{name:'Micromobility Detection',desc:'9-class detector counting bikes, e-bikes, and e-scooters across <span class="metric">50+</span> camera sites for FDOT.',cs:'cs-overlay'}]},
   {title:'Research Assistant · Data Engineering & Entity Resolution',cur:true,org:'USF · Muma College of Business',period:'Jan 2026 – Present',color:'#006747',bg:'USF MUMA',logo:'usf',
+   line:'Entity-resolution pipelines linking companies across 325K+ research records.',
    tags:['Entity Resolution','Fuzzy Matching','Python','pandas','Record Linkage','EDA'],
    bullets:['Building large-scale <strong>entity-resolution pipelines</strong> that link companies across messy, real-world research datasets of up to <span class="metric">325K+</span> records: the clean, connected data foundation that downstream business and economic research relies on.','Matching records with <strong>fuzzy name matching</strong> across multiple algorithms, reconciled in a consensus layer and verified with geographic, industry, and domain signals into tiered confidence levels.','Auditing data quality end to end so every match is scored and explainable, turning fragmented, inconsistently-named sources into reliable linked datasets ready for analysis.']},
   {title:'Artificial Intelligence Research Associate (Internship)',cur:false,org:'ISRO · Indian Space Research Organisation',period:'Jan 2025 – Jul 2025',color:'#FF671F',bg:'ISRO',logo:'isro',
+   line:'SRGAN super-resolution: 4x upscaling, 10 m satellite imagery to 2.5 m detail.',
    tags:['SRGAN','TensorFlow','Keras','VGG19','Satellite Imaging','Python'],
    bullets:['Built a satellite-image super-resolution model using <strong>SRGAN</strong> (a GAN paired with a VGG19 perceptual-loss network) in TensorFlow/Keras at ISRO&rsquo;s National Remote Sensing Centre, hitting <span class="metric">4× upscaling</span> (roughly 10 m to 2.5 m detail).','Trained it on <span class="metric">5,000+</span> aligned high- and low-resolution image pairs with a full preprocessing pipeline: RGB band stacking, normalization, and preserved geospatial metadata so the enhanced output stayed analysis-ready.','Reached <span class="metric">31 dB PSNR</span> and <span class="metric">0.86 SSIM</span>, producing sharp, structurally faithful imagery for downstream work like land-cover classification and urban mapping.'],
    projLabel:false,projects:[{name:'Satellite Super-Resolution',desc:'How SRGAN turned <span class="metric">10 m</span> pixels into <span class="metric">2.5 m</span> detail: the architecture, the data, and the trade-offs.',cs:'cs-isro'}]},
   {title:'Gen AI Engineer (Internship)',cur:false,org:'Venkusa Technologies',period:'May 2024 – Nov 2024',color:'#14B8A6',bg:'VENKUSA',logo:'venkusa',
+   line:'LLM code completion: +15% accuracy and 25% faster processing.',
    tags:['Python','PHP','Machine Learning','OpenAI API','Prompt Engineering'],
    bullets:['Built a generative <strong>AI code-completion tool</strong> inspired by GitHub Copilot, working across Python and PHP, improving code-completion accuracy by <span class="metric">15%</span> and cutting processing time by <span class="metric">25%</span> by streamlining the core components.','Shipped an AI travel chatbot that improved lead capture and booking conversions after deployment.']},
 ];
 
 const PROJ=[
   // ── Row 0: newest ──
-  {name:'Fludd',sub:'Flood report card for any address',color:'#3B82F6',metric:'Live · 52% Milton hits',award:"Best Overall · HackJam '26",wip:false,link:'https://github.com/Harshxth/Fludd',live:'https://fludd.app',cats:['civic'],
+  {name:'Fludd',featured:true,sub:'Flood report card for any address',color:'#3B82F6',metric:'Live · 52% Milton hits',award:"Best Overall · HackJam '26",wip:false,link:'https://github.com/Harshxth/Fludd',live:'https://fludd.app',cats:['civic'],
    media:{poster:'assets/fludd-grade.jpg',live:'assets/fludd-storm.jpg'},
    desc:'Type an address near USF and get a flood report card: a letter grade, the water hour by hour, when to move your car, and whether a fire truck can still reach you. Its depth model puts water at <span class="m">286 of 547</span> Hurricane Milton damage points, <span class="m">136</span> of them outside FEMA high-risk zones. Built with Hansika Samayamantri; I led the product and interface.',
    tags:['Next.js','TypeScript','MapLibre','Python','Supabase','Gemini'],flow:['Address','Depth Model','Grade','Storm Hours','Safe Route']},
   // ── Row 1: hackathon-award cards ──
-  {name:'Sensory',sub:'Maps how a place feels',color:'#22D3EE',metric:'Best UI/UX · 148 Venues',award:'Best UI/UX · HackaBull VII',wip:false,link:'https://github.com/Harshxth/Sensory',cats:['agents'],
+  {name:'Sensory',featured:true,sub:'Maps how a place feels',color:'#22D3EE',metric:'Best UI/UX · 148 Venues',award:'Best UI/UX · HackaBull VII',wip:false,link:'https://github.com/Harshxth/Sensory',cats:['agents'],
    media:{poster:'assets/sensory-hero.jpg',live:'assets/sensory-map.jpg'},
    desc:'Maps how a place will feel before you go, for autistic, deaf, blind, and wheelchair users. Profile-aware routes across <span class="m">148 Tampa venues</span>, <strong>Gemini Vision</strong> reads signs through your camera, and <strong>ElevenLabs</strong> delivers cues in a 30-second clone of a voice you trust.',
    tags:['Next.js','TypeScript','Gemini Vision','ElevenLabs','MongoDB Atlas','Google Maps','PWA'],flow:['Profile','Sensory Map','Route Score','Voice Cue','Arrive']},
-  {name:'CareCall',sub:'Agentic Voice AI · Healthcare',color:'#F472B6',metric:'Top 5 · 70+ Languages',award:'Top 5 · HackUSF 2026',wip:false,link:'https://github.com/Harshxth/CareCall',cats:['agents','healthcare'],
+  {name:'CareCall',featured:true,sub:'Agentic Voice AI · Healthcare',color:'#F472B6',metric:'Top 5 · 70+ Languages',award:'Top 5 · HackUSF 2026',wip:false,link:'https://github.com/Harshxth/CareCall',cats:['agents','healthcare'],
    media:{poster:'assets/carecall-hero.jpg',live:'assets/carecall-app.jpg'},
    desc:'Cuts avoidable readmissions by calling discharged patients in their own language. A <strong>Google ADK + Gemini</strong> multi-agent system runs a <span class="m">9-step</span> care protocol with auto-escalation to nurses, <strong>ElevenLabs</strong> voice in <span class="m">70+ languages</span>, and HIPAA-compliant encrypted PHI.',
    tags:['Google ADK','Gemini','ElevenLabs','Supabase','React','HIPAA'],flow:['Discharge','Voice Call','Comprehension','Triage','Report']},
@@ -1164,52 +1169,55 @@ function initBG(){
 // ── EXPERIENCE ────────────────────────────────────────────────────────────────
 function initExp(){
   const el=document.getElementById('exp-list');
+  // Readable text on a solid company-color fill (chip): dark ink on bright colors, white on deep ones
+  const onColor=hex=>{const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return (r*299+g*587+b*114)/1000>150?'#0B0B0D':'#FFFFFF';};
   EXP.forEach((ex,i)=>{
-    const div=document.createElement('div');div.className='exp-item';div.style.transitionDelay=i*.15+'s';div.style.color=ex.color;
-    const sc=(ex.summary&&ex.bullets.length>ex.summary)?ex.summary:ex.bullets.length;
-    const visB=ex.bullets.slice(0,sc).map(b=>`<li>${b}</li>`).join('');
-    const moreB=ex.bullets.slice(sc).map(b=>`<li>${b}</li>`).join('');
-    const moreN=ex.bullets.length-sc;
-    const bulletsHTML=`<ul class="exp-bullets">${visB}</ul>`+(moreN>0?`<div class="exp-more" id="xm-${i}"><div><ul class="exp-bullets">${moreB}</ul></div></div><button type="button" class="exp-readmore" data-t="xm-${i}" data-n="${moreN}" aria-expanded="false"><span class="rm-txt">+${moreN} more</span><span class="rm-ico">⌄</span></button>`:'');
+    const div=document.createElement('div');div.className='exp-item';div.style.transitionDelay=i*.15+'s';
+    div.style.cssText+=`;color:${ex.color};--xc:${ex.color};--xc-on:${onColor(ex.color)}`;
+    const bulletsHTML=`<ul class="exp-bullets">${ex.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>`;
     const subsHTML=(ex.projects&&ex.projects.length)?`<div class="subs">${ex.projLabel===false?'':'<div class="subs-label">Projects</div>'}${ex.projects.map(p=>`<button type="button" class="sub-row click" data-cs="${p.cs}"><span class="sub-main"><span class="sub-name"><span class="sub-dot done"></span>${p.name}</span><span class="sub-desc">${p.desc}</span></span><span class="sub-cta cta-chip shine-border">Case study <i>→</i></span></button>`).join('')}</div>`:'';
     const logoHTML=LOGOS[ex.logo]
-      ?ex.logoFill
-        ?`<div style="width:40px;height:40px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy" decoding="async" alt="${ex.org} logo"/></div>`
-        :`<div style="width:40px;height:40px;border-radius:8px;background:#ffffff;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:3px;border:1px solid ${ex.color}30"><img src="${LOGOS[ex.logo]}" style="width:100%;height:100%;object-fit:contain;display:block" loading="lazy" decoding="async" alt="${ex.org} logo"/></div>`
-      :`<div style="width:40px;height:40px;border-radius:8px;background:${ex.color}18;border:1px solid ${ex.color}30;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:${ex.color};font-weight:700">${ex.org.split(' ')[0].substring(0,4).toUpperCase()}</div>`;
+      ?`<div class="xr-logo${ex.logoFill?' fill':''}"><img src="${LOGOS[ex.logo]}" loading="lazy" decoding="async" alt="${ex.org} logo"/></div>`
+      :`<div class="xr-logo mono-l">${ex.org.split(' ')[0].substring(0,4).toUpperCase()}</div>`;
     div.innerHTML=`
       <div class="exp-dot" style="background:${ex.color};box-shadow:0 0 14px ${ex.color}88"></div>
-      <div class="exp-card" style="color:${ex.color}">
-        <span class="card-shine"></span>
-        ${ex.bg?`<div class="exp-bg-name">${ex.bg}</div>`:''}
-        <div class="exp-num">${String(i+1).padStart(2,'0')}</div>
-        <div class="exp-header">
-          <div style="display:flex;align-items:center;gap:.75rem">
-            ${logoHTML}
-            <div>
-              <div class="mono" style="font-size:.6rem;color:${ex.color};letter-spacing:.14em;margin-bottom:.25rem">${ex.org}</div>
-              <h3 class="display" style="font-size:1.05rem;font-weight:700;color:var(--text);margin:0;line-height:1.3">${ex.title}${ex.cur?`<span class="cur-badge"><span class="cur-dot-sm"></span>CURRENT</span>`:''}</h3>
-            </div>
+      <details class="xr">
+        <summary class="xr-row">
+          ${logoHTML}
+          <div class="xr-main">
+            <div class="xr-org">${ex.org}</div>
+            <h3 class="xr-title">${ex.title}${ex.cur?`<span class="cur-badge"><span class="cur-dot-sm"></span>CURRENT</span>`:''}</h3>
+            ${ex.line?`<p class="xr-line">${ex.line}</p>`:''}
           </div>
-          <div class="exp-period">${ex.period}</div>
+          <div class="xr-side"><span class="exp-period">${ex.period}</span><span class="xr-hint" aria-hidden="true">Details <i>+</i></span></div>
+        </summary>
+        <div class="xr-more">
+          <div class="xr-tags">${ex.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+          ${bulletsHTML}${subsHTML}
         </div>
-        <div style="display:flex;gap:.38rem;flex-wrap:wrap;margin-bottom:.2rem;margin-top:.6rem">${ex.tags.map(t=>`<span class="tag" style="background:${ex.color}10;border:1px solid ${ex.color}30;color:${ex.color}">${t}</span>`).join('')}</div>
-        ${bulletsHTML}${subsHTML}
-      </div>`;
+      </details>`;
     el.appendChild(div);
-  });
-  el.querySelectorAll('.exp-readmore').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const w=document.getElementById(btn.dataset.t);
-      const open=w.classList.toggle('open');
-      btn.classList.toggle('open',open);
-      btn.setAttribute('aria-expanded',open?'true':'false');
-      btn.querySelector('.rm-txt').textContent=open?'Show less':('+'+btn.dataset.n+' more');
-    });
   });
   el.querySelectorAll('.sub-row[data-cs]').forEach(btn=>{
     btn.addEventListener('click',()=>{if(window.openCaseStudy)window.openCaseStudy(btn.dataset.cs,btn);});
   });
+  // Magnetic rows: content leans toward the cursor, the Details chip pulls harder, both spring back on leave
+  if(matchMedia('(pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const IN='transform .35s cubic-bezier(.16,1,.3,1)',OUT='transform .9s cubic-bezier(.34,1.56,.64,1)';
+    el.querySelectorAll('.xr-row').forEach(row=>{
+      const main=row.querySelector('.xr-main'),chip=row.querySelector('.xr-hint');
+      row.addEventListener('mousemove',e=>{
+        const r=row.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+        main.style.transition=IN;main.style.transform=`translate3d(${dx*.018}px,${dy*.08}px,0)`;
+        const c=chip.getBoundingClientRect(),cx=e.clientX-(c.left+c.width/2),cy=e.clientY-(c.top+c.height/2);
+        chip.style.transition=IN+',opacity .2s,color .3s';chip.style.transform=`translate3d(${Math.max(-60,cx*.22)}px,${cy*.25}px,0)`;
+      });
+      row.addEventListener('mouseleave',()=>{
+        main.style.transition=OUT;main.style.transform='';
+        chip.style.transition=OUT+',opacity .2s,color .3s';chip.style.transform='';
+      });
+    });
+  }
   // Scroll-drawn timeline: the line fills as you move through the section and
   // each dot ignites to its company color when the fill reaches it.
   const wrap=el.parentElement,line=wrap?wrap.querySelector('.timeline-line'):null;
@@ -1236,8 +1244,10 @@ function initExp(){
 function initProj(){
   const grid=document.getElementById('projects-grid');
   // Bento sizing pattern — Row 1: feature(8) + regular(4) · Row 2: wide(6) + wide(6) · Row 3: regular×3(4 each)
-  const SIZES=['feature','regular','wide','wide','regular','regular','regular'];
-  PROJ.forEach((p,i)=>{
+  initShowcase(PROJ.filter(p=>p.featured));
+  // Remaining projects: Row 1 wide(6) + wide(6) · Row 2 regular×3 (4 each)
+  const SIZES=['wide','wide','regular','regular','regular'];
+  PROJ.filter(p=>!p.featured).forEach((p,i)=>{
     const size=SIZES[i%SIZES.length]||'regular';
     const primaryCat=(p.cats||['ml'])[0];
     const catLabel=(p.cats||[]).map(c=>CAT_LABELS[c]||c).slice(0,2).join(' · ');
@@ -1281,6 +1291,42 @@ function initProj(){
   initProjMedia();
 }
 
+// Selected work: sticky text column swaps per project while framed screenshots scroll past
+function initShowcase(list){
+  const wrap=document.getElementById('proj-show');if(!wrap||!list.length)return;
+  const N=list.length,pad=n=>String(n).padStart(2,'0');
+  const host=u=>u.replace(/^https?:\/\//,'').replace(/\/$/,'');
+  const GH='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.3 4.8 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>';
+  wrap.innerHTML=list.map((p,i)=>{
+    const main=p.live||p.link,m=p.media||{};
+    const imgs=[m.poster,m.live].filter(Boolean);
+    return `<article class="sp" style="--pc:${p.color}" aria-label="${p.name}">
+      <div class="sp-t${i===0?' on':''}" data-i="${i}">
+        <div class="sp-top"><span>${pad(i+1)} / ${pad(N)}</span><span class="sp-bars" aria-hidden="true">${list.map((_,j)=>`<i${j===i?' class="on"':''}></i>`).join('')}</span></div>
+        ${p.award?`<p class="sp-win">${p.award}</p>`:''}
+        <h3 class="sp-name">${p.name}<span>.</span></h3>
+        <p class="sp-sub">${p.sub}</p>
+        <p class="sp-d">${p.desc}</p>
+        <ul class="sp-stack">${p.tags.map(t=>`<li>${t}</li>`).join('')}</ul>
+        <div class="sp-links">
+          ${p.live?`<a class="fx fill" href="${p.live}" target="_blank" rel="noopener">Live <span aria-hidden="true">↗</span></a>`:''}
+          ${p.link?`<a class="fx${p.live?'':' fill'}" href="${p.link}" target="_blank" rel="noopener">${GH}GitHub <span aria-hidden="true">↗</span></a>`:''}
+        </div>
+      </div>
+      <div class="sp-m" data-i="${i}" style="grid-row:${i+1}">
+        <div class="sp-glow" aria-hidden="true"></div>
+        <a class="sp-frame-link" href="${main}" target="_blank" rel="noopener" aria-label="Open ${p.name}">
+          <figure class="sp-frame"><div class="sp-bar"><span class="sq" aria-hidden="true"><i></i><i></i><i></i></span><span class="u">${host(main)}</span></div>
+            <img src="${imgs[0]}" alt="${p.name}: ${p.sub}" loading="lazy" decoding="async"></figure>
+        </a>
+        ${imgs[1]?`<figure class="sp-frame sub${i%2?'':' left'}"><div class="sp-bar"><span class="sq" aria-hidden="true"><i></i><i></i><i></i></span><span class="u">${p.name.toLowerCase()}</span></div><img src="${imgs[1]}" alt="" loading="lazy" decoding="async"></figure>`:''}
+      </div>
+    </article>`;}).join('');
+  const ts=[...wrap.querySelectorAll('.sp-t')];
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const k=+e.target.dataset.i;ts.forEach((t,j)=>t.classList.toggle('on',j===k));}}),{rootMargin:'-45% 0px -45% 0px'});
+  wrap.querySelectorAll('.sp-m').forEach(m=>io.observe(m));
+}
+
 // Cinematic hero -> live UI blur swap. Fires once when card crosses the
 // viewport, after a brief beat so the user reads the poster image first.
 // Respects prefers-reduced-motion (jumps straight to live image).
@@ -1307,12 +1353,12 @@ function initProjMedia(){
 function initProjFilters(){
   const wrap=document.getElementById('proj-filters');if(!wrap)return;
   const grid=document.getElementById('projects-grid');
-  const all=new Set();
-  PROJ.forEach(p=>(p.cats||[]).forEach(c=>all.add(c)));
+  const all=new Set(),LIST=PROJ.filter(p=>!p.featured);
+  LIST.forEach(p=>(p.cats||[]).forEach(c=>all.add(c)));
   const order=['all','rag','agents','healthcare','ml'];
   const ordered=order.filter(c=>c==='all'||all.has(c));
-  const counts={all:PROJ.length};
-  PROJ.forEach(p=>(p.cats||[]).forEach(c=>counts[c]=(counts[c]||0)+1));
+  const counts={all:LIST.length};
+  LIST.forEach(p=>(p.cats||[]).forEach(c=>counts[c]=(counts[c]||0)+1));
   wrap.innerHTML=ordered.map((c,i)=>`<button class="proj-filter${i===0?' active':''}" data-cat="${c}">${CAT_LABELS[c]||c}<span class="count">${counts[c]||0}</span></button>`).join('');
   wrap.addEventListener('click',e=>{
     const btn=e.target.closest('.proj-filter');if(!btn)return;
