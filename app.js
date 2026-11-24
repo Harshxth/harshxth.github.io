@@ -20,6 +20,11 @@ const EXP=[
 ];
 
 const PROJ=[
+  // ── Row 0: newest ──
+  {name:'Fludd',sub:'Flood report card for any address',color:'#3B82F6',metric:'Live · 52% Milton hits',award:"Winner · HackJam '26",wip:false,link:'https://github.com/Harshxth/Fludd',live:'https://fludd.app',cats:['civic'],
+   media:{poster:'assets/fludd-grade.jpg',live:'assets/fludd-storm.jpg'},
+   desc:'Type an address near USF and get a flood report card: a letter grade, the water hour by hour, when to move your car, and whether a fire truck can still reach you. Its depth model puts water at <span class="m">286 of 547</span> Hurricane Milton damage points, <span class="m">136</span> of them outside FEMA high-risk zones. Built with Hansika Samayamantri; I led the product and interface.',
+   tags:['Next.js','TypeScript','MapLibre','Python','Supabase','Gemini'],flow:['Address','Depth Model','Grade','Storm Hours','Safe Route']},
   // ── Row 1: hackathon-award cards ──
   {name:'Sensory',sub:'Maps how a place feels',color:'#22D3EE',metric:'Best UI/UX · 148 Venues',award:'Best UI/UX · HackaBull VII',wip:false,link:'https://github.com/Harshxth/Sensory',cats:['agents'],
    media:{poster:'assets/sensory-hero.jpg',live:'assets/sensory-map.jpg'},
@@ -49,7 +54,7 @@ const PROJ=[
    desc:'Does hours of medical-literature research in minutes. A <strong>CrewAI</strong> 4-agent system scans PubMed and writes executive reports at <span class="m">95% accuracy</span> versus manual review.',
    tags:['CrewAI','Multi-Agent','PubMed','Python','LangChain'],flow:['Input','Researcher','Analyzer','Validator','Report']},
 ];
-const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Model Training'};
+const CAT_LABELS={all:'All',rag:'RAG',agents:'Agents',healthcare:'Healthcare',ml:'Model Training',civic:'Civic Tech'};
 // Signature SVG visuals for cards without media — each diagram states something true about the project.
 const PROJ_VIZ={
   'Sentinel AI': // confidence gate: most posts take the cheap local path, few escalate
@@ -364,6 +369,7 @@ async function initResumeCounter(){
     }},
     ls:{d:'list sections & projects',run(arg){
       if(arg==='projects'||arg==='proj'){
+        line('fludd/','');
         line('sensory/','');
         line('carecall/','');
         line('sentinel-ai/','');
@@ -642,6 +648,7 @@ async function initResumeCounter(){
   }).filter(Boolean);
   const CMDS=[
     ...JUMPS,
+    {g:'Projects',t:'Fludd',d:"Winner · HackJam '26 · fludd.app",k:'fludd flood hackjam hackathon map grade milton fema routing nextjs maplibre',ic:'◈',act:()=>open('https://fludd.app')},
     {g:'Projects',t:'Sensory',d:'Best UI/UX · HackaBull VII',k:'sensory hackabull hackathon nextjs gemini elevenlabs accessibility autistic wheelchair deaf blind dyslexic',ic:'◈',act:()=>open('https://github.com/Harshxth/Sensory')},
     {g:'Projects',t:'CareCall',d:'agentic voice AI for healthcare',k:'carecall hackusf adk gemini',ic:'◈',act:()=>open('https://github.com/Harshxth/CareCall')},
     {g:'Projects',t:'Sentinel AI',d:'confidence-gated multi-agent NLP',k:'sentinel kaggle roberta mcp claude',ic:'◈',act:()=>open('https://github.com/Harshxth/Sentinel-AI')},
@@ -1263,6 +1270,7 @@ function initProj(){
           <span>${(p.flow||[]).slice(0,2).join(' · ').toUpperCase()||'—'}</span>
           <span style="display:inline-flex;gap:.8rem;align-items:center">
             ${p.wip?'<span class="wip-tag">IN PROGRESS</span>':''}
+            ${p.live?`<a class="gh-shine shine-border" href="${p.live}" target="_blank" rel="noopener" style="--shine:${p.color}">Live <span>↗</span></a>`:''}
             ${p.link?`<a class="gh-shine shine-border" href="${p.link}" target="_blank" rel="noopener" style="--shine:${p.color}">GitHub <span>↗</span></a>`:''}
           </span>
         </div>
